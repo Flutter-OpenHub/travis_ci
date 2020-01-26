@@ -27,6 +27,16 @@ The project is still in beta and not all features are available.
 - Show build details, log and history
 
 
+## Screenshots
+
+![CI Selection](/screenshots/screen1.jpg)
+![Login Screen](/screenshots/screen2.jpg)
+![Login Token Help](/screenshots/screen3.jpg)
+![Dashboard](/screenshots/screen4.jpg)
+![My Account](/screenshots/screen5.jpg)
+![Settings](/screenshots/screen6.jpg)
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
