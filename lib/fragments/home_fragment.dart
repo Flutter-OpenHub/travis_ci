@@ -121,11 +121,15 @@ class _ActiveRepoState extends State<HomeFragment>
         TravisLogos.source_repository,
         size: 30.0,
       ),
-      title: Text(repositoriesModel.name,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
+      trailing: Icon(
+        repositoriesModel.starred ? Icons.star : Icons.star_border,
+        color: repositoriesModel.starred ? Colors.orange : Colors.black54,
+      ),
+      title: Text(repositoriesModel.owner,
+          style: TextStyle(fontWeight: FontWeight.w500)),
       subtitle: Text(
           repositoriesModel.active
-              ? repositoriesModel.slug
+              ? repositoriesModel.name
               : 'There is no build on the default branch yet.',
           style: TextStyle(
               color: repositoriesModel.active ? Colors.blue : Colors.teal,
@@ -135,7 +139,9 @@ class _ActiveRepoState extends State<HomeFragment>
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return Details(
-              repoDetail: repositoriesModel.name,
+              repoDetail: repositoriesModel.slug,
+              repoId: repositoriesModel.id.toString(),
+              token: widget.store.token,
             );
           }));
         });

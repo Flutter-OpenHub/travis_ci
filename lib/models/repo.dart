@@ -61,10 +61,11 @@ class RepositoriesModel {
   bool active;
   String name;
   String slug;
+  String owner;
   String description;
 
   RepositoriesModel(this.id, this.starred, this.active, this.name, this.slug,
-      this.description);
+      this.description, this.owner);
 
   factory RepositoriesModel.fromJson(Map<String, dynamic> parsedJson) {
     return RepositoriesModel(
@@ -73,6 +74,7 @@ class RepositoriesModel {
         parsedJson['active'],
         parsedJson['name'],
         parsedJson['slug'],
-        parsedJson['description']);
+        parsedJson['description'],
+        parsedJson['owner']['login']);
   }
 }

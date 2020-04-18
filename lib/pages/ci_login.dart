@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
         title: Text("Login"),
         centerTitle: true,
       ),
+      // TODO Replace bottom sheet with FloatingActionButton as BottomSheet covers SnackBar
       bottomSheet: BottomSheet(
           onClosing: () {},
           enableDrag: false,

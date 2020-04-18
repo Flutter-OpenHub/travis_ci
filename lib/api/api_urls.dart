@@ -4,6 +4,8 @@ class ApiUrls {
 
   static const String reposUrl = baseUrl + "/repos";
 
+  static const String repoUrl = baseUrl + "/repo/";
+
   static const String userRepoUrl = "https://api.travis-ci.org/";
 
   static const String organizationsUrl = baseUrl + "/orgs";

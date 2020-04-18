@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:travis_ci/api/api_urls.dart';
 import 'package:travis_ci/models/repo.dart';
 import 'package:travis_ci/utils/network_util.dart';
@@ -14,6 +15,7 @@ class UserRepoApi {
       cancelToken,
       headers: {"Travis-API-Version": "3", "Authorization": "token $token"},
     ).then((dynamic res) {
+      //debugPrint(res.toString());
       return Repositories.getListFromJson(res['repositories']);
     });
   }

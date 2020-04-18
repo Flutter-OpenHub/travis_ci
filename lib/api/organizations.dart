@@ -9,7 +9,7 @@ class OrganizationsApi {
   static Future<List<Organization>> getOrganizationList(String token,
       String login, int offset, int limit, CancelToken cancelToken) async {
     return NetworkUtil().get(
-      ApiUrls.organizationsUrl,
+      ApiUrls.organizationsUrl + '?limit=$limit&offset=$offset',
       cancelToken,
       headers: {"Travis-API-Version": "3", "Authorization": "token $token"},
     ).then((dynamic res) {

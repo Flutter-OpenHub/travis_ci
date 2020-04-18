@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class NetworkUtil with NetworkUtilMixin {
   // next three lines makes this class a Singleton
@@ -18,7 +19,7 @@ class NetworkUtil with NetworkUtilMixin {
     Response response = await Dio().get(url,
         options: Options(headers: headers, responseType: ResponseType.plain),
         cancelToken: cancelToken);
-    //print(response.data);
+    debugPrint(response.data.toString());
     final res = jsonDecode(response.data.toString());
     //print(res);
     final int statusCode = response.statusCode;
