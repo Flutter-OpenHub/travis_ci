@@ -1,3 +1,9 @@
+/*
+ * organization.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 class Organization {
   String name;
   String login;

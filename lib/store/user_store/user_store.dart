@@ -1,17 +1,24 @@
+/*
+ * user_store.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
-import 'package:travis_ci/api/account.dart';
-import 'package:travis_ci/models/user.dart';
+
+import '../../api/travis_ci_api.dart';
+import '../../models/user.dart';
 
 part 'user_store.g.dart';
 
 class UserStore = _UserStore with _$UserStore;
 
 abstract class _UserStore with Store {
-  final UserAccountApi _userAccountApi = UserAccountApi();
+  final TravisCIApi _userAccountApi = TravisCIApi();
   @observable
   User user;
 
@@ -31,9 +38,8 @@ abstract class _UserStore with Store {
   bool get hasErrors => user != null;
 
   @action
-  Future getUser(String token, CancelToken cancelToken) async {
-    print('a');
-    final future = _userAccountApi.getUser(token, cancelToken);
+  Future getUser(CancelToken cancelToken) async {
+    final future = _userAccountApi.getUser(cancelToken);
     getUserFuture = ObservableFuture(future);
     future.then((value) {
       user = value;
@@ -47,14 +53,9 @@ abstract class _UserStore with Store {
   }
 
   @action
-  void setUser(User value) {
-    user = value;
-  }
-
-  @action
-  Future syncAccount(String token, CancelToken cancelToken) async {
+  Future syncAccount(CancelToken cancelToken) async {
     final future =
-        _userAccountApi.syncAccount(token, user.id.toString(), cancelToken);
+        _userAccountApi.syncAccount(user.id.toString(), cancelToken);
     syncAccountFuture = ObservableFuture(future);
     future.then((value) {
       user = value;

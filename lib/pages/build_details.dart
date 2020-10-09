@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+/*
+ * build_details.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+import 'package:flutter/material.dart';
 
 import '../models/build_model.dart';
 
@@ -14,14 +19,6 @@ class BuildDetails extends StatefulWidget {
 }
 
 class _BuildDetailsState extends State<BuildDetails> {
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url, forceWebView: false);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,24 +36,25 @@ class _BuildDetailsState extends State<BuildDetails> {
             ListTile(
               leading: Icon(FeatherIcons.rotateCcw),
               title: Text("Previous build"),
-              subtitle: Text(widget.buildDetail.previousState != null ? widget.buildDetail.previousState : 'None'),
+              subtitle: Text(widget.buildDetail.previousState != null
+                  ? widget.buildDetail.previousState
+                  : 'None'),
             ),
             ListTile(
               leading: Icon(FeatherIcons.gitCommit),
               title: Text("Commit"),
-              subtitle: Text(widget.buildDetail.commit['message']),
+              //subtitle: Text(widget.buildDetail.commit['message']),
               onTap: () {
-                _launchURL(
-                    'https://github.com/${widget.buildDetail.repository['slug']}/commit/${widget.buildDetail.commit['sha']}');
+                // _launchURL(
+                //     'https://github.com/${widget.buildDetail.repository['slug']}/commit/${widget.buildDetail.commit['sha']}');
               },
               trailing: Icon(Icons.keyboard_arrow_right),
             ),
 
-
-            ListTile(
-              title: Text("Commit"),
-              subtitle: Text(widget.buildDetail.commit['sha']),
-            ),
+            // ListTile(
+            //   title: Text("Commit"),
+            //   subtitle: Text(widget.buildDetail.commit['sha']),
+            // ),
             ListTile(
               title: Text("Commit"),
               subtitle: Text(widget.buildDetail.commit.toString()),

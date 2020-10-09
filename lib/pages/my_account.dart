@@ -1,3 +1,9 @@
+/*
+ * my_account.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 import 'dart:async';
 
 import 'package:dio/dio.dart';
@@ -7,9 +13,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import 'package:travis_ci/api/organizations.dart';
+import 'package:travis_ci/api/travis_ci_api.dart';
 import 'package:travis_ci/models/organization.dart';
-import 'package:travis_ci/store/form_store.dart';
+import 'package:travis_ci/store/form_store/form_store.dart';
 
 class MyAccount extends StatefulWidget {
   final FormStore formStore;
@@ -86,8 +92,7 @@ class _MyAccountState extends State<MyAccount> {
                             ),
                       onTap: () {
                         if (!widget.formStore.userStore.user.isSyncing) {
-                          widget.formStore.userStore
-                              .syncAccount(widget.formStore.token, cancelToken);
+                          widget.formStore.userStore.syncAccount(cancelToken);
                         }
                       },
                     )),
@@ -159,12 +164,8 @@ class _MyAccountState extends State<MyAccount> {
     _pageWiseLoadController = PagewiseLoadController(
         pageSize: 10,
         pageFuture: (pageIndex) {
-          return OrganizationsApi.getOrganizationList(
-              widget.formStore.token,
-              widget.formStore.userStore.user.login,
-              (pageIndex * 10),
-              10,
-              cancelToken);
+          return TravisCIApi.getOrganizationList(
+              (pageIndex * 10), 10, cancelToken);
         });
     _disposer = reaction(
       (_) => widget.formStore.userStore.syncAccountFuture.status,
@@ -202,8 +203,7 @@ class _MyAccountState extends State<MyAccount> {
         Duration(seconds: 3),
         () => _timer = Timer.periodic(Duration(seconds: 3), (tick) {
               if (widget.formStore.userStore.user.isSyncing) {
-                widget.formStore.userStore
-                    .getUser(widget.formStore.token, cancelToken);
+                widget.formStore.userStore.getUser(cancelToken);
               } else {
                 _timer.cancel();
               }

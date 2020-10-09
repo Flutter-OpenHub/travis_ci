@@ -1,12 +1,18 @@
+/*
+ * home_page.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:travis_ci/fragments/build_fragment.dart';
-import 'package:travis_ci/fragments/home_fragment.dart';
-import 'package:travis_ci/fragments/repo_fragment.dart';
-import 'package:travis_ci/pages/my_account.dart';
-import 'package:travis_ci/store/form_store.dart';
+import 'package:travis_ci/utils/icon_fonts.dart';
 
-import '../utils/icon_fonts.dart';
+import '../fragments/home_fragment.dart';
+import '../fragments/my_builds.dart';
+import '../fragments/repo_fragment.dart';
+import '../store/form_store/form_store.dart';
+import 'my_account.dart';
 import 'settings.dart';
 
 class DrawerItem {
@@ -23,115 +29,182 @@ class HomePage extends StatefulWidget {
   HomePageState createState() => new HomePageState();
 }
 
-class HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class HomePageState extends State<HomePage> {
   int _index = 0;
-  TabController _tabController;
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = new TabController(length: 4, vsync: this);
-    setState(() {
-      _index = 0;
-    });
-  }
+  String _title = "Active Repos";
+
+  Widget _selectedWidget;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Image.asset(
-            'assets/TravisCI-Full-Color.png',
-            height: kToolbarHeight - 24.0,
+          title: Text(
+            _title,
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Quicksand'),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0.0,
           centerTitle: false,
-          automaticallyImplyLeading: false,
+          //automaticallyImplyLeading: false,
           brightness: Brightness.light,
-          actions: <Widget>[
-            ActionChip(
-              avatar: CircleAvatar(
-                backgroundImage:
-                    NetworkImage(widget.store.userStore.user.avatarUrl),
-                backgroundColor: Colors.white,
-              ),
-              backgroundColor: Colors.teal,
-              label: Text(
-                'My Account',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                  return MyAccount(
-                    formStore: widget.store,
-                  );
-                }));
-              },
-            ),
-            IconButton(
-                icon: Icon(
-                  FeatherIcons.settings,
-                  size: 18.0,
+          // actions: <Widget>[
+          //   ActionChip(
+          //     avatar: CircleAvatar(
+          //       backgroundImage:
+          //           NetworkImage(widget.store.userStore.user.avatarUrl),
+          //       backgroundColor: Colors.white,
+          //     ),
+          //     backgroundColor: Colors.teal,
+          //     label: Text(
+          //       'My Account',
+          //       style:
+          //           TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          //     ),
+          //     onPressed: () {
+          //       Navigator.push(context,
+          //           new MaterialPageRoute(builder: (BuildContext context) {
+          //         return MyAccount(
+          //           formStore: widget.store,
+          //         );
+          //       }));
+          //     },
+          //   ),
+          //   IconButton(
+          //       icon: Icon(
+          //         FeatherIcons.settings,
+          //         size: 18.0,
+          //       ),
+          //       onPressed: () {
+          //
+          //       }),
+          // ],
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              DrawerHeader(
+                  child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 28.0,
+                      backgroundImage:
+                          NetworkImage(widget.store.userStore.user.avatarUrl),
+                    ),
+                    ListTile(
+                      title: Text(widget.store.userStore.user.name),
+                      subtitle: Text(widget.store.userStore.user.login),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      contentPadding: const EdgeInsets.only(),
+                      onTap: () {
+                        Navigator.push(context, new MaterialPageRoute(
+                            builder: (BuildContext context) {
+                          return MyAccount(
+                            formStore: widget.store,
+                          );
+                        }));
+                      },
+                    )
+                  ],
                 ),
-                onPressed: () {
+              )),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.only(),
+                  shrinkWrap: true,
+                  children: [
+                    ListTile(
+                      leading: Icon(TravisLogos.source_repository),
+                      title: Text("Active Repos"),
+                      selected: _index == 0,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _index = 0;
+                          _title = "Active Repos";
+                          _selectedWidget = HomeFragment();
+                        });
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(TravisLogos.source_repository_multiple),
+                      title: Text("All Repos"),
+                      selected: _index == 1,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _index = 1;
+                          _title = "All Repos";
+                          _selectedWidget = RepoFragment();
+                        });
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(FeatherIcons.settings),
+                      title: Text("Builds"),
+                      selected: _index == 2,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _index = 2;
+                          _title = "Builds";
+                          _selectedWidget = MyBuilds();
+                        });
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(FeatherIcons.briefcase),
+                      title: Text("Jobs"),
+                      selected: _index == 3,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _index = 3;
+                          _title = "Jobs";
+                          _selectedWidget = Center(
+                            child: Text("Yet to be implemented \u{1f605}"),
+                          );
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 0.0,
+              ),
+              ListTile(
+                leading: Icon(FeatherIcons.settings),
+                title: Text("Settings"),
+                onTap: () {
+                  Navigator.of(context).pop();
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (BuildContext context) {
                     return SettingsPage();
                   }));
-                }),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            onTap: (index) {
-              setState(() {
-                _index = index;
-                _tabController.animateTo(index);
-              });
-            },
-            currentIndex: _index,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(FeatherIcons.home),
-                  title: Text(
-                    'Dashboard',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(TravisLogos.source_repository_multiple),
-                  title: Text(
-                    'All Repos',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(FeatherIcons.settings),
-                  title: Text(
-                    'Builds',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(FeatherIcons.briefcase),
-                  title: Text(
-                    'Jobs',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ))
-            ]),
-        body: TabBarView(
-            controller: _tabController,
-            physics: NeverScrollableScrollPhysics(),
-            children: [
-              HomeFragment(
-                store: widget.store,
-              ),
-              RepoFragment(),
-              BuildsFragment(),
-              Center(
-                child: Text("Yet to be implemented \u{1f605}"),
-              ),
-            ]));
+        body: _selectedWidget);
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedWidget = HomeFragment();
+  }
+
+  //Image.asset(
+//             'assets/TravisCI-Full-Color.png',
+//             height: kToolbarHeight - 24.0,
+//           )
 }

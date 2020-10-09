@@ -1,11 +1,19 @@
+/*
+ * settings.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:travis_ci/store/form_store.dart';
-import 'package:travis_ci/utils/open_url.dart';
+
+import '../store/form_store/form_store.dart';
+import '../utils/open_url.dart';
+import '../widgets/openhub_logo.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -32,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
               fontWeight: FontWeight.w600,
               fontFamily: 'Quicksand'),
         ),
-        textTheme: TextTheme(title: TextStyle(fontSize: 20.0)),
+        textTheme: TextTheme(headline6: TextStyle(fontSize: 20.0)),
         centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -68,48 +76,22 @@ class _SettingsPageState extends State<SettingsPage> {
               OpenUrl.launchURL('https://www.traviscistatus.com/');
             },
           ),
-          ListTile(
-            leading: Icon(Icons.info),
-            title: Text(
-              'About',
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text(
-              'Travis CI client developed using Flutter framework',
-              style: TextStyle(fontWeight: FontWeight.w400),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.developer_mode),
-            title: Text(
-              'Developed by',
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text(
-              'Flutter OpenHub',
-              style: TextStyle(fontWeight: FontWeight.w400),
-            ),
-          ),
-
-          ///Flutter OpenHub logo
-          /*
+          Divider(),
           Container(
+            margin: const EdgeInsets.symmetric(vertical: 24.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlutterLogo(
-                  size: 40.0,
-                ),
+              children: [
                 Text(
-                  'OpenHub',
-                  style: TextStyle(fontSize: 20.0),
-                  textAlign: TextAlign.center,
+                  "Developed by",
+                  style: TextStyle(fontWeight: FontWeight.w500),
                 ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                OpenHubLogo()
               ],
             ),
-          ),
-           */
+          )
         ],
       ),
     );

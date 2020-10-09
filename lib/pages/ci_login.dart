@@ -1,8 +1,16 @@
+/*
+ * ci_login.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:travis_ci/init/init.dart';
 import 'package:travis_ci/pages/home_page.dart';
-import 'package:travis_ci/store/form_store.dart';
+import 'package:travis_ci/store/form_store/form_store.dart';
+import 'package:travis_ci/store/token_store/token_store.dart';
 import 'package:travis_ci/utils/open_url.dart';
 
 class LoginPage extends StatefulWidget {
@@ -159,6 +167,8 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () {
                                     store.validateAll();
                                     if (!store.errorState.hasErrors) {
+                                      kTokenStore = TokenStore();
+                                      kTokenStore.token = store.token;
                                       store.authUser();
                                     }
                                   },
@@ -198,6 +208,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _navigate() {
+    // Init TokenStore
+    kTokenStore = TokenStore();
+    kTokenStore.token = store.token;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => HomePage(
               store: store,
@@ -205,6 +218,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _showError() {
+    //TODO Snackbar is not visible if bottomsheet is active
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       content: Text(store.errorMessage),
       behavior: SnackBarBehavior.floating,

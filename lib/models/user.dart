@@ -1,3 +1,9 @@
+/*
+ * user.dart
+ *
+ * Created by Amit Khairnar on 09/10/2020.
+ */
+
 class User {
   int id;
   bool isSyncing;

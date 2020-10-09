@@ -1,5 +1,5 @@
 /*
- * account.dart
+ * get_user_api.dart
  *
  * Created by Amit Khairnar on 09/10/2020.
  */
@@ -11,22 +11,12 @@
 // import 'package:travis_ci/models/user.dart';
 // import 'package:travis_ci/utils/network_util.dart';
 //
-// class UserAccountApi {
+// class GetUserApi {
 //   NetworkUtil _netUtil = new NetworkUtil();
 //
-//   Future<User> syncAccount(
-//       String token, String id, CancelToken cancelToken) async {
-//     var res = await _netUtil.post(
-//       ApiUrls.userUrl + '/$id/sync',
-//       cancelToken,
-//       headers: {"Travis-API-Version": "3", "Authorization": "token $token"},
-//     );
-//     return User.fromJson(res);
-//   }
-//
-//   Future<User> getUser(String token, CancelToken cancelToken) async {
+//   Future<User> getUser(String id, String token, CancelToken cancelToken) async {
 //     var res = await _netUtil.get(
-//       ApiUrls.userUrl,
+//       ApiUrls.userUrl + '/$id',
 //       cancelToken,
 //       headers: {"Travis-API-Version": "3", "Authorization": "token $token"},
 //     );
