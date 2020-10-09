@@ -5,6 +5,7 @@
  */
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../init/init.dart';
 import '../models/build_model.dart';
@@ -30,6 +31,21 @@ class TravisCIApi {
     return _builds != null
         ? _builds.map((e) => BuildsModel.fromJson(e)).toList()
         : [];
+  }
+
+  Future<String> getBuildLog(String id, CancelToken cancelToken) async {
+    var res = await Dio().get(
+      ApiUrls.jobUrl + id + '/log.txt',
+      cancelToken: cancelToken,
+      options: Options(headers: headers),
+    );
+    if (res.statusCode < 200 || res.statusCode > 400) {
+      throw new Exception(
+          "Error while fetching data: ${res.statusCode} ${res.statusMessage}");
+    }
+    //debugPrint(res.data);
+    print(res.data.toString().split("\n").length);
+    return res.data.toString();
   }
 
   Future<User> getUser(CancelToken cancelToken, {String id}) async {

@@ -1,9 +1,3 @@
-/*
- * get_user_store.g.dart
- *
- * Created by Amit Khairnar on 09/10/2020.
- */
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'get_user_store.dart';

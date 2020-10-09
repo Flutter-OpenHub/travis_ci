@@ -59,6 +59,12 @@ flutter:
         - asset: fonts/Quicksand-Medium.ttf
         - asset: fonts/Quicksand-Bold.ttf
         - asset: fonts/Quicksand-Light.ttf
+    - family: Cousine
+      fonts:
+        - asset: fonts/Cousine-Regular.ttf
+        - asset: fonts/Cousine-Bold.ttf
+        - asset: fonts/Cousine-BoldItalic.ttf
+        - asset: fonts/Cousine-Italic.ttf
     - family: TravisLogos
       fonts:
         - asset: fonts/TravisLogos.ttf

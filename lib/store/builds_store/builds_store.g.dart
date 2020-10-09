@@ -1,9 +1,3 @@
-/*
- * builds_store.g.dart
- *
- * Created by Amit Khairnar on 09/10/2020.
- */
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'builds_store.dart';
@@ -37,6 +31,21 @@ mixin _$BuildsStore on _BuildsStore, Store {
     });
   }
 
+  final _$buildLogAtom = Atom(name: '_BuildsStore.buildLog');
+
+  @override
+  String get buildLog {
+    _$buildLogAtom.reportRead();
+    return super.buildLog;
+  }
+
+  @override
+  set buildLog(String value) {
+    _$buildLogAtom.reportWrite(value, super.buildLog, () {
+      super.buildLog = value;
+    });
+  }
+
   final _$errorMessageAtom = Atom(name: '_BuildsStore.errorMessage');
 
   @override
@@ -67,6 +76,21 @@ mixin _$BuildsStore on _BuildsStore, Store {
     });
   }
 
+  final _$getBuildLogFutureAtom = Atom(name: '_BuildsStore.getBuildLogFuture');
+
+  @override
+  ObservableFuture<String> get getBuildLogFuture {
+    _$getBuildLogFutureAtom.reportRead();
+    return super.getBuildLogFuture;
+  }
+
+  @override
+  set getBuildLogFuture(ObservableFuture<String> value) {
+    _$getBuildLogFutureAtom.reportWrite(value, super.getBuildLogFuture, () {
+      super.getBuildLogFuture = value;
+    });
+  }
+
   final _$getBuildsAsyncAction = AsyncAction('_BuildsStore.getBuilds');
 
   @override
@@ -74,12 +98,22 @@ mixin _$BuildsStore on _BuildsStore, Store {
     return _$getBuildsAsyncAction.run(() => super.getBuilds(id, cancelToken));
   }
 
+  final _$getBuildLogAsyncAction = AsyncAction('_BuildsStore.getBuildLog');
+
+  @override
+  Future<dynamic> getBuildLog(String id, CancelToken cancelToken) {
+    return _$getBuildLogAsyncAction
+        .run(() => super.getBuildLog(id, cancelToken));
+  }
+
   @override
   String toString() {
     return '''
 builds: ${builds},
+buildLog: ${buildLog},
 errorMessage: ${errorMessage},
 getBuildsFuture: ${getBuildsFuture},
+getBuildLogFuture: ${getBuildLogFuture},
 hasErrors: ${hasErrors}
     ''';
   }

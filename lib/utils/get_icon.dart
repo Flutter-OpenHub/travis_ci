@@ -9,10 +9,13 @@ import 'package:travis_ci/enum/build_status.dart';
 
 class GetIcon {
   static getIcon(BuildState state, {double size}) {
-    print(state);
     switch (state) {
       case BuildState.started:
-        return Container();
+        return Icon(
+          Icons.more_horiz,
+          color: Colors.grey,
+          size: size,
+        );
       case BuildState.passed:
         return Icon(
           Icons.check,
@@ -34,6 +37,12 @@ class GetIcon {
       case BuildState.canceled:
         return Icon(
           Icons.not_interested,
+          color: Colors.grey,
+          size: size,
+        );
+      default:
+        return Icon(
+          Icons.more_horiz,
           color: Colors.grey,
           size: size,
         );

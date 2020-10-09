@@ -22,10 +22,16 @@ abstract class _BuildsStore with Store {
   ObservableList<BuildsModel> builds = ObservableList<BuildsModel>();
 
   @observable
+  String buildLog;
+
+  @observable
   String errorMessage = '';
 
   @observable
   ObservableFuture<List<BuildsModel>> getBuildsFuture;
+
+  @observable
+  ObservableFuture<String> getBuildLogFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;
@@ -36,6 +42,21 @@ abstract class _BuildsStore with Store {
     getBuildsFuture = ObservableFuture(future);
     future.then((value) {
       builds = ObservableList.of(value);
+    }).catchError((error) {
+      errorMessage = error.toString().contains('SocketException:')
+          ? 'Connection to server failed! Please check your internet connection and try again.'
+          : error.response != null
+              ? jsonDecode(error.response.data.toString())['error_message']
+              : error.message.toString();
+    });
+  }
+
+  @action
+  Future getBuildLog(String id, CancelToken cancelToken) async {
+    final future = _buildsApi.getBuildLog(id, cancelToken);
+    getBuildLogFuture = ObservableFuture(future);
+    future.then((value) {
+      buildLog = value;
     }).catchError((error) {
       errorMessage = error.toString().contains('SocketException:')
           ? 'Connection to server failed! Please check your internet connection and try again.'

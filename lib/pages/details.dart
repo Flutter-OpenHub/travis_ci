@@ -4,6 +4,8 @@
  * Created by Amit Khairnar on 09/10/2020.
  */
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,8 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   BuildsStore _buildsStore = BuildsStore();
 
   TabController _tabController;
+
+  ReactionDisposer _reactionDisposer;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +93,23 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
     print(ApiUrls.repoUrl + widget.repositoriesModel.id.toString());
     _buildsStore.getBuilds(
         widget.repositoriesModel.id.toString(), CancelToken());
+
+    _reactionDisposer = reaction(
+      (_) => _buildsStore.getBuildsFuture.status,
+      (result) =>
+          _buildsStore.getBuildsFuture.status == FutureStatus.rejected &&
+                  _buildsStore.hasErrors
+              ? null
+              : _buildsStore.getBuildsFuture.status == FutureStatus.fulfilled &&
+                      !_buildsStore.hasErrors
+                  ? _getBuildLog()
+                  : null,
+    );
+  }
+
+  _getBuildLog() {
+    _buildsStore.getBuildLog(
+        _buildsStore.builds.first.jobs.first.id.toString(), CancelToken());
   }
 
   Widget _current() {
@@ -97,7 +118,12 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
             child: Column(
               children: [
                 ListTile(
-                  leading: GetIcon.getIcon(_buildsStore.builds.first.state),
+                  leading: _buildsStore.builds.first.state != null
+                      ? GetIcon.getIcon(_buildsStore.builds.first.state)
+                      : Icon(
+                          Icons.more_horiz,
+                          color: Colors.grey,
+                        ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -258,7 +284,80 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                             side: BorderSide(color: Colors.grey[200])),
                         onPressed: () {}),
                   ),
-                )
+                ),
+                _buildsStore.getBuildLogFuture != null
+                    ? _buildsStore.getBuildLogFuture.status ==
+                            FutureStatus.fulfilled
+                        ? Container(
+                            color: Colors.black,
+                            padding: const EdgeInsets.all(8.0),
+                            child: SafeArea(child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: _buildsStore.buildLog
+                              // .replaceAll("[0K[33;1m", "")
+                              // .replaceAll("[0m", "")
+                              // .replaceAll("[0K", "")
+                              // .replaceAll("[34m[1m", "")
+                              // .replaceAll("travis_fold:end:worker_info", "")
+                                  .split("\n")
+                                  .map((e) => (e.trim().contains(
+                                  "travis_fold:start:") &&
+                                  e.contains("[0K[33;1m")) ||
+                                  (e.trim().startsWith("[33;1m") &&
+                                      e.contains("[0m"))
+                                  ? Text(
+
+                                e
+                                    .split("[0K[33;1m")
+                                    .last
+                                    .split("[0m")
+                                    .first
+                                    .trim(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Cousine',
+                                    fontSize: 10.0,
+                                    color: Color.fromRGBO(
+                                        255, 255, 145, 1.0)),
+                              )
+                                  : e.trim().startsWith(
+                                  "travis_time:start") ||
+                                  e
+                                      .trim()
+                                      .startsWith("travis_time:end") || e.trim().startsWith("travis_fold:end")
+                                  ? Text("")
+                                  : Text(
+                                e.contains("[34m[1m")
+                                    ? e
+                                    .split("[34m[1m")
+                                    .last
+                                    .split("[0m")
+                                    .first
+                                    .trim()
+                                    : e.trimLeft(),
+                                style: TextStyle(
+                                  color: e.contains("[34m[1m")
+                                      ? Colors.lightBlueAccent
+                                      : Colors.white,
+                                  fontSize: 10.0,
+                                  fontWeight:
+                                  e.contains("[34m[1m")
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
+                                  fontFamily: 'Cousine',
+                                  //fontWeight: FontWeight.w500,
+                                ),
+                              ))
+                                  .toList(),
+                            )),
+                          )
+                        : _buildsStore.getBuildLogFuture.status ==
+                                FutureStatus.rejected
+                            ? Text(_buildsStore.errorMessage)
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              )
+                    : Container()
               ],
             ),
           )

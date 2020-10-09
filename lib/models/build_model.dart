@@ -19,6 +19,7 @@ class BuildsModel {
   final Commit commit;
   final Repository repository;
   final Branch branch;
+  final List<Job> jobs;
 
   BuildsModel(
       {this.number,
@@ -30,9 +31,11 @@ class BuildsModel {
       this.createdAt,
       this.commit,
       this.repository,
-      this.branch});
+      this.branch,
+      this.jobs});
 
   factory BuildsModel.fromJson(Map<String, dynamic> parsedJson) {
+    List<dynamic> _jobs = parsedJson['jobs'];
     return BuildsModel(
         state:
             enumFromString<BuildState>(BuildState.values, parsedJson['state']),
@@ -48,7 +51,9 @@ class BuildsModel {
             : null,
         previousState: parsedJson['previous_state'],
         commit: Commit.fromJson(parsedJson['commit']),
-        createdBy: CreatedBy.fromJson(parsedJson['created_by']));
+        createdBy: CreatedBy.fromJson(parsedJson['created_by']),
+        jobs:
+            _jobs != null ? _jobs.map((e) => Job.fromJson(e)).toList() : null);
   }
 }
 
@@ -91,6 +96,21 @@ class CreatedBy {
     return CreatedBy(
         id: parsedJson['id'],
         login: parsedJson['login'],
+        href: parsedJson['@href'],
+        type: parsedJson['@type']);
+  }
+}
+
+class Job {
+  final int id;
+  final String type;
+  final String href;
+
+  Job({this.id, this.type, this.href});
+
+  factory Job.fromJson(Map<String, dynamic> parsedJson) {
+    return Job(
+        id: parsedJson['id'],
         href: parsedJson['@href'],
         type: parsedJson['@type']);
   }
