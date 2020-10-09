@@ -160,8 +160,10 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                             width: 8.0,
                           ),
                           Text(
-                            "Ran for ${_buildsStore.builds.first.duration ~/ 60} min "
-                            "${_buildsStore.builds.first.duration % 60} sec",
+                            _buildsStore.builds.first.duration != null
+                                ? "Ran for ${_buildsStore.builds.first.duration ~/ 60} min "
+                                    "${_buildsStore.builds.first.duration % 60} sec"
+                                : '-',
                             style: TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -338,8 +340,10 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                                 width: 8.0,
                               ),
                               Text(
-                                "${_buildsStore.builds[index].duration ~/ 60} min "
-                                "${_buildsStore.builds[index].duration % 60} sec",
+                                _buildsStore.builds[index].duration != null
+                                    ? "${_buildsStore.builds[index].duration ~/ 60} min "
+                                        "${_buildsStore.builds[index].duration % 60} sec"
+                                    : "-",
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               )
                             ],

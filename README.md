@@ -1,6 +1,6 @@
 # travis_ci
 
-Travis CI Flutter App
+Travis CI Flutter App [![Build Status](https://travis-ci.org/Flutter-OpenHub/travis_ci.svg?branch=master)](https://travis-ci.org/Flutter-OpenHub/travis_ci)
 
 ## About
 
@@ -15,6 +15,8 @@ The project is still in beta and not all features are available.
 - Sync with GitHub account in My Account
 - List of organizations the current user is a member of
 - Subscribe to build notifications
+- List builds
+- Show build details and history
 
 
 #### TO-DO
@@ -23,8 +25,7 @@ The project is still in beta and not all features are available.
 - Star and un-star repository on org
 - Trigger build
 - Activate and deactivate repository on org
-- List builds
-- Show build details, log and history
+- Show build logs
 
 
 ## Screenshots
@@ -36,16 +37,3 @@ The project is still in beta and not all features are available.
 ![My Account](/screenshots/screen5.jpg)
 ![Settings](/screenshots/screen6.jpg)
 
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
