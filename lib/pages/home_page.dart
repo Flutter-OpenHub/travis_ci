@@ -6,12 +6,12 @@
 
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:travis_ci/utils/icon_fonts.dart';
 
 import '../fragments/home_fragment.dart';
 import '../fragments/my_builds.dart';
 import '../fragments/repo_fragment.dart';
 import '../store/form_store/form_store.dart';
+import '../utils/icon_fonts.dart';
 import 'my_account.dart';
 import 'settings.dart';
 
@@ -42,51 +42,15 @@ class HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(
             _title,
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Quicksand'),
+            style:
+                TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Quicksand'),
           ),
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
           elevation: 0.0,
           centerTitle: false,
-          //automaticallyImplyLeading: false,
-          brightness: Brightness.light,
-          // actions: <Widget>[
-          //   ActionChip(
-          //     avatar: CircleAvatar(
-          //       backgroundImage:
-          //           NetworkImage(widget.store.userStore.user.avatarUrl),
-          //       backgroundColor: Colors.white,
-          //     ),
-          //     backgroundColor: Colors.teal,
-          //     label: Text(
-          //       'My Account',
-          //       style:
-          //           TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          //     ),
-          //     onPressed: () {
-          //       Navigator.push(context,
-          //           new MaterialPageRoute(builder: (BuildContext context) {
-          //         return MyAccount(
-          //           formStore: widget.store,
-          //         );
-          //       }));
-          //     },
-          //   ),
-          //   IconButton(
-          //       icon: Icon(
-          //         FeatherIcons.settings,
-          //         size: 18.0,
-          //       ),
-          //       onPressed: () {
-          //
-          //       }),
-          // ],
         ),
         drawer: Drawer(
-          child: Column(
+          child: SafeArea(
+              child: Column(
             children: [
               DrawerHeader(
                   child: Container(
@@ -192,7 +156,7 @@ class HomePageState extends State<HomePage> {
                 },
               ),
             ],
-          ),
+          )),
         ),
         body: _selectedWidget);
   }

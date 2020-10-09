@@ -92,214 +92,42 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   }
 
   Widget _current() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListTile(
-            leading: GetIcon.getIcon(_buildsStore.builds.first.state),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
+    return _buildsStore.builds.isNotEmpty
+        ? SingleChildScrollView(
+            child: Column(
               children: [
-                Icon(
-                  FeatherIcons.gitCommit,
-                  size: 16.0,
-                ),
-                Text(
-                  " #${_buildsStore.builds.first.number} "
-                  "${_buildsStore.builds.first.state.toString().split('.').last}",
-                  style: TextStyle(
-                      color: GetStateColor.getStateColor(
-                          _buildsStore.builds.first.state),
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            title: Text(
-              _buildsStore.builds.first.commit.message,
-              maxLines: 1,
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: GetStateColor.getStateColor(
-                      _buildsStore.builds.first.state)),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      FeatherIcons.gitCommit,
-                      color: Colors.teal,
-                      size: 16.0,
-                    ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      "Commit ${_buildsStore.builds.first.commit.sha.substring(0, 7)}",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    )
-                  ],
-                )),
-                Expanded(
-                    child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      FeatherIcons.clock,
-                      color: Colors.teal,
-                      size: 16.0,
-                    ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      "Ran for ${_buildsStore.builds.first.duration ~/ 60} min "
-                      "${_buildsStore.builds.first.duration % 60} sec",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ))
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-            child: Row(
-              children: [
-                Icon(
-                  FeatherIcons.gitPullRequest,
-                  color: Colors.teal,
-                  size: 16.0,
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  "Compare ${_buildsStore.builds.first.commit.compareUrl.split('/').last.split('...').map((e) => e.substring(0, 7)).join("...")}",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-            child: Row(
-              children: [
-                Icon(
-                  FeatherIcons.gitBranch,
-                  color: Colors.teal,
-                  size: 16.0,
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  "Branch master",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-            child: Row(
-              children: [
-                Icon(
-                  FeatherIcons.calendar,
-                  color: Colors.teal,
-                  size: 16.0,
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  timeago.format(
-                      DateTime.parse(_buildsStore.builds.first.createdAt)),
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
-            child: UserDataWidget(
-              id: _buildsStore.builds.first.createdBy.id.toString(),
-            ),
-          ),
-          Divider(),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ActionChip(
-                  avatar: Icon(
-                    Icons.refresh,
-                    color: Colors.teal,
-                  ),
-                  label: Text(
-                    'Restart build',
-                    style: TextStyle(color: Colors.teal),
-                  ),
-                  backgroundColor: Colors.white30,
-                  shape:
-                      StadiumBorder(side: BorderSide(color: Colors.grey[200])),
-                  onPressed: () {}),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _history() {
-    return ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        itemBuilder: (_, index) => ListTile(
-              title: Text(
-                _buildsStore.builds[index].commit.message,
-                //maxLines: 1,
-                //overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
+                ListTile(
+                  leading: GetIcon.getIcon(_buildsStore.builds.first.state),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      GetIcon.getIcon(_buildsStore.builds[index].state,
-                          size: 16.0),
-                      SizedBox(
-                        width: 4.0,
+                      Icon(
+                        FeatherIcons.gitCommit,
+                        size: 16.0,
                       ),
                       Text(
-                        _buildsStore.builds[index].state
-                            .toString()
-                            .split('.')
-                            .last,
+                        " #${_buildsStore.builds.first.number} "
+                        "${_buildsStore.builds.first.state.toString().split('.').last}",
                         style: TextStyle(
                             color: GetStateColor.getStateColor(
-                                _buildsStore.builds[index].state),
+                                _buildsStore.builds.first.state),
                             fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 4.0,
+                  title: Text(
+                    _buildsStore.builds.first.commit.message,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: GetStateColor.getStateColor(
+                            _buildsStore.builds.first.state)),
                   ),
-                  Row(
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  child: Row(
                     children: [
                       Expanded(
                           child: Row(
@@ -314,7 +142,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                             width: 8.0,
                           ),
                           Text(
-                            "${_buildsStore.builds[index].commit.sha.substring(0, 7)}",
+                            "Commit ${_buildsStore.builds.first.commit.sha.substring(0, 7)}",
                             style: TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -326,32 +154,214 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                           Icon(
                             FeatherIcons.clock,
                             color: Colors.teal,
-                            size: 14.0,
+                            size: 16.0,
                           ),
                           SizedBox(
                             width: 8.0,
                           ),
                           Text(
-                            "${_buildsStore.builds[index].duration ~/ 60} min "
-                            "${_buildsStore.builds[index].duration % 60} sec",
+                            "Ran for ${_buildsStore.builds.first.duration ~/ 60} min "
+                            "${_buildsStore.builds.first.duration % 60} sec",
                             style: TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
                       ))
                     ],
-                  )
-                ],
-              ),
-              leading: Text(
-                "#${_buildsStore.builds[index].number}",
-                style: TextStyle(
-                    color: GetStateColor.getStateColor(
-                        _buildsStore.builds[index].state),
-                    fontWeight: FontWeight.bold),
-              ),
-              trailing: IconButton(icon: Icon(Icons.refresh), onPressed: () {}),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FeatherIcons.gitPullRequest,
+                        color: Colors.teal,
+                        size: 16.0,
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(
+                        "Compare ${_buildsStore.builds.first.commit.compareUrl.split('/').last.split('...').map((e) => e.substring(0, 7)).join("...")}",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FeatherIcons.gitBranch,
+                        color: Colors.teal,
+                        size: 16.0,
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(
+                        "Branch master",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FeatherIcons.calendar,
+                        color: Colors.teal,
+                        size: 16.0,
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(
+                        timeago.format(DateTime.parse(
+                            _buildsStore.builds.first.createdAt)),
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 12.0),
+                  child: UserDataWidget(
+                    id: _buildsStore.builds.first.createdBy.id.toString(),
+                  ),
+                ),
+                Divider(),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ActionChip(
+                        avatar: Icon(
+                          Icons.refresh,
+                          color: Colors.teal,
+                        ),
+                        label: Text(
+                          'Restart build',
+                          style: TextStyle(color: Colors.teal),
+                        ),
+                        backgroundColor: Colors.white30,
+                        shape: StadiumBorder(
+                            side: BorderSide(color: Colors.grey[200])),
+                        onPressed: () {}),
+                  ),
+                )
+              ],
             ),
-        separatorBuilder: (_, index) => Divider(),
-        itemCount: _buildsStore.builds.length);
+          )
+        : Center(
+            child: Text("No builds for this repository"),
+          );
+  }
+
+  Widget _history() {
+    return _buildsStore.builds.isNotEmpty
+        ? ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            itemBuilder: (_, index) => ListTile(
+                  title: Text(
+                    _buildsStore.builds[index].commit.message,
+                    //maxLines: 1,
+                    //overflow: TextOverflow.ellipsis,
+                    style:
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 8.0,
+                      ),
+                      Row(
+                        children: [
+                          GetIcon.getIcon(_buildsStore.builds[index].state,
+                              size: 16.0),
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          Text(
+                            _buildsStore.builds[index].state
+                                .toString()
+                                .split('.')
+                                .last,
+                            style: TextStyle(
+                                color: GetStateColor.getStateColor(
+                                    _buildsStore.builds[index].state),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                FeatherIcons.gitCommit,
+                                color: Colors.teal,
+                                size: 16.0,
+                              ),
+                              SizedBox(
+                                width: 8.0,
+                              ),
+                              Text(
+                                "${_buildsStore.builds[index].commit.sha.substring(0, 7)}",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          )),
+                          Expanded(
+                              child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                FeatherIcons.clock,
+                                color: Colors.teal,
+                                size: 14.0,
+                              ),
+                              SizedBox(
+                                width: 8.0,
+                              ),
+                              Text(
+                                "${_buildsStore.builds[index].duration ~/ 60} min "
+                                "${_buildsStore.builds[index].duration % 60} sec",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ))
+                        ],
+                      )
+                    ],
+                  ),
+                  leading: Text(
+                    "#${_buildsStore.builds[index].number}",
+                    style: TextStyle(
+                        color: GetStateColor.getStateColor(
+                            _buildsStore.builds[index].state),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  trailing:
+                      IconButton(icon: Icon(Icons.refresh), onPressed: () {}),
+                ),
+            separatorBuilder: (_, index) => Divider(),
+            itemCount: _buildsStore.builds.length)
+        : Center(
+            child: Text("No builds for this repository"),
+          );
   }
 }
