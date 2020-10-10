@@ -42,8 +42,8 @@ class HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(
             _title,
-            style:
-                TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Quicksand'),
+            style: TextStyle(
+                fontWeight: FontWeight.w600, fontFamily: 'SourceSansPro'),
           ),
           elevation: 0.0,
           centerTitle: false,

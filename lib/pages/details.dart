@@ -4,8 +4,6 @@
  * Created by Amit Khairnar on 09/10/2020.
  */
 
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -291,64 +289,11 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                         ? Container(
                             color: Colors.black,
                             padding: const EdgeInsets.all(8.0),
-                            child: SafeArea(child: Column(
+                            child: SafeArea(
+                                child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _buildsStore.buildLog
-                              // .replaceAll("[0K[33;1m", "")
-                              // .replaceAll("[0m", "")
-                              // .replaceAll("[0K", "")
-                              // .replaceAll("[34m[1m", "")
-                              // .replaceAll("travis_fold:end:worker_info", "")
-                                  .split("\n")
-                                  .map((e) => (e.trim().contains(
-                                  "travis_fold:start:") &&
-                                  e.contains("[0K[33;1m")) ||
-                                  (e.trim().startsWith("[33;1m") &&
-                                      e.contains("[0m"))
-                                  ? Text(
-
-                                e
-                                    .split("[0K[33;1m")
-                                    .last
-                                    .split("[0m")
-                                    .first
-                                    .trim(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Cousine',
-                                    fontSize: 10.0,
-                                    color: Color.fromRGBO(
-                                        255, 255, 145, 1.0)),
-                              )
-                                  : e.trim().startsWith(
-                                  "travis_time:start") ||
-                                  e
-                                      .trim()
-                                      .startsWith("travis_time:end") || e.trim().startsWith("travis_fold:end")
-                                  ? Text("")
-                                  : Text(
-                                e.contains("[34m[1m")
-                                    ? e
-                                    .split("[34m[1m")
-                                    .last
-                                    .split("[0m")
-                                    .first
-                                    .trim()
-                                    : e.trimLeft(),
-                                style: TextStyle(
-                                  color: e.contains("[34m[1m")
-                                      ? Colors.lightBlueAccent
-                                      : Colors.white,
-                                  fontSize: 10.0,
-                                  fontWeight:
-                                  e.contains("[34m[1m")
-                                      ? FontWeight.w600
-                                      : FontWeight.normal,
-                                  fontFamily: 'Cousine',
-                                  //fontWeight: FontWeight.w500,
-                                ),
-                              ))
-                                  .toList(),
+                              children: _buildLog(
+                                  _buildsStore.buildLog['content'].toString()),
                             )),
                           )
                         : _buildsStore.getBuildLogFuture.status ==
@@ -364,6 +309,90 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         : Center(
             child: Text("No builds for this repository"),
           );
+  }
+
+  List<Widget> _buildLog(String log) {
+    return log
+        // .replaceAll("[0K[33;1m", "")
+        // .replaceAll("[0m", "")
+        // .replaceAll("[0K", "")
+        // .replaceAll("[34m[1m", "")
+        // .replaceAll("travis_fold:end:worker_info", "")
+        .split("\n")
+        .map((e) {
+      // if (e.startsWith("[33;1m") && e.contains("[0m")) {
+      //   print(e);
+      // }
+      return (e.contains("travis_fold:start:") && e.contains("[0K[33;1m")) ||
+              (e.startsWith("[33;1m") && e.contains("[0m"))
+          ? Text(
+              (e.contains("travis_fold:start:") && e.contains("[0K[33;1m"))
+                  ? e.split("[0K[33;1m").last.split("[0m").first.trim()
+                  : e.split("[33;1m").last.split("[0m").first.trim(),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Cousine',
+                  fontSize: 10.0,
+                  color: Color.fromRGBO(255, 255, 145, 1.0)),
+            )
+          : e.startsWith("[32m+ [39m")
+              ? RichText(
+                  text: TextSpan(
+                      text: '+  ',
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontFamily: "Cousine",
+                          fontSize: 10.0),
+                      children: [
+                        TextSpan(
+                            text: e
+                                .split("[32m+ [39m")
+                                .last
+                                .split("[36m")
+                                .first
+                                .split("[1m")
+                                .last
+                                .replaceAll("[0m", "")
+                                .trimLeft(),
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Cousine",
+                            )),
+                        if (e.split("[32m+ [39m").last.contains("[36m") &&
+                            e.split("[32m+ [39m").last.contains("[39m"))
+                          TextSpan(
+                              text: e
+                                  .split("[32m+ [39m")
+                                  .last
+                                  .split("[36m")
+                                  .last
+                                  .replaceAll("[39m", "")
+                                  .trimLeft(),
+                              style: TextStyle(
+                                  fontSize: 10.0,
+                                  fontFamily: "Cousine",
+                                  color: Colors.lightBlueAccent))
+                      ]),
+                )
+              : Text(
+                  e.contains("[34m[1m")
+                      ? e.split("[34m[1m").last.split("[0m").first.trimLeft()
+                      : e,
+                  style: TextStyle(
+                    color: e.contains("[34m[1m")
+                        ? Colors.lightBlueAccent
+                        : Colors.white,
+                    fontSize: 10.0,
+                    fontWeight: e.contains("[34m[1m")
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                    fontFamily: 'Cousine',
+                    //fontWeight: FontWeight.w500,
+                  ),
+                );
+    }).toList();
   }
 
   Widget _history() {

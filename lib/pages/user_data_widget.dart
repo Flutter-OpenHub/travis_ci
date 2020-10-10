@@ -44,7 +44,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                   Expanded(
                       child: Text(_getUserStore.user.login,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16.0,
                               color: Colors.teal[600])))
                 ],

@@ -70,7 +70,7 @@ class _ActiveRepoState extends State<HomeFragment> {
         color: Colors.grey,
       ),
       title: Text(repositoriesModel.name,
-          style: TextStyle(fontWeight: FontWeight.w500)),
+          style: TextStyle(fontWeight: FontWeight.w600)),
       subtitle: Text(repositoriesModel.owner,
           style: TextStyle(
               color: repositoriesModel.active ? Colors.blue : Colors.teal,

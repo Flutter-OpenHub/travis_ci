@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Travis CI',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'Quicksand'),
+      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'SourceSansPro'),
       home: InitializationPage(),
     );
   }

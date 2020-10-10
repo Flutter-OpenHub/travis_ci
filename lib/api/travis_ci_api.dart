@@ -33,7 +33,7 @@ class TravisCIApi {
         : [];
   }
 
-  Future<String> getBuildLog(String id, CancelToken cancelToken) async {
+  Future<String> getBuildLogAsTxt(String id, CancelToken cancelToken) async {
     var res = await Dio().get(
       ApiUrls.jobUrl + id + '/log.txt',
       cancelToken: cancelToken,
@@ -46,6 +46,12 @@ class TravisCIApi {
     //debugPrint(res.data);
     print(res.data.toString().split("\n").length);
     return res.data.toString();
+  }
+
+  Future<Map> getBuildLog(String id, CancelToken cancelToken) async {
+    var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log', cancelToken,
+        headers: headers);
+    return res;
   }
 
   Future<User> getUser(CancelToken cancelToken, {String id}) async {

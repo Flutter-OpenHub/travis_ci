@@ -38,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
-              fontFamily: 'Quicksand'),
+              fontFamily: 'SourceSansPro'),
         ),
         textTheme: TextTheme(headline6: TextStyle(fontSize: 20.0)),
         centerTitle: false,
