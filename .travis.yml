@@ -40,7 +40,7 @@ deploy:
   provider: releases
   api_key:
     secure: 1kNh9GgqZchvGnXoiIzpESRE0YeZpa4DkbJ3Tq8vv1HWqSXN9JKGDhjrPJikdKlOIeDBYeWJOD/fhATMQj3UZGtEKLP54ESYfH6wLH9haFj0VMKurzXBOlBX/r0sT0MUMv57jaxTqz4zPMlHVSLtt3IHCjxfEj8nEF3FjWueIvLfues1Rjk+ZD5uDochnb9XcnNTeRthj+Zz4B23I+0dpZr4qlRJAQ9D9OAJiwr+Vvi9XBuvwJgGzIMmQI/meAyL1ro1G5EKnONLO64apwR0Z8nOWQ/kmEDSBolun7sNaOznLWjCZr+9a95P3Rj2g3GcCDXXvcsZaN+4/XuR008Nbq2fe0GENqqObTvAYEZM56Q1h6TJWfHqeJT9kSvKkNjr263AqWRn8YAYMwleUePZ8hheTKjY8xCo/xrAIX3pRiaO3JRzD7mfjmaY/TdzNKsD7lQ3s6TEigiICtY9k6ahoQlfQ2QQ6n65siZKU2MjpCNUmvlGzK/u/x7HHTquRiSD7DkId82qJMflRJKEmM9sfaRjmwT4nn+vA5pzPPv9zgRZ2QWEbe5r8a3sTaw3WudP7fYDrcslzVVBfvBpf1uLB6nJ5n7QnjhFvlEO7lONQuBIZJuqii+/3RAcjpba7AA06FEEmScbbAmX3r61IPrtEtmunhRxlQ5sq6oOxJUhXBQ=
-  file: ./app-release.apk
+  file: app-release.apk
   on:
     repo: Flutter-OpenHub/travis_ci
     tags: true
