@@ -31,36 +31,6 @@ mixin _$BuildsStore on _BuildsStore, Store {
     });
   }
 
-  final _$buildLogAtom = Atom(name: '_BuildsStore.buildLog');
-
-  @override
-  Map<dynamic, dynamic> get buildLog {
-    _$buildLogAtom.reportRead();
-    return super.buildLog;
-  }
-
-  @override
-  set buildLog(Map<dynamic, dynamic> value) {
-    _$buildLogAtom.reportWrite(value, super.buildLog, () {
-      super.buildLog = value;
-    });
-  }
-
-  final _$buildLogTxtAtom = Atom(name: '_BuildsStore.buildLogTxt');
-
-  @override
-  String get buildLogTxt {
-    _$buildLogTxtAtom.reportRead();
-    return super.buildLogTxt;
-  }
-
-  @override
-  set buildLogTxt(String value) {
-    _$buildLogTxtAtom.reportWrite(value, super.buildLogTxt, () {
-      super.buildLogTxt = value;
-    });
-  }
-
   final _$errorMessageAtom = Atom(name: '_BuildsStore.errorMessage');
 
   @override
@@ -91,38 +61,6 @@ mixin _$BuildsStore on _BuildsStore, Store {
     });
   }
 
-  final _$getBuildLogFutureAtom = Atom(name: '_BuildsStore.getBuildLogFuture');
-
-  @override
-  ObservableFuture<Map<dynamic, dynamic>> get getBuildLogFuture {
-    _$getBuildLogFutureAtom.reportRead();
-    return super.getBuildLogFuture;
-  }
-
-  @override
-  set getBuildLogFuture(ObservableFuture<Map<dynamic, dynamic>> value) {
-    _$getBuildLogFutureAtom.reportWrite(value, super.getBuildLogFuture, () {
-      super.getBuildLogFuture = value;
-    });
-  }
-
-  final _$getBuildLogTxtFutureAtom =
-      Atom(name: '_BuildsStore.getBuildLogTxtFuture');
-
-  @override
-  ObservableFuture<String> get getBuildLogTxtFuture {
-    _$getBuildLogTxtFutureAtom.reportRead();
-    return super.getBuildLogTxtFuture;
-  }
-
-  @override
-  set getBuildLogTxtFuture(ObservableFuture<String> value) {
-    _$getBuildLogTxtFutureAtom.reportWrite(value, super.getBuildLogTxtFuture,
-        () {
-      super.getBuildLogTxtFuture = value;
-    });
-  }
-
   final _$getBuildsAsyncAction = AsyncAction('_BuildsStore.getBuilds');
 
   @override
@@ -130,33 +68,12 @@ mixin _$BuildsStore on _BuildsStore, Store {
     return _$getBuildsAsyncAction.run(() => super.getBuilds(id, cancelToken));
   }
 
-  final _$getBuildLogAsyncAction = AsyncAction('_BuildsStore.getBuildLog');
-
-  @override
-  Future<dynamic> getBuildLog(String id, CancelToken cancelToken) {
-    return _$getBuildLogAsyncAction
-        .run(() => super.getBuildLog(id, cancelToken));
-  }
-
-  final _$getBuildLogTxtAsyncAction =
-      AsyncAction('_BuildsStore.getBuildLogTxt');
-
-  @override
-  Future<dynamic> getBuildLogTxt(String id, CancelToken cancelToken) {
-    return _$getBuildLogTxtAsyncAction
-        .run(() => super.getBuildLogTxt(id, cancelToken));
-  }
-
   @override
   String toString() {
     return '''
 builds: ${builds},
-buildLog: ${buildLog},
-buildLogTxt: ${buildLogTxt},
 errorMessage: ${errorMessage},
 getBuildsFuture: ${getBuildsFuture},
-getBuildLogFuture: ${getBuildLogFuture},
-getBuildLogTxtFuture: ${getBuildLogTxtFuture},
 hasErrors: ${hasErrors}
     ''';
   }

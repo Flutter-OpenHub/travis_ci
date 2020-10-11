@@ -1,5 +1,5 @@
 os:
-  - linux
+- linux
 language: android
 android:
   components:
@@ -10,14 +10,13 @@ android:
     - add-on
     - extra
   licenses:
-    - 'android-sdk-license-.+'
+    - android-sdk-license-.+
 jdk:
   - oraclejdk8
 addons:
   apt:
-    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
     sources:
-      - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
+      - ubuntu-toolchain-r-test
     packages:
       - libstdc++6
       - fonts-droid
@@ -31,16 +30,17 @@ script:
   - flutter precache
   - yes | flutter doctor --android-licenses
   - flutter doctor && flutter -v build apk
-  #  - find -type f -name "*.apk"
   - mv ./build/app/outputs/apk/release/app-release.apk ./TravisCI-$(git describe --tags).apk
 cache:
   directories:
-    - $HOME/.pub-cache
-#deploy:
-#  cleanup: true
-#  provider: releases
-#  token: <encrypted token>
-#  file: ./TravisCI-$(git describe --tags).apk
-#  edge: true # opt in to dpl v2
-#  on:
-#    tags: true
+    - "$HOME/.pub-cache"
+deploy:
+  cleanup: true
+  provider: releases
+  api_key:
+    secure: 1kNh9GgqZchvGnXoiIzpESRE0YeZpa4DkbJ3Tq8vv1HWqSXN9JKGDhjrPJikdKlOIeDBYeWJOD/fhATMQj3UZGtEKLP54ESYfH6wLH9haFj0VMKurzXBOlBX/r0sT0MUMv57jaxTqz4zPMlHVSLtt3IHCjxfEj8nEF3FjWueIvLfues1Rjk+ZD5uDochnb9XcnNTeRthj+Zz4B23I+0dpZr4qlRJAQ9D9OAJiwr+Vvi9XBuvwJgGzIMmQI/meAyL1ro1G5EKnONLO64apwR0Z8nOWQ/kmEDSBolun7sNaOznLWjCZr+9a95P3Rj2g3GcCDXXvcsZaN+4/XuR008Nbq2fe0GENqqObTvAYEZM56Q1h6TJWfHqeJT9kSvKkNjr263AqWRn8YAYMwleUePZ8hheTKjY8xCo/xrAIX3pRiaO3JRzD7mfjmaY/TdzNKsD7lQ3s6TEigiICtY9k6ahoQlfQ2QQ6n65siZKU2MjpCNUmvlGzK/u/x7HHTquRiSD7DkId82qJMflRJKEmM9sfaRjmwT4nn+vA5pzPPv9zgRZ2QWEbe5r8a3sTaw3WudP7fYDrcslzVVBfvBpf1uLB6nJ5n7QnjhFvlEO7lONQuBIZJuqii+/3RAcjpba7AA06FEEmScbbAmX3r61IPrtEtmunhRxlQ5sq6oOxJUhXBQ=
+  file: ./TravisCI-$(git describe --tags).apk
+  on:
+    repo: Flutter-OpenHub/travis_ci
+    tags: true
+

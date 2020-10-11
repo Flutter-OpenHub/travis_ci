@@ -16,6 +16,7 @@ import '../models/repo.dart';
 import '../store/builds_store/builds_store.dart';
 import '../utils/get_icon.dart';
 import '../utils/get_state_color.dart';
+import 'show_logs.dart';
 import 'user_data_widget.dart';
 
 class Details extends StatefulWidget {
@@ -33,8 +34,6 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   BuildsStore _buildsStore = BuildsStore();
 
   TabController _tabController;
-
-  ReactionDisposer _reactionDisposer;
 
   @override
   Widget build(BuildContext context) {
@@ -91,23 +90,6 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
     print(ApiUrls.repoUrl + widget.repositoriesModel.id.toString());
     _buildsStore.getBuilds(
         widget.repositoriesModel.id.toString(), CancelToken());
-
-    _reactionDisposer = reaction(
-      (_) => _buildsStore.getBuildsFuture.status,
-      (result) =>
-          _buildsStore.getBuildsFuture.status == FutureStatus.rejected &&
-                  _buildsStore.hasErrors
-              ? null
-              : _buildsStore.getBuildsFuture.status == FutureStatus.fulfilled &&
-                      !_buildsStore.hasErrors
-                  ? _getBuildLog()
-                  : null,
-    );
-  }
-
-  _getBuildLog() {
-    _buildsStore.getBuildLog(
-        _buildsStore.builds.first.jobs.first.id.toString(), CancelToken());
   }
 
   Widget _current() {
@@ -283,116 +265,28 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                         onPressed: () {}),
                   ),
                 ),
-                _buildsStore.getBuildLogFuture != null
-                    ? _buildsStore.getBuildLogFuture.status ==
-                            FutureStatus.fulfilled
-                        ? Container(
-                            color: Colors.black,
-                            padding: const EdgeInsets.all(8.0),
-                            child: SafeArea(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _buildLog(
-                                  _buildsStore.buildLog['content'].toString()),
-                            )),
-                          )
-                        : _buildsStore.getBuildLogFuture.status ==
-                                FutureStatus.rejected
-                            ? Text(_buildsStore.errorMessage)
-                            : Center(
-                                child: CircularProgressIndicator(),
-                              )
-                    : Container()
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _buildsStore.builds.first.jobs.length,
+                  itemBuilder: (_, index) => ListTile(
+                    title: Text("Job Log"),
+                    leading: Icon(Icons.description),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => ShowLogs(
+                                jobId: _buildsStore.builds.first.jobs[index].id,
+                              )));
+                    },
+                  ),
+                )
               ],
             ),
           )
         : Center(
             child: Text("No builds for this repository"),
           );
-  }
-
-  List<Widget> _buildLog(String log) {
-    return log
-        // .replaceAll("[0K[33;1m", "")
-        // .replaceAll("[0m", "")
-        // .replaceAll("[0K", "")
-        // .replaceAll("[34m[1m", "")
-        // .replaceAll("travis_fold:end:worker_info", "")
-        .split("\n")
-        .map((e) {
-      // if (e.startsWith("[33;1m") && e.contains("[0m")) {
-      //   print(e);
-      // }
-      return (e.contains("travis_fold:start:") && e.contains("[0K[33;1m")) ||
-              (e.startsWith("[33;1m") && e.contains("[0m"))
-          ? Text(
-              (e.contains("travis_fold:start:") && e.contains("[0K[33;1m"))
-                  ? e.split("[0K[33;1m").last.split("[0m").first.trim()
-                  : e.split("[33;1m").last.split("[0m").first.trim(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Cousine',
-                  fontSize: 10.0,
-                  color: Color.fromRGBO(255, 255, 145, 1.0)),
-            )
-          : e.startsWith("[32m+ [39m")
-              ? RichText(
-                  text: TextSpan(
-                      text: '+  ',
-                      style: TextStyle(
-                          color: Colors.green,
-                          fontFamily: "Cousine",
-                          fontSize: 10.0),
-                      children: [
-                        TextSpan(
-                            text: e
-                                .split("[32m+ [39m")
-                                .last
-                                .split("[36m")
-                                .first
-                                .split("[1m")
-                                .last
-                                .replaceAll("[0m", "")
-                                .trimLeft(),
-                            style: TextStyle(
-                              fontSize: 10.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Cousine",
-                            )),
-                        if (e.split("[32m+ [39m").last.contains("[36m") &&
-                            e.split("[32m+ [39m").last.contains("[39m"))
-                          TextSpan(
-                              text: e
-                                  .split("[32m+ [39m")
-                                  .last
-                                  .split("[36m")
-                                  .last
-                                  .replaceAll("[39m", "")
-                                  .trimLeft(),
-                              style: TextStyle(
-                                  fontSize: 10.0,
-                                  fontFamily: "Cousine",
-                                  color: Colors.lightBlueAccent))
-                      ]),
-                )
-              : Text(
-                  e.contains("[34m[1m")
-                      ? e.split("[34m[1m").last.split("[0m").first.trimLeft()
-                      : e,
-                  style: TextStyle(
-                    color: e.contains("[34m[1m")
-                        ? Colors.lightBlueAccent
-                        : Colors.white,
-                    fontSize: 10.0,
-                    fontWeight: e.contains("[34m[1m")
-                        ? FontWeight.w600
-                        : FontWeight.normal,
-                    fontFamily: 'Cousine',
-                    //fontWeight: FontWeight.w500,
-                  ),
-                );
-    }).toList();
   }
 
   Widget _history() {

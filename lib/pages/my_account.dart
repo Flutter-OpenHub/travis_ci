@@ -13,9 +13,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import 'package:travis_ci/api/travis_ci_api.dart';
-import 'package:travis_ci/models/organization.dart';
-import 'package:travis_ci/store/form_store/form_store.dart';
+
+import '../api/travis_ci_api.dart';
+import '../models/organization.dart';
+import '../store/form_store/form_store.dart';
 
 class MyAccount extends StatefulWidget {
   final FormStore formStore;
