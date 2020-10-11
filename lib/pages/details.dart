@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:travis_ci/pages/build_details.dart';
 
 import '../models/repo.dart';
 import '../store/builds_store/builds_store.dart';
@@ -93,242 +94,9 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
 
   Widget _current() {
     return _buildsStore.builds.isNotEmpty
-        ? SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  leading: _buildsStore.builds.first.state != null
-                      ? GetIcon.getIcon(_buildsStore.builds.first.state)
-                      : Icon(
-                          Icons.more_horiz,
-                          color: Colors.grey,
-                        ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        FeatherIcons.gitCommit,
-                        size: 16.0,
-                      ),
-                      Text(
-                        [
-                          " #${_buildsStore.builds.first.number}",
-                          _buildsStore.builds.first.state != null
-                              ? _buildsStore.builds.first.state
-                                  .toString()
-                                  .split('.')
-                                  .last
-                              : 'received'
-                        ].join(" "),
-                        style: TextStyle(
-                            color: GetStateColor.getStateColor(
-                                _buildsStore.builds.first.state),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  title: Text(
-                    _buildsStore.builds.first.commit.message,
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: GetStateColor.getStateColor(
-                            _buildsStore.builds.first.state)),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 4.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            FeatherIcons.gitCommit,
-                            color: Colors.teal,
-                            size: 16.0,
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(
-                            "Commit ${_buildsStore.builds.first.commit.sha.substring(0, 7)}",
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      )),
-                      Expanded(
-                          child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            FeatherIcons.clock,
-                            color: Colors.teal,
-                            size: 16.0,
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(
-                            _buildsStore.builds.first.duration != null
-                                ? "Ran for ${_buildsStore.builds.first.duration ~/ 60} min "
-                                    "${_buildsStore.builds.first.duration % 60} sec"
-                                : '-',
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 4.0),
-                  child: InkWell(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          FeatherIcons.gitPullRequest,
-                          color: Colors.teal,
-                          size: 16.0,
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Text(
-                          [
-                            "Compare",
-                            _buildsStore.builds.first.commit.compareUrl
-                                        .split('/')
-                                        .last
-                                        .split('...')
-                                        .length >
-                                    1
-                                ? _buildsStore.builds.first.commit.compareUrl
-                                    .split('/')
-                                    .last
-                                    .split('...')
-                                    .map((e) => e.substring(0, 7))
-                                    .join("...")
-                                : _buildsStore.builds.first.commit.compareUrl
-                                    .split('/')
-                                    .last
-                          ].join(" "),
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    onTap: () {
-                      OpenUrl.launchURL(
-                          _buildsStore.builds.first.commit.compareUrl);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 4.0),
-                  child: InkWell(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _buildsStore.builds.first.tag != null
-                              ? FeatherIcons.tag
-                              : FeatherIcons.gitBranch,
-                          color: Colors.teal,
-                          size: 16.0,
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Text(
-                          [
-                            _buildsStore.builds.first.tag != null
-                                ? "Tag"
-                                : "Branch",
-                            _buildsStore.builds.first.branch.name
-                          ].join(" "),
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    onTap: () {
-                      OpenUrl.launchURL("url");
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 4.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        FeatherIcons.calendar,
-                        color: Colors.teal,
-                        size: 16.0,
-                      ),
-                      SizedBox(
-                        width: 8.0,
-                      ),
-                      Text(
-                        _buildsStore.builds.first.createdAt != null
-                            ? timeago.format(DateTime.parse(
-                                _buildsStore.builds.first.createdAt))
-                            : "-",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 12.0),
-                  child: UserDataWidget(
-                    id: _buildsStore.builds.first.createdBy.id.toString(),
-                  ),
-                ),
-                Divider(),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ActionChip(
-                        avatar: Icon(
-                          Icons.refresh,
-                          color: Colors.teal,
-                        ),
-                        label: Text(
-                          'Restart build',
-                          style: TextStyle(color: Colors.teal),
-                        ),
-                        backgroundColor: Colors.white30,
-                        shape: StadiumBorder(
-                            side: BorderSide(color: Colors.grey[200])),
-                        onPressed: () {}),
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _buildsStore.builds.first.jobs.length,
-                  itemBuilder: (_, index) => ListTile(
-                    title: Text("Job Log"),
-                    leading: Icon(Icons.description),
-                    trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => ShowLogs(
-                                jobId: _buildsStore.builds.first.jobs[index].id,
-                              )));
-                    },
-                  ),
-                )
-              ],
-            ),
+        ? BuildDetails(
+            buildData: _buildsStore.builds.first,
+            showAppbar: false,
           )
         : Center(
             child: Text("No builds for this repository"),
@@ -429,6 +197,15 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                   ),
                   trailing:
                       IconButton(icon: Icon(Icons.refresh), onPressed: () {}),
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (_) => BuildDetails(
+                              buildData: _buildsStore.builds[index],
+                              showAppbar: true,
+                            ));
+                  },
                 ),
             separatorBuilder: (_, index) => Divider(),
             itemCount: _buildsStore.builds.length)

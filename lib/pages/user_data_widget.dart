@@ -51,11 +51,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               )
             : _getUserStore.getUserFuture.status == FutureStatus.rejected
                 ? Text(_getUserStore.errorMessage)
-                : SizedBox(
-                    width: 12.0,
-                    height: 12.0,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1.0,
+                : Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: SizedBox(
+                      width: 12.0,
+                      height: 12.0,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.0,
+                      ),
                     ),
                   ));
   }

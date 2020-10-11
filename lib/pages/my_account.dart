@@ -97,16 +97,6 @@ class _MyAccountState extends State<MyAccount> {
                         }
                       },
                     )),
-            ListTile(
-              leading: Icon(FeatherIcons.logOut),
-              title: Text(
-                'Log out',
-                //style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              onTap: () {
-                //TODO Add logout
-              },
-            ),
             Divider(
               height: 24.0,
               indent: 16.0,

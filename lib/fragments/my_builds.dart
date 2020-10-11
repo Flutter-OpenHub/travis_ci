@@ -9,6 +9,7 @@ import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:travis_ci/pages/build_details.dart';
 
 import '../api/travis_ci_api.dart';
 import '../models/build_model.dart';
@@ -111,7 +112,10 @@ class _MyBuildsState extends State<MyBuilds> {
                           width: 8.0,
                         ),
                         Text(
-                          timeago.format(DateTime.parse(buildsModel.createdAt)),
+                          buildsModel.createdAt != null
+                              ? timeago
+                                  .format(DateTime.parse(buildsModel.createdAt))
+                              : "-",
                           style: TextStyle(fontWeight: FontWeight.w500),
                         )
                       ],
@@ -208,7 +212,15 @@ class _MyBuildsState extends State<MyBuilds> {
             ],
           ),
           leading: Icon(TravisLogos.source_repository),
-          onTap: () {},
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (_) => BuildDetails(
+                      buildData: buildsModel,
+                      showAppbar: true,
+                    ));
+          },
         ),
         Divider(
           indent: 72.0,

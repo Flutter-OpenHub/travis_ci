@@ -33,10 +33,7 @@ class _ShowLogsState extends State<ShowLogs> {
             ? _logsStore.getBuildLogFuture.status == FutureStatus.fulfilled
                 ? Container(
                     color: Colors.black,
-                    padding: const EdgeInsets.all(8.0),
-                    child: SafeArea(
-                        child: _buildLog(
-                            _logsStore.buildLog['content'].toString())),
+                    child: _buildLog(_logsStore.buildLog['content'].toString()),
                   )
                 : _logsStore.getBuildLogFuture.status == FutureStatus.rejected
                     ? Text(_logsStore.errorMessage)
@@ -58,6 +55,7 @@ class _ShowLogsState extends State<ShowLogs> {
     List<String> _data = log.split("\n");
     return ListView.builder(
         itemCount: _data.length,
+        padding: const EdgeInsets.all(16.0),
         itemBuilder: (_, index) =>
             (_data[index].contains("travis_fold:start:") &&
                         _data[index].contains("[0K[33;1m")) ||

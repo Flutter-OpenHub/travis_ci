@@ -70,7 +70,10 @@ class TravisCIApi {
   static Future<List<BuildsModel>> getMyBuilds(
       int offset, int limit, CancelToken cancelToken) async {
     return NetworkUtil()
-        .get(ApiUrls.myBuildsUrl + '?limit=$limit&offset=$offset', cancelToken,
+        .get(
+            ApiUrls.myBuildsUrl +
+                '?limit=$limit&offset=$offset&sort_by=created_at:desc',
+            cancelToken,
             headers: headers)
         .then((dynamic res) {
       List<dynamic> _builds = res['builds'];
