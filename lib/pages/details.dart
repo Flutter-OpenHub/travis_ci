@@ -112,8 +112,15 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                         size: 16.0,
                       ),
                       Text(
-                        " #${_buildsStore.builds.first.number} "
-                        "${_buildsStore.builds.first.state.toString().split('.').last}",
+                        [
+                          " #${_buildsStore.builds.first.number}",
+                          _buildsStore.builds.first.state != null
+                              ? _buildsStore.builds.first.state
+                                  .toString()
+                                  .split('.')
+                                  .last
+                              : 'starting'
+                        ].join(" "),
                         style: TextStyle(
                             color: GetStateColor.getStateColor(
                                 _buildsStore.builds.first.state),
@@ -231,8 +238,10 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                         width: 8.0,
                       ),
                       Text(
-                        timeago.format(DateTime.parse(
-                            _buildsStore.builds.first.createdAt)),
+                        _buildsStore.builds.first.createdAt != null
+                            ? timeago.format(DateTime.parse(
+                                _buildsStore.builds.first.createdAt))
+                            : "-",
                         style: TextStyle(fontWeight: FontWeight.w500),
                       )
                     ],

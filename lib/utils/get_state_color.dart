@@ -20,6 +20,8 @@ class GetStateColor {
         return Colors.redAccent;
       case BuildState.canceled:
         return Colors.grey;
+      default:
+        return Colors.teal;
     }
   }
 }
