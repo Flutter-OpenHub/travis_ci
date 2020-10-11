@@ -6,6 +6,7 @@
 
 import '../enum/build_status.dart';
 import 'branch.dart';
+import 'tag.dart';
 import 'repository.dart';
 
 class BuildsModel {
@@ -19,6 +20,7 @@ class BuildsModel {
   final Commit commit;
   final Repository repository;
   final Branch branch;
+  final Tag tag;
   final List<Job> jobs;
 
   BuildsModel(
@@ -32,7 +34,8 @@ class BuildsModel {
       this.commit,
       this.repository,
       this.branch,
-      this.jobs});
+      this.jobs,
+      this.tag});
 
   factory BuildsModel.fromJson(Map<String, dynamic> parsedJson) {
     List<dynamic> _jobs = parsedJson['jobs'];
@@ -49,6 +52,7 @@ class BuildsModel {
         branch: parsedJson['branch'] != null
             ? Branch.fromJson(parsedJson['branch'])
             : null,
+        tag: parsedJson['tag'] != null ? Tag.fromJson(parsedJson['tag']) : null,
         previousState: parsedJson['previous_state'],
         commit: Commit.fromJson(parsedJson['commit']),
         createdBy: CreatedBy.fromJson(parsedJson['created_by']),

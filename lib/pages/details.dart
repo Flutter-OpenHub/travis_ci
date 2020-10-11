@@ -11,11 +11,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../api/api_urls.dart';
 import '../models/repo.dart';
 import '../store/builds_store/builds_store.dart';
 import '../utils/get_icon.dart';
 import '../utils/get_state_color.dart';
+import '../utils/open_url.dart';
 import 'show_logs.dart';
 import 'user_data_widget.dart';
 
@@ -87,7 +87,6 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    print(ApiUrls.repoUrl + widget.repositoriesModel.id.toString());
     _buildsStore.getBuilds(
         widget.repositoriesModel.id.toString(), CancelToken());
   }
@@ -96,6 +95,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
     return _buildsStore.builds.isNotEmpty
         ? SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
                   leading: _buildsStore.builds.first.state != null
@@ -119,7 +119,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                                   .toString()
                                   .split('.')
                                   .last
-                              : 'starting'
+                              : 'received'
                         ].join(" "),
                         style: TextStyle(
                             color: GetStateColor.getStateColor(
@@ -187,41 +187,78 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 4.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        FeatherIcons.gitPullRequest,
-                        color: Colors.teal,
-                        size: 16.0,
-                      ),
-                      SizedBox(
-                        width: 8.0,
-                      ),
-                      Text(
-                        "Compare ${_buildsStore.builds.first.commit.compareUrl.split('/').last.split('...').map((e) => e.substring(0, 7)).join("...")}",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      )
-                    ],
+                  child: InkWell(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FeatherIcons.gitPullRequest,
+                          color: Colors.teal,
+                          size: 16.0,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(
+                          [
+                            "Compare",
+                            _buildsStore.builds.first.commit.compareUrl
+                                        .split('/')
+                                        .last
+                                        .split('...')
+                                        .length >
+                                    1
+                                ? _buildsStore.builds.first.commit.compareUrl
+                                    .split('/')
+                                    .last
+                                    .split('...')
+                                    .map((e) => e.substring(0, 7))
+                                    .join("...")
+                                : _buildsStore.builds.first.commit.compareUrl
+                                    .split('/')
+                                    .last
+                          ].join(" "),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                    onTap: () {
+                      OpenUrl.launchURL(
+                          _buildsStore.builds.first.commit.compareUrl);
+                    },
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 4.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        FeatherIcons.gitBranch,
-                        color: Colors.teal,
-                        size: 16.0,
-                      ),
-                      SizedBox(
-                        width: 8.0,
-                      ),
-                      Text(
-                        "Branch master",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      )
-                    ],
+                  child: InkWell(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          _buildsStore.builds.first.tag != null
+                              ? FeatherIcons.tag
+                              : FeatherIcons.gitBranch,
+                          color: Colors.teal,
+                          size: 16.0,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(
+                          [
+                            _buildsStore.builds.first.tag != null
+                                ? "Tag"
+                                : "Branch",
+                            _buildsStore.builds.first.branch.name
+                          ].join(" "),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                    onTap: () {
+                      OpenUrl.launchURL("url");
+                    },
                   ),
                 ),
                 Padding(
