@@ -17,6 +17,7 @@ The project is still in beta and not all features are available.
 - Subscribe to build notifications
 - List builds
 - Show build details and history
+- Show build logs
 
 
 #### TO-DO
@@ -25,8 +26,6 @@ The project is still in beta and not all features are available.
 - Star and un-star repository on org
 - Trigger build
 - Activate and deactivate repository on org
-- Show build logs
-
 
 ## Screenshots
 
