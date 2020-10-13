@@ -5,16 +5,19 @@
  */
 
 class ApiUrls {
-  static const String baseUrl = "https://api.travis-ci.org";
-  static const String userUrl = baseUrl + "/user";
+  static const String orgUrl = "https://api.travis-ci.org";
 
-  static const String reposUrl = baseUrl + "/repos";
+  static const String comUrl = "https://api.travis-ci.com";
 
-  static const String repoUrl = baseUrl + "/repo/";
+  static const String userUrl = "/user";
 
-  static const String organizationsUrl = baseUrl + "/orgs";
+  static const String reposUrl = "/repos";
 
-  static const String myBuildsUrl = baseUrl + "/builds";
+  static const String repoUrl = "/repo/";
 
-  static const String jobUrl = baseUrl + "/job/";
+  static const String organizationsUrl = "/orgs";
+
+  static const String myBuildsUrl = "/builds";
+
+  static const String jobUrl = "/job/";
 }

@@ -5,8 +5,11 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:travis_ci/utils/dialog.dart';
-import 'package:travis_ci/pages/ci_login.dart';
+
+import '../api/api_urls.dart';
+import '../init/init.dart';
+import '../utils/dialog.dart';
+import 'ci_login.dart';
 
 class InitializationPage extends StatelessWidget {
   @override
@@ -35,6 +38,8 @@ class InitializationPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0)),
                   child: InkWell(
                     onTap: () {
+                      isOrg = true;
+                      baseUrl = ApiUrls.orgUrl;
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (BuildContext context) => LoginPage()));
                     },
@@ -69,9 +74,10 @@ class InitializationPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0)),
                   child: InkWell(
                     onTap: () {
-                      TravisDialog.showWarning(
-                          context: context,
-                          text: "This option has been disabled");
+                      isOrg = false;
+                      baseUrl = ApiUrls.comUrl;
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => LoginPage()));
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

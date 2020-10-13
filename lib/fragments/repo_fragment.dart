@@ -22,7 +22,7 @@ class _RepoFragmentState extends State<RepoFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: PagewiseListView(
         itemBuilder: _builder,
@@ -69,9 +69,7 @@ class _RepoFragmentState extends State<RepoFragment> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
       subtitle: Text(repositoriesModel.owner,
           style: TextStyle(color: Colors.blue, fontSize: 15.0)),
-      onTap: () {
-        setState(() {});
-      },
+      onTap: () {},
     );
   }
 }

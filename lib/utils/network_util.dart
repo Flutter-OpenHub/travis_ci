@@ -8,11 +8,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+
+import '../init/init.dart';
 
 class NetworkUtil with NetworkUtilMixin {
   // next three lines makes this class a Singleton
   static NetworkUtil _instance = new NetworkUtil.internal();
+
+  final Dio _dio = Dio();
 
   factory NetworkUtil() => _instance;
 
@@ -22,10 +25,10 @@ class NetworkUtil with NetworkUtilMixin {
   Future<dynamic> get(String url, CancelToken cancelToken,
       {Map<String, String> headers}) async {
     //print(url);
-    Response response = await Dio().get(url,
+    Response response = await _dio.get(baseUrl + url,
         options: Options(headers: headers, responseType: ResponseType.plain),
         cancelToken: cancelToken);
-    debugPrint(response.data.toString());
+    //debugPrint(response.data.toString());
     final res = jsonDecode(response.data.toString());
     //print(res);
     final int statusCode = response.statusCode;
@@ -37,9 +40,28 @@ class NetworkUtil with NetworkUtilMixin {
   }
 
   @override
+  Future patch(String url, CancelToken cancelToken,
+      {Map<String, String> headers, body, encoding}) async {
+    Response response = await _dio.patch(baseUrl + url,
+        options: Options(headers: headers, responseType: ResponseType.plain),
+        cancelToken: cancelToken,
+        data: body);
+    //print(response.data);
+    final res = jsonDecode(response.data.toString());
+    //final res = response.data;
+    //print('Res: $res');
+    final int statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode > 400 || res == null) {
+      throw Exception(
+          "Error : ${response.statusCode} ${response.statusMessage}");
+    }
+    return res;
+  }
+
+  @override
   Future<dynamic> post(String url, CancelToken cancelToken,
       {Map<String, String> headers, body, encoding}) async {
-    Response response = await Dio().post(url,
+    Response response = await _dio.post(baseUrl + url,
         options: Options(headers: headers, responseType: ResponseType.plain),
         cancelToken: cancelToken,
         data: body);
@@ -59,6 +81,8 @@ class NetworkUtil with NetworkUtilMixin {
 mixin NetworkUtilMixin {
   Future<dynamic> get(String url, CancelToken cancelToken,
       {Map<String, String> headers});
+  Future<dynamic> patch(String url, CancelToken cancelToken,
+      {Map<String, String> headers, body, encoding});
   Future<dynamic> post(String url, CancelToken cancelToken,
       {Map<String, String> headers, body, encoding});
 }

@@ -4,14 +4,14 @@
  * Created by Amit Khairnar on 09/10/2020.
  */
 
-import 'dart:async';
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 
-import '../store/form_store/form_store.dart';
+import '../init/init.dart';
+import '../store/settings_store/settings_store.dart';
 import '../utils/open_url.dart';
 import '../widgets/openhub_logo.dart';
 
@@ -21,16 +21,17 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  bool notification = false;
+  final SettingsStore _settingsStore = SettingsStore();
 
-  final FormStore store = FormStore();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String currentLocale;
+  ReactionDisposer _updateBuildEmailsDisposer;
+  ReactionDisposer _updatePrivateInsightsDisposer;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
@@ -47,90 +48,276 @@ class _SettingsPageState extends State<SettingsPage> {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: ListView(
-        children: <Widget>[
-          SwitchListTile(
-            value: notification,
-            title: Text(
-              'Build notifications',
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            onChanged: (bool value) {
-              setState(() {
-                notification = value;
-                _updateSettings(store.token, value);
-              });
-              _savePrefs(notification);
-              print(value);
-            },
-            subtitle: Text('The status of your builds straight to your inbox'),
-            secondary: Icon(Icons.notifications),
-          ),
-          ListTile(
-            leading: Icon(Icons.show_chart),
-            title: Text(
-              'Travis CI status',
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            onTap: () {
-              OpenUrl.launchURL('https://www.traviscistatus.com/');
-            },
-          ),
-          Divider(),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 24.0),
-            child: Column(
-              children: [
-                Text(
-                  "Developed by",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                OpenHubLogo()
-              ],
-            ),
-          )
-        ],
-      ),
+      body: _buildUI(),
     );
+  }
+
+  @override
+  void dispose() {
+    _updateBuildEmailsDisposer();
+    _updatePrivateInsightsDisposer();
+    super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _loadPrefs();
+    _settingsStore.loadPrefs();
+    _settingsStore.getPreferences(CancelToken());
+    _updateBuildEmailsDisposer = reaction(
+      (_) => _settingsStore.updateSettingsFuture.status,
+      (result) =>
+          _settingsStore.updateSettingsFuture.status == FutureStatus.rejected &&
+                  _settingsStore.hasErrors
+              ? _showError()
+              : _settingsStore.updateSettingsFuture.status ==
+                          FutureStatus.fulfilled &&
+                      !_settingsStore.hasErrors
+                  ? _saveEmailPrefs()
+                  : null,
+    );
+
+    _updatePrivateInsightsDisposer = reaction(
+      (_) => _settingsStore.updatePrivateInsightsFuture.status,
+      (result) => _settingsStore.updatePrivateInsightsFuture.status ==
+                  FutureStatus.rejected &&
+              _settingsStore.hasErrors
+          ? _showError()
+          : _settingsStore.updatePrivateInsightsFuture.status ==
+                      FutureStatus.fulfilled &&
+                  !_settingsStore.hasErrors
+              ? _savePrivateInsightsPrefs()
+              : null,
+    );
   }
 
-  _loadPrefs() async {
-    final SharedPreferences prefs = await _prefs;
-    setState(() {
-      notification = (prefs.getBool('notification') ?? false);
-    });
+  _buildUI() {
+    return Observer(
+        builder: (_) => _settingsStore.getPreferencesFuture.status ==
+                FutureStatus.fulfilled
+            ? ListView(
+                children: <Widget>[
+                  Observer(
+                      builder: (_) => _settingsStore.updateSettingsFuture ==
+                                  null ||
+                              (_settingsStore.updateSettingsFuture != null &&
+                                  (_settingsStore.updateSettingsFuture.status ==
+                                          FutureStatus.fulfilled ||
+                                      _settingsStore
+                                              .updateSettingsFuture.status ==
+                                          FutureStatus.rejected))
+                          ? SwitchListTile(
+                              value: _settingsStore.buildEmails,
+                              title: Text(
+                                'Build notifications',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (bool value) {
+                                _settingsStore.updateEmailSettings(
+                                    value, CancelToken());
+                              },
+                              subtitle: Text(
+                                  'The status of your builds straight to your inbox'),
+                              secondary: Icon(Icons.notifications),
+                            )
+                          : ListTile(
+                              leading: Icon(Icons.notifications),
+                              trailing: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 12.0, right: 12.0),
+                                child: SizedBox(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                'Build notifications',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              subtitle: Text(
+                                  'The status of your builds straight to your inbox'),
+                            )),
+                  if (!isOrg)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'Insights Visibility Settings',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          leading: Icon(Icons.visibility),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, bottom: 8.0),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(245, 251, 251, 1.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RadioListTile(
+                                value: "private",
+                                groupValue:
+                                    _settingsStore.privateInsightsVisibility,
+                                onChanged: (value) => _settingsStore
+                                    .privateInsightsVisibility = value,
+                                title: Text(
+                                  "Do not allow everyone to see insights from your private builds",
+                                  style: TextStyle(
+                                      color: Colors.blueGrey, fontSize: 14.0),
+                                ),
+                              ),
+                              RadioListTile(
+                                value: "public",
+                                groupValue:
+                                    _settingsStore.privateInsightsVisibility,
+                                onChanged: (value) => _settingsStore
+                                    .privateInsightsVisibility = value,
+                                title: Text(
+                                  "Allow everyone to see insights from your private builds",
+                                  style: TextStyle(
+                                      color: Colors.blueGrey, fontSize: 14.0),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 28.0, top: 8.0, bottom: 16.0),
+                                child: _settingsStore
+                                                .updatePrivateInsightsFuture ==
+                                            null ||
+                                        (_settingsStore
+                                                    .updatePrivateInsightsFuture !=
+                                                null &&
+                                            (_settingsStore
+                                                        .updatePrivateInsightsFuture
+                                                        .status ==
+                                                    FutureStatus.fulfilled ||
+                                                _settingsStore
+                                                        .updatePrivateInsightsFuture
+                                                        .status ==
+                                                    FutureStatus.rejected))
+                                    ? Material(
+                                        child: InkWell(
+                                          onTap: () {
+                                            _settingsStore
+                                                .updatePrivateInsightsVisibility(
+                                                    CancelToken());
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                                border: Border.all(
+                                                    color: Colors.grey)),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4.0,
+                                                horizontal: 16.0),
+                                            child: Text(
+                                              "SAVE",
+                                              style: TextStyle(
+                                                  color: Colors.blueGrey),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        width: 24.0,
+                                        height: 24.0,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.0,
+                                        ),
+                                      ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  Divider(
+                    indent: 16.0,
+                    endIndent: 16.0,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.show_chart),
+                    title: Text(
+                      'Travis CI Status',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    subtitle:
+                        Text("Check Travis CI status and incident history"),
+                    onTap: () {
+                      OpenUrl.launchURL('https://www.traviscistatus.com/');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(FeatherIcons.github),
+                    title: Text(
+                      'GitHub repo',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    subtitle: Text("Check out the GitHub repo of this app"),
+                    onTap: () {
+                      OpenUrl.launchURL(
+                          'https://github.com/Flutter-OpenHub/travis_ci');
+                    },
+                  ),
+                  Divider(
+                    indent: 16.0,
+                    endIndent: 16.0,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 24.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Developed by",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(
+                          height: 16.0,
+                        ),
+                        OpenHubLogo()
+                      ],
+                    ),
+                  )
+                ],
+              )
+            : _settingsStore.getPreferencesFuture.status ==
+                    FutureStatus.rejected
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(_settingsStore.errorMessage),
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ));
   }
 
-  _savePrefs(bool value) async {
-    final SharedPreferences prefs = await _prefs;
-    prefs.setBool("notification", value);
+  _saveEmailPrefs() async {
+    _settingsStore.buildEmails = _settingsStore.buildEmailsResponse.value;
+    _settingsStore.sharedPreferences
+        .setBool("notification", _settingsStore.buildEmails);
   }
 
-  _updateSettings(String travisToken, bool value) async {
-    var response = await http.patch(
-        "https://api.travis-ci.org/preference/build_emails",
-        headers: {"Travis-API-Version": "3", "Authorization": "$travisToken"},
-        body: {"value": "$value"});
-    if (response.statusCode == 200) {
-      String responseBody = response.body;
-      var jsonBody = json.decode(responseBody);
-      print(jsonBody);
-    } else {
-      print('Failed!');
-      print('Reverting back');
-      print('Response code: ${response.statusCode}');
-      setState(() {
-        notification = !value;
-      });
-    }
+  _savePrivateInsightsPrefs() async {
+    _settingsStore.privateInsightsVisibility =
+        _settingsStore.privateInsightsVisibilityResponse.value;
+    _settingsStore.sharedPreferences.setString(
+        "private_insights", _settingsStore.privateInsightsVisibility);
+  }
+
+  _showError() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(_settingsStore.errorMessage),
+      behavior: SnackBarBehavior.floating,
+    ));
+    _settingsStore.errorMessage = '';
   }
 }

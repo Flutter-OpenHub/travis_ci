@@ -5,11 +5,12 @@
  */
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import '../init/init.dart';
+import '../models/build_emails_response.dart';
 import '../models/build_model.dart';
 import '../models/organization.dart';
+import '../models/private_insights_visibility.dart';
 import '../models/repo.dart';
 import '../models/user.dart';
 import '../utils/network_util.dart';
@@ -23,6 +24,22 @@ class TravisCIApi {
 
   NetworkUtil _netUtil = NetworkUtil();
 
+  Future<Map> getBuildLog(String id, CancelToken cancelToken) async {
+    var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log', cancelToken,
+        headers: headers);
+    return res;
+  }
+
+  Future<String> getBuildLogAsTxt(String id, CancelToken cancelToken) async {
+    var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log.txt', cancelToken,
+        headers: headers);
+    if (res.statusCode < 200 || res.statusCode > 400) {
+      throw new Exception(
+          "Error while fetching data: ${res.statusCode} ${res.statusMessage}");
+    }
+    return res.data.toString();
+  }
+
   Future<List<BuildsModel>> getBuilds(
       String id, CancelToken cancelToken) async {
     var res = await _netUtil.get(ApiUrls.repoUrl + id + '/builds', cancelToken,
@@ -33,25 +50,9 @@ class TravisCIApi {
         : [];
   }
 
-  Future<String> getBuildLogAsTxt(String id, CancelToken cancelToken) async {
-    var res = await Dio().get(
-      ApiUrls.jobUrl + id + '/log.txt',
-      cancelToken: cancelToken,
-      options: Options(headers: headers),
-    );
-    if (res.statusCode < 200 || res.statusCode > 400) {
-      throw new Exception(
-          "Error while fetching data: ${res.statusCode} ${res.statusMessage}");
-    }
-    //debugPrint(res.data);
-    print(res.data.toString().split("\n").length);
-    return res.data.toString();
-  }
-
-  Future<Map> getBuildLog(String id, CancelToken cancelToken) async {
-    var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log', cancelToken,
-        headers: headers);
-    return res;
+  Future<List<dynamic>> getPreferences(CancelToken cancelToken) async {
+    var res = await _netUtil.get("/preferences", cancelToken, headers: headers);
+    return res['preferences'];
   }
 
   Future<User> getUser(CancelToken cancelToken, {String id}) async {
@@ -65,6 +66,21 @@ class TravisCIApi {
     var res = await _netUtil.post(ApiUrls.userUrl + '/$id/sync', cancelToken,
         headers: headers);
     return User.fromJson(res);
+  }
+
+  Future<BuildEmailsResponse> updateBuildEmails(
+      bool value, CancelToken cancelToken) async {
+    var res = await _netUtil.patch("/preference/build_emails", cancelToken,
+        headers: headers, body: {"value": "$value"});
+    return BuildEmailsResponse.fromJson(res);
+  }
+
+  Future<PrivateInsightsVisibilityResponse> updatePrivateInsightVisibility(
+      String value, CancelToken cancelToken) async {
+    var res = await _netUtil.patch(
+        "/preference/private_insights_visibility", cancelToken,
+        headers: headers, body: {"value": "$value"});
+    return PrivateInsightsVisibilityResponse.fromJson(res);
   }
 
   static Future<List<BuildsModel>> getMyBuilds(

@@ -237,7 +237,7 @@ class _MyBuildsState extends State<MyBuilds> {
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       pageLoadController: _pageWiseLoadController,
       noItemsFoundBuilder: (context) {
-        return Chip(label: Text('No active repositories found!'));
+        return Chip(label: Text('No builds found!'));
       },
       errorBuilder: (context, error) {
         return Text(error.toString());

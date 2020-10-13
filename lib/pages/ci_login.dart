@@ -16,7 +16,7 @@ import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -81,9 +81,9 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.only(top: 24.0),
             child: Hero(
-                tag: 'org',
+                tag: isOrg ? 'org' : 'com',
                 child: Image.asset(
-                  'assets/TravisCI-Mascot-1.png',
+                  'assets/TravisCI-Mascot-${isOrg ? "1" : "2"}.png',
                   width: 80.0,
                   height: 80.0,
                 )),
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 22.0),
               )),
           Text(
-            'https://travis-ci.org',
+            'https://travis-ci.${isOrg ? "org" : "com"}',
             style: TextStyle(color: Colors.blue),
           ),
           Container(
