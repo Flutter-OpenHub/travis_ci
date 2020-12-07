@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
+import 'package:travis_ci/models/repo.dart';
 
 import '../../api/travis_ci_api.dart';
 import '../../models/build_model.dart';
@@ -23,10 +24,16 @@ abstract class _BuildsStore with Store {
   ObservableList<BuildsModel> builds = ObservableList<BuildsModel>();
 
   @observable
+  RepositoriesModel repositoriesModel;
+
+  @observable
   String errorMessage = '';
 
   @observable
   ObservableFuture<List<BuildsModel>> getBuildsFuture;
+
+  @observable
+  ObservableFuture<RepositoriesModel> starUnStarRepoFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;
@@ -37,6 +44,21 @@ abstract class _BuildsStore with Store {
     getBuildsFuture = ObservableFuture(future);
     future.then((value) {
       builds = ObservableList.of(value);
+    }).catchError((error) {
+      errorMessage = error.toString().contains('SocketException:')
+          ? 'Connection to server failed! Please check your internet connection and try again.'
+          : error.response != null
+              ? jsonDecode(error.response.data.toString())['error_message']
+              : error.message.toString();
+    });
+  }
+
+  @action
+  Future starUnStarRepo(String id, bool isStar, CancelToken cancelToken) async {
+    final future = _buildsApi.starUnStarRepo(id, isStar, cancelToken);
+    starUnStarRepoFuture = ObservableFuture(future);
+    future.then((value) {
+      repositoriesModel = value;
     }).catchError((error) {
       errorMessage = error.toString().contains('SocketException:')
           ? 'Connection to server failed! Please check your internet connection and try again.'

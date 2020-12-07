@@ -4,10 +4,12 @@
  * Created by Amit Khairnar on 11/10/2020.
  */
 
+import 'package:dio/dio.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../api/travis_ci_api.dart';
 import '../models/build_model.dart';
 import '../utils/get_icon.dart';
 import '../utils/get_state_color.dart';
@@ -243,7 +245,10 @@ class BuildDetails extends StatelessWidget {
                   backgroundColor: Colors.white30,
                   shape:
                       StadiumBorder(side: BorderSide(color: Colors.grey[200])),
-                  onPressed: () {}),
+                  onPressed: () {
+                    //TravisCIApi().restartBuild(buildData.jobs.first.id.toString(), CancelToken());
+                    TravisCIApi().restartBuild(buildData.id.toString(), CancelToken());
+                  }),
             ),
           ),
           Divider(),

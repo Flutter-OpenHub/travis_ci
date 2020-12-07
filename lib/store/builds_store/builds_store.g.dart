@@ -31,6 +31,21 @@ mixin _$BuildsStore on _BuildsStore, Store {
     });
   }
 
+  final _$repositoriesModelAtom = Atom(name: '_BuildsStore.repositoriesModel');
+
+  @override
+  RepositoriesModel get repositoriesModel {
+    _$repositoriesModelAtom.reportRead();
+    return super.repositoriesModel;
+  }
+
+  @override
+  set repositoriesModel(RepositoriesModel value) {
+    _$repositoriesModelAtom.reportWrite(value, super.repositoriesModel, () {
+      super.repositoriesModel = value;
+    });
+  }
+
   final _$errorMessageAtom = Atom(name: '_BuildsStore.errorMessage');
 
   @override
@@ -61,6 +76,23 @@ mixin _$BuildsStore on _BuildsStore, Store {
     });
   }
 
+  final _$starUnStarRepoFutureAtom =
+      Atom(name: '_BuildsStore.starUnStarRepoFuture');
+
+  @override
+  ObservableFuture<RepositoriesModel> get starUnStarRepoFuture {
+    _$starUnStarRepoFutureAtom.reportRead();
+    return super.starUnStarRepoFuture;
+  }
+
+  @override
+  set starUnStarRepoFuture(ObservableFuture<RepositoriesModel> value) {
+    _$starUnStarRepoFutureAtom.reportWrite(value, super.starUnStarRepoFuture,
+        () {
+      super.starUnStarRepoFuture = value;
+    });
+  }
+
   final _$getBuildsAsyncAction = AsyncAction('_BuildsStore.getBuilds');
 
   @override
@@ -68,12 +100,24 @@ mixin _$BuildsStore on _BuildsStore, Store {
     return _$getBuildsAsyncAction.run(() => super.getBuilds(id, cancelToken));
   }
 
+  final _$starUnStarRepoAsyncAction =
+      AsyncAction('_BuildsStore.starUnStarRepo');
+
+  @override
+  Future<dynamic> starUnStarRepo(
+      String id, bool isStar, CancelToken cancelToken) {
+    return _$starUnStarRepoAsyncAction
+        .run(() => super.starUnStarRepo(id, isStar, cancelToken));
+  }
+
   @override
   String toString() {
     return '''
 builds: ${builds},
+repositoriesModel: ${repositoriesModel},
 errorMessage: ${errorMessage},
 getBuildsFuture: ${getBuildsFuture},
+starUnStarRepoFuture: ${starUnStarRepoFuture},
 hasErrors: ${hasErrors}
     ''';
   }

@@ -10,6 +10,7 @@ import 'tag.dart';
 import 'repository.dart';
 
 class BuildsModel {
+  final int id;
   final String number;
   final BuildState state;
   final int duration;
@@ -24,7 +25,7 @@ class BuildsModel {
   final List<Job> jobs;
 
   BuildsModel(
-      {this.number,
+      {this.id,this.number,
       this.state,
       this.duration,
       this.previousState,
@@ -40,6 +41,7 @@ class BuildsModel {
   factory BuildsModel.fromJson(Map<String, dynamic> parsedJson) {
     List<dynamic> _jobs = parsedJson['jobs'];
     return BuildsModel(
+      id: parsedJson['id'],
         state:
             enumFromString<BuildState>(BuildState.values, parsedJson['state']),
         number: parsedJson['number'],

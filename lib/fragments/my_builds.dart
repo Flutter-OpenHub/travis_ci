@@ -25,6 +25,8 @@ class MyBuilds extends StatefulWidget {
 class _MyBuildsState extends State<MyBuilds> {
   PagewiseLoadController<BuildsModel> _pageWiseLoadController;
 
+  bool _restarted = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,6 +210,21 @@ class _MyBuildsState extends State<MyBuilds> {
                     ],
                   ),
                 ),
+                onTap: () {
+                  if (!_restarted) {
+                    TravisCIApi()
+                        .restartBuild(buildsModel.id.toString(), CancelToken());
+                    setState(() {
+                      _restarted = true;
+                    });
+                  } else {
+                    TravisCIApi()
+                        .cancelBuild(buildsModel.id.toString(), CancelToken());
+                    setState(() {
+                      _restarted = false;
+                    });
+                  }
+                },
               ),
             ],
           ),

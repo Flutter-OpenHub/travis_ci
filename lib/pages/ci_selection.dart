@@ -28,117 +28,112 @@ class InitializationPage extends StatelessWidget {
                   'Select CI Server',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 22.0),
                 )),
-            Wrap(
-              alignment: WrapAlignment.center,
-              children: <Widget>[
-                Card(
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.grey.withOpacity(0.1)),
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: InkWell(
-                    onTap: () {
-                      isOrg = true;
-                      baseUrl = ApiUrls.orgUrl;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
-                      width: 200.0,
-                      child: Column(
-                        children: <Widget>[
-                          Hero(
-                              tag: 'org',
-                              child: Image.asset(
-                                'assets/TravisCI-Mascot-1.png',
-                                width: 40.0,
-                                height: 40.0,
-                              )),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          Text('Travis CI (.org)',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 15.0)),
-                        ],
+            Card(
+              elevation: 0.0,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: InkWell(
+                onTap: () {
+                  isOrg = true;
+                  baseUrl = ApiUrls.orgUrl;
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => LoginPage()));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16.0),
+                  width: 200.0,
+                  child: Column(
+                    children: <Widget>[
+                      Hero(
+                          tag: 'org',
+                          child: Image.asset(
+                            'assets/TravisCI-Mascot-1.png',
+                            width: 40.0,
+                            height: 40.0,
+                          )),
+                      SizedBox(
+                        height: 16.0,
                       ),
-                    ),
+                      Text('Travis CI (.org)',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 15.0)),
+                    ],
                   ),
                 ),
-                Card(
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.grey.withOpacity(0.1)),
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: InkWell(
-                    onTap: () {
-                      isOrg = false;
-                      baseUrl = ApiUrls.comUrl;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
-                      width: 200.0,
-                      child: Column(
-                        children: <Widget>[
-                          Hero(
-                              tag: 'com',
-                              child: Image.asset(
-                                'assets/TravisCI-Mascot-2.png',
-                                width: 40.0,
-                                height: 40.0,
-                              )),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          Text('Travis CI (.com)',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 16.0)),
-                        ],
+              ),
+            ),
+            Card(
+              elevation: 0.0,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: InkWell(
+                onTap: () {
+                  isOrg = false;
+                  baseUrl = ApiUrls.comUrl;
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => LoginPage()));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16.0),
+                  width: 200.0,
+                  child: Column(
+                    children: <Widget>[
+                      Hero(
+                          tag: 'com',
+                          child: Image.asset(
+                            'assets/TravisCI-Mascot-2.png',
+                            width: 40.0,
+                            height: 40.0,
+                          )),
+                      SizedBox(
+                        height: 16.0,
                       ),
-                    ),
+                      Text('Travis CI (.com)',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16.0)),
+                    ],
                   ),
                 ),
-                Card(
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.grey.withOpacity(0.1)),
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: InkWell(
-                    onTap: () {
-                      TravisDialog.showWarning(
-                          context: context,
-                          text: "This option has been disabled");
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
-                      width: 200.0,
-                      child: Column(
-                        children: <Widget>[
-                          Hero(
-                              tag: 'enterprise',
-                              child: Image.asset(
-                                'assets/TravisCI-Mascot-1.png',
-                                width: 40.0,
-                                height: 40.0,
-                              )),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          Text('Travis CI Enterprise',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 16.0)),
-                        ],
+              ),
+            ),
+            Card(
+              elevation: 0.0,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: InkWell(
+                onTap: () {
+                  TravisDialog.showWarning(
+                      context: context,
+                      text: "This option has been disabled");
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16.0),
+                  width: 200.0,
+                  child: Column(
+                    children: <Widget>[
+                      Hero(
+                          tag: 'enterprise',
+                          child: Image.asset(
+                            'assets/TravisCI-Mascot-1.png',
+                            width: 40.0,
+                            height: 40.0,
+                          )),
+                      SizedBox(
+                        height: 16.0,
                       ),
-                    ),
+                      Text('Travis CI Enterprise',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16.0)),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),

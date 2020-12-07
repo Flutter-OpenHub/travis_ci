@@ -9,16 +9,13 @@ import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:travis_ci/pages/build_details.dart';
 
 import '../models/repo.dart';
+import '../pages/build_details.dart';
 import '../store/builds_store/builds_store.dart';
+import '../utils/dialog.dart';
 import '../utils/get_icon.dart';
 import '../utils/get_state_color.dart';
-import '../utils/open_url.dart';
-import 'show_logs.dart';
-import 'user_data_widget.dart';
 
 class Details extends StatefulWidget {
   final RepositoriesModel repositoriesModel;
@@ -30,11 +27,13 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
-  //TODO Implement function to star and unstar repo. Activate and deactivate repo
+  //TODO Activate and deactivate repo
 
   BuildsStore _buildsStore = BuildsStore();
 
   TabController _tabController;
+
+  ReactionDisposer _starUnStarDisposer;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +55,33 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         ),
         centerTitle: false,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.star_border), onPressed: () {})
+          Observer(
+              builder: (_) => _buildsStore.starUnStarRepoFuture != null &&
+                      _buildsStore.starUnStarRepoFuture.status ==
+                          FutureStatus.pending
+                  ? Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        width: 24.0,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                          strokeWidth: 1.5,
+                        ),
+                      ),
+                    )
+                  : IconButton(
+                      icon: Icon(widget.repositoriesModel.starred
+                          ? Icons.star
+                          : Icons.star_border),
+                      color: widget.repositoriesModel.starred
+                          ? Colors.orange
+                          : null,
+                      onPressed: () {
+                        _buildsStore.starUnStarRepo(
+                            widget.repositoriesModel.id.toString(),
+                            !widget.repositoriesModel.starred,
+                            CancelToken());
+                      }))
         ],
         bottom: TabBar(controller: _tabController, tabs: [
           Tab(
@@ -85,9 +110,27 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _starUnStarDisposer();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _starUnStarDisposer = reaction(
+      (_) => _buildsStore.starUnStarRepoFuture.status,
+      (result) =>
+          _buildsStore.starUnStarRepoFuture.status == FutureStatus.rejected &&
+                  _buildsStore.hasErrors
+              ? _showError()
+              : _buildsStore.starUnStarRepoFuture.status ==
+                          FutureStatus.fulfilled &&
+                      !_buildsStore.hasErrors
+                  ? _navigate(true)
+                  : null,
+    );
     _buildsStore.getBuilds(
         widget.repositoriesModel.id.toString(), CancelToken());
   }
@@ -212,5 +255,14 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         : Center(
             child: Text("No builds for this repository"),
           );
+  }
+
+  _navigate(bool isUpdate) {
+    widget.repositoriesModel.starred = _buildsStore.repositoriesModel.starred;
+  }
+
+  _showError() {
+    TravisDialog.showWarning(context: context, text: _buildsStore.errorMessage);
+    _buildsStore.errorMessage = '';
   }
 }

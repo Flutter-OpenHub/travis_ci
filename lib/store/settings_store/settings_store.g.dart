@@ -151,6 +151,15 @@ mixin _$SettingsStore on _SettingsStore, Store {
     });
   }
 
+  final _$getPreferencesAsyncAction =
+      AsyncAction('_SettingsStore.getPreferences');
+
+  @override
+  Future<dynamic> getPreferences(CancelToken cancelToken) {
+    return _$getPreferencesAsyncAction
+        .run(() => super.getPreferences(cancelToken));
+  }
+
   final _$updateEmailSettingsAsyncAction =
       AsyncAction('_SettingsStore.updateEmailSettings');
 
@@ -167,15 +176,6 @@ mixin _$SettingsStore on _SettingsStore, Store {
   Future<dynamic> updatePrivateInsightsVisibility(CancelToken cancelToken) {
     return _$updatePrivateInsightsVisibilityAsyncAction
         .run(() => super.updatePrivateInsightsVisibility(cancelToken));
-  }
-
-  final _$getPreferencesAsyncAction =
-      AsyncAction('_SettingsStore.getPreferences');
-
-  @override
-  Future<dynamic> getPreferences(CancelToken cancelToken) {
-    return _$getPreferencesAsyncAction
-        .run(() => super.getPreferences(cancelToken));
   }
 
   @override

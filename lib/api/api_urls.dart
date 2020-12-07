@@ -19,5 +19,7 @@ class ApiUrls {
 
   static const String myBuildsUrl = "/builds";
 
+  static const String buildUrl = "/build";
+
   static const String jobUrl = "/job/";
 }

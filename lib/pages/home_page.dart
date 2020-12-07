@@ -167,8 +167,8 @@ class HomePageState extends State<HomePage> {
     _selectedWidget = HomeFragment();
   }
 
-  //Image.asset(
-//             'assets/TravisCI-Full-Color.png',
-//             height: kToolbarHeight - 24.0,
-//           )
+  // Image.asset(
+  //           'assets/TravisCI-Full-Color.png',
+  //           height: kToolbarHeight - 24.0,
+  //         )
 }
