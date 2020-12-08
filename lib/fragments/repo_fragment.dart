@@ -10,6 +10,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 
 import '../api/travis_ci_api.dart';
 import '../models/repo.dart';
+import '../pages/details.dart';
 import '../utils/icon_fonts.dart';
 
 class RepoFragment extends StatefulWidget {
@@ -69,7 +70,14 @@ class _RepoFragmentState extends State<RepoFragment> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
       subtitle: Text(repositoriesModel.owner,
           style: TextStyle(color: Colors.blue, fontSize: 15.0)),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return Details(
+            repositoriesModel: repositoriesModel,
+          );
+        }));
+      },
     );
   }
 }
