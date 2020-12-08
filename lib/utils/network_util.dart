@@ -13,7 +13,7 @@ import '../init/init.dart';
 
 class NetworkUtil with NetworkUtilMixin {
   // next three lines makes this class a Singleton
-  static NetworkUtil _instance = new NetworkUtil.internal();
+  static NetworkUtil _instance = NetworkUtil.internal();
 
   final Dio _dio = Dio();
 
@@ -33,7 +33,7 @@ class NetworkUtil with NetworkUtilMixin {
     //print(res);
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
-      throw new Exception(
+      throw Exception(
           "Error while fetching data: ${response.statusCode} ${response.statusMessage}");
     }
     return res;

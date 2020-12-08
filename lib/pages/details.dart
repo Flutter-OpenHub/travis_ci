@@ -181,10 +181,12 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                             width: 4.0,
                           ),
                           Text(
-                            _buildsStore.builds[index].state
-                                .toString()
-                                .split('.')
-                                .last,
+                            _buildsStore.builds[index].state != null
+                                ? _buildsStore.builds[index].state
+                                    .toString()
+                                    .split('.')
+                                    .last
+                                : 'received',
                             style: TextStyle(
                                 color: GetStateColor.getStateColor(
                                     _buildsStore.builds[index].state),

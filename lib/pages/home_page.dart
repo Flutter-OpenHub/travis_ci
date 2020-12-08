@@ -15,18 +15,12 @@ import '../utils/icon_fonts.dart';
 import 'my_account.dart';
 import 'settings.dart';
 
-class DrawerItem {
-  String title;
-  IconData icon;
-  DrawerItem(this.title, this.icon);
-}
-
 class HomePage extends StatefulWidget {
   final FormStore store;
 
   const HomePage({Key key, this.store}) : super(key: key);
   @override
-  HomePageState createState() => new HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
@@ -68,8 +62,9 @@ class HomePageState extends State<HomePage> {
                       trailing: Icon(Icons.keyboard_arrow_right),
                       contentPadding: const EdgeInsets.only(),
                       onTap: () {
-                        Navigator.push(context, new MaterialPageRoute(
-                            builder: (BuildContext context) {
+                        Navigator.of(context).pop();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
                           return MyAccount(
                             formStore: widget.store,
                           );
@@ -135,7 +130,7 @@ class HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.push(context,
-                      new MaterialPageRoute(builder: (BuildContext context) {
+                      MaterialPageRoute(builder: (BuildContext context) {
                     return SettingsPage();
                   }));
                 },

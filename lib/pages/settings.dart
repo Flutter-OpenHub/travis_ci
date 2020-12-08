@@ -17,7 +17,7 @@ import '../widgets/openhub_logo.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
-  _SettingsPageState createState() => new _SettingsPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {

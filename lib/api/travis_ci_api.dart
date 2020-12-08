@@ -34,7 +34,7 @@ class TravisCIApi {
     var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log.txt', cancelToken,
         headers: headers);
     if (res.statusCode < 200 || res.statusCode > 400) {
-      throw new Exception(
+      throw Exception(
           "Error while fetching data: ${res.statusCode} ${res.statusMessage}");
     }
     return res.data.toString();

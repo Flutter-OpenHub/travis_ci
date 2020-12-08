@@ -21,9 +21,6 @@ The project is still in beta and not all features are available.
 - Show repository details
 - Star and un-star repository on org
 - Activate and deactivate repository on org
-
-#### TO-DO
-
 - Trigger build
 
 
