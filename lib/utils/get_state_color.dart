@@ -11,7 +11,7 @@ class GetStateColor {
   static getStateColor(BuildState state) {
     switch (state) {
       case BuildState.started:
-        return Colors.black45;
+        return Colors.orange;
       case BuildState.passed:
         return Colors.green;
       case BuildState.errored:

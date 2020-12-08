@@ -145,6 +145,10 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         ? BuildDetails(
             buildData: _buildsStore.builds.first,
             showAppbar: false,
+            onChanged: (value) {
+              _buildsStore.getBuilds(
+                  widget.repositoriesModel.id.toString(), CancelToken());
+            },
           )
         : Center(
             child: Text("No builds for this repository"),

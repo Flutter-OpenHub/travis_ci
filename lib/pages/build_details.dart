@@ -4,24 +4,25 @@
  * Created by Amit Khairnar on 11/10/2020.
  */
 
-import 'package:dio/dio.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../api/travis_ci_api.dart';
+import '../enum/build_status.dart';
 import '../models/build_model.dart';
 import '../utils/get_icon.dart';
 import '../utils/get_state_color.dart';
 import '../utils/open_url.dart';
+import '../widgets/restart_cancel_button.dart';
 import 'show_logs.dart';
 import 'user_data_widget.dart';
 
 class BuildDetails extends StatelessWidget {
   final BuildsModel buildData;
   final bool showAppbar;
+  final ValueChanged<bool> onChanged;
 
-  const BuildDetails({Key key, this.buildData, this.showAppbar})
+  const BuildDetails({Key key, this.buildData, this.showAppbar, this.onChanged})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -229,35 +230,60 @@ class BuildDetails extends StatelessWidget {
               id: buildData.createdBy.id.toString(),
             ),
           ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: ActionChip(
+          //         avatar: Icon(
+          //           Icons.refresh,
+          //           color: Colors.teal,
+          //         ),
+          //         label: Text(
+          //           'Restart build',
+          //           style: TextStyle(color: Colors.teal),
+          //         ),
+          //         backgroundColor: Colors.white30,
+          //         shape:
+          //             StadiumBorder(side: BorderSide(color: Colors.grey[200])),
+          //         onPressed: () {
+          //           //TravisCIApi().restartBuild(buildData.jobs.first.id.toString(), CancelToken());
+          //           TravisCIApi()
+          //               .restartBuild(buildData.id.toString(), CancelToken());
+          //         }),
+          //   ),
+          // ),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ActionChip(
-                  avatar: Icon(
-                    Icons.refresh,
-                    color: Colors.teal,
-                  ),
-                  label: Text(
-                    'Restart build',
-                    style: TextStyle(color: Colors.teal),
-                  ),
-                  backgroundColor: Colors.white30,
-                  shape:
-                      StadiumBorder(side: BorderSide(color: Colors.grey[200])),
-                  onPressed: () {
-                    //TravisCIApi().restartBuild(buildData.jobs.first.id.toString(), CancelToken());
-                    TravisCIApi().restartBuild(buildData.id.toString(), CancelToken());
-                  }),
+              child: RestartCancelBuildButton(
+                buildId: buildData.id.toString(),
+                onChanged: onChanged,
+                isRestart: buildData.state == BuildState.passed ||
+                    buildData.state == BuildState.failed ||
+                    buildData.state == BuildState.errored ||
+                    buildData.state == BuildState.canceled,
+              ),
             ),
           ),
           Divider(),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              "Jobs",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+            ),
+          ),
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: buildData.jobs.length,
             itemBuilder: (_, index) => ListTile(
-              title: Text("View build log"),
+              title: Text(buildData.jobs.length == 1
+                  ? 'View build log'
+                  : "#${buildData.jobs[index].id} log"),
               leading: Icon(FeatherIcons.fileText),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {

@@ -123,21 +123,6 @@ class HomePageState extends State<HomePage> {
                         });
                       },
                     ),
-                    ListTile(
-                      leading: Icon(FeatherIcons.briefcase),
-                      title: Text("Jobs"),
-                      selected: _index == 3,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          _index = 3;
-                          _title = "Jobs";
-                          _selectedWidget = Center(
-                            child: Text("Yet to be implemented \u{1f605}"),
-                          );
-                        });
-                      },
-                    ),
                   ],
                 ),
               ),

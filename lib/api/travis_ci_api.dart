@@ -24,24 +24,12 @@ class TravisCIApi {
 
   NetworkUtil _netUtil = NetworkUtil();
 
-  Future<Map> cancelBuild(String id, CancelToken cancelToken) async {
-    //print(ApiUrls.jobUrl  + id + '/restart');
-    print(ApiUrls.buildUrl + '/' + id + '/cancel');
-    var res = await _netUtil.post(
-        ApiUrls.buildUrl + '/' + id + '/cancel', cancelToken,
-        headers: headers);
-    print(res);
-    return res;
-  }
-
-  //{@type: pending, build: {@type: build, @href: /build/735270426, @representation: minimal, id: 735270426, number: 26, state: canceled, duration: 5, event_type: push, previous_state: null, pull_request_title: null, pull_request_number: null, started_at: 2020-10-18T05:26:24Z, finished_at: 2020-10-18T05:26:29Z, private: false, priority: false}, state_change: restart, resource_type: build}
   Future<Map> getBuildLog(String id, CancelToken cancelToken) async {
     var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log', cancelToken,
         headers: headers);
     return res;
   }
 
-  //{@type: pending, build: {@type: build, @href: /build/735270426, @representation: minimal, id: 735270426, number: 26, state: started, duration: null, event_type: push, previous_state: null, pull_request_title: null, pull_request_number: null, started_at: 2020-10-18T05:26:24Z, finished_at: null, private: false, priority: false}, state_change: cancel, resource_type: build}
   Future<String> getBuildLogAsTxt(String id, CancelToken cancelToken) async {
     var res = await _netUtil.get(ApiUrls.jobUrl + id + '/log.txt', cancelToken,
         headers: headers);
@@ -74,15 +62,28 @@ class TravisCIApi {
     return User.fromJson(res);
   }
 
-  Future<Map> restartBuild(String id, CancelToken cancelToken) async {
+  Future<Map> restartCancelBuild(
+      String id, bool isRestart, CancelToken cancelToken) async {
     //print(ApiUrls.jobUrl  + id + '/restart');
-    print(ApiUrls.buildUrl + '/' + id + '/restart');
+    //print(ApiUrls.buildUrl + '/' + id + (isRestart ? '/restart' : '/cancel'));
     var res = await _netUtil.post(
-        ApiUrls.buildUrl + '/' + id + '/restart', cancelToken,
-        headers: headers);
-    print(res);
+      ApiUrls.buildUrl + '/' + id + (isRestart ? '/restart' : '/cancel'),
+      cancelToken,
+      headers: headers,
+    );
+    //print(res);
     return res;
   }
+
+  // Future<Map> cancelBuild(String id, CancelToken cancelToken) async {
+  //   //print(ApiUrls.jobUrl  + id + '/restart');
+  //   print(ApiUrls.buildUrl + '/' + id + '/cancel');
+  //   var res = await _netUtil.post(
+  //       ApiUrls.buildUrl + '/' + id + '/cancel', cancelToken,
+  //       headers: headers);
+  //   print(res);
+  //   return res;
+  // }
 
   Future<RepositoriesModel> starUnStarRepo(
       String id, bool isStar, CancelToken cancelToken) async {

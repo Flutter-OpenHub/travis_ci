@@ -9,10 +9,10 @@ import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:travis_ci/pages/build_details.dart';
 
 import '../api/travis_ci_api.dart';
 import '../models/build_model.dart';
+import '../pages/build_details.dart';
 import '../utils/get_icon.dart';
 import '../utils/get_state_color.dart';
 import '../utils/icon_fonts.dart';
@@ -92,7 +92,12 @@ class _MyBuildsState extends State<MyBuilds> {
                           width: 4.0,
                         ),
                         Text(
-                          "#${buildsModel.number} ${buildsModel.state.toString().split('.').last}",
+                          [
+                            "#${buildsModel.number}",
+                            buildsModel.state != null
+                                ? buildsModel.state.toString().split('.').last
+                                : 'received'
+                          ].join(" "),
                           style: TextStyle(
                               color: GetStateColor.getStateColor(
                                   buildsModel.state),
@@ -171,8 +176,10 @@ class _MyBuildsState extends State<MyBuilds> {
                         width: 8.0,
                       ),
                       Text(
-                        "${buildsModel.duration ~/ 60} min "
-                        "${buildsModel.duration % 60} sec",
+                        buildsModel.duration != null
+                            ? "${buildsModel.duration ~/ 60} min "
+                                "${buildsModel.duration % 60} sec"
+                            : '-',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       )
                     ],
@@ -182,50 +189,50 @@ class _MyBuildsState extends State<MyBuilds> {
               SizedBox(
                 height: 16.0,
               ),
-              InkWell(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      right: 8.0, left: 4.0, top: 4.0, bottom: 4.0),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(20.0)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.refresh,
-                        color: Colors.teal,
-                        size: 16.0,
-                      ),
-                      SizedBox(
-                        width: 8.0,
-                      ),
-                      Text(
-                        "Restart build",
-                        style: TextStyle(
-                            color: Colors.teal,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  if (!_restarted) {
-                    TravisCIApi()
-                        .restartBuild(buildsModel.id.toString(), CancelToken());
-                    setState(() {
-                      _restarted = true;
-                    });
-                  } else {
-                    TravisCIApi()
-                        .cancelBuild(buildsModel.id.toString(), CancelToken());
-                    setState(() {
-                      _restarted = false;
-                    });
-                  }
-                },
-              ),
+              // InkWell(
+              //   child: Container(
+              //     padding: const EdgeInsets.only(
+              //         right: 8.0, left: 4.0, top: 4.0, bottom: 4.0),
+              //     decoration: BoxDecoration(
+              //         color: Colors.grey[200],
+              //         borderRadius: BorderRadius.circular(20.0)),
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Icon(
+              //           Icons.refresh,
+              //           color: Colors.teal,
+              //           size: 16.0,
+              //         ),
+              //         SizedBox(
+              //           width: 8.0,
+              //         ),
+              //         Text(
+              //           "Restart build",
+              //           style: TextStyle(
+              //               color: Colors.teal,
+              //               fontSize: 12.0,
+              //               fontWeight: FontWeight.w500),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              //   onTap: () {
+              //     // if (!_restarted) {
+              //     //   TravisCIApi()
+              //     //       .restartBuild(buildsModel.id.toString(), CancelToken());
+              //     //   setState(() {
+              //     //     _restarted = true;
+              //     //   });
+              //     // } else {
+              //     //   TravisCIApi()
+              //     //       .cancelBuild(buildsModel.id.toString(), CancelToken());
+              //     //   setState(() {
+              //     //     _restarted = false;
+              //     //   });
+              //     // }
+              //   },
+              // ),
             ],
           ),
           leading: Icon(TravisLogos.source_repository),
@@ -236,6 +243,17 @@ class _MyBuildsState extends State<MyBuilds> {
                 builder: (_) => BuildDetails(
                       buildData: buildsModel,
                       showAppbar: true,
+                      onChanged: (value) {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _pageWiseLoadController = PagewiseLoadController(
+                              pageSize: 10,
+                              pageFuture: (pageIndex) {
+                                return TravisCIApi.getMyBuilds(
+                                    (pageIndex * 10), 10, CancelToken());
+                              });
+                        });
+                      },
                     ));
           },
         ),
