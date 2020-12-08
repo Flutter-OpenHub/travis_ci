@@ -16,6 +16,7 @@ import 'package:mobx/mobx.dart';
 
 import '../api/travis_ci_api.dart';
 import '../models/organization.dart';
+import '../pages/show_user_repos.dart';
 import '../store/form_store/form_store.dart';
 
 class MyAccount extends StatefulWidget {
@@ -183,7 +184,11 @@ class _MyAccountState extends State<MyAccount> {
         style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),
       ),
       onTap: () {
-        //TODO Show repos of selected organization
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => ShowUserRepos(
+                  login: organization.login,
+                  title: organization.name,
+                )));
       },
     );
   }

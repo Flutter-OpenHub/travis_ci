@@ -9,8 +9,6 @@ class Organization {
   String login;
   String avatarUrl;
 
-  //TODO Add repositories
-
   Organization(this.name, this.login, this.avatarUrl);
 
   factory Organization.fromJson(Map<String, dynamic> json) {

@@ -69,18 +69,67 @@ class RepositoriesModel {
   String slug;
   String owner;
   String description;
+  RepoPermissions permissions;
 
   RepositoriesModel(this.id, this.starred, this.active, this.name, this.slug,
-      this.description, this.owner);
+      this.description, this.owner, this.permissions);
 
   factory RepositoriesModel.fromJson(Map<String, dynamic> parsedJson) {
     return RepositoriesModel(
-        parsedJson['id'],
-        parsedJson['starred'],
-        parsedJson['active'],
-        parsedJson['name'],
-        parsedJson['slug'],
-        parsedJson['description'],
-        parsedJson['owner']['login']);
+      parsedJson['id'],
+      parsedJson['starred'],
+      parsedJson['active'],
+      parsedJson['name'],
+      parsedJson['slug'],
+      parsedJson['description'],
+      parsedJson['owner']['login'],
+      RepoPermissions.fromJson(parsedJson['@permissions']),
+    );
+  }
+}
+
+class RepoPermissions {
+  bool read;
+  bool deleteKeyPair;
+  bool createRequest;
+  bool admin;
+  bool activate;
+  bool deactivate;
+  bool migrate;
+  bool star;
+  bool createCron;
+  bool unStar;
+  bool createKeyPair;
+  bool createEnvVar;
+
+  RepoPermissions(
+      {this.read,
+      this.deleteKeyPair,
+      this.createRequest,
+      this.admin,
+      this.activate,
+      this.deactivate,
+      this.migrate,
+      this.star,
+      this.createCron,
+      this.unStar,
+      this.createKeyPair,
+      this.createEnvVar});
+
+  factory RepoPermissions.fromJson(Map<String, dynamic> parsedJson) {
+    return RepoPermissions(
+      read: parsedJson['read'],
+      star: parsedJson['star'],
+      admin: parsedJson['admin'],
+      unStar: parsedJson['unstar'],
+      migrate: parsedJson['migrate'],
+      activate: parsedJson['activate'],
+      deactivate: parsedJson['deactivate'],
+      createCron: parsedJson['create_cron'],
+      createEnvVar: parsedJson['create_env_var'],
+      createRequest: parsedJson['create_request'],
+      createKeyPair: parsedJson['create_key_pair'],
+      deleteKeyPair: parsedJson['delete_key_pair'],
+    );
   }
 }

@@ -27,8 +27,6 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
-  //TODO Activate and deactivate repo
-
   BuildsStore _buildsStore = BuildsStore();
 
   TabController _tabController;
@@ -76,12 +74,19 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                       color: widget.repositoriesModel.starred
                           ? Colors.orange
                           : null,
-                      onPressed: () {
-                        _buildsStore.starUnStarRepo(
-                            widget.repositoriesModel.id.toString(),
-                            !widget.repositoriesModel.starred,
-                            CancelToken());
-                      }))
+                      tooltip: widget.repositoriesModel.permissions.star ||
+                              widget.repositoriesModel.permissions.unStar
+                          ? "Star repo"
+                          : "Insufficient Permissions",
+                      onPressed: widget.repositoriesModel.permissions.star ||
+                              widget.repositoriesModel.permissions.unStar
+                          ? () {
+                              _buildsStore.starUnStarRepo(
+                                  widget.repositoriesModel.id.toString(),
+                                  !widget.repositoriesModel.starred,
+                                  CancelToken());
+                            }
+                          : null))
         ],
         bottom: TabBar(controller: _tabController, tabs: [
           Tab(

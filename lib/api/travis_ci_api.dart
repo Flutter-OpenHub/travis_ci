@@ -92,6 +92,15 @@ class TravisCIApi {
     return RepositoriesModel.fromJson(res);
   }
 
+  Future<RepositoriesModel> activateDeactivateRepo(
+      String id, bool isActivate, CancelToken cancelToken) async {
+    var res = await _netUtil.post(
+        ApiUrls.repoUrl + '$id/${isActivate ? 'activate' : 'deactivate'}',
+        cancelToken,
+        headers: headers);
+    return RepositoriesModel.fromJson(res);
+  }
+
   Future<User> syncAccount(String id, CancelToken cancelToken) async {
     var res = await _netUtil.post(ApiUrls.userUrl + '/$id/sync', cancelToken,
         headers: headers);
@@ -137,6 +146,20 @@ class TravisCIApi {
             headers: headers)
         .then((dynamic res) {
       return Organizations.getListFromJson(res['organizations']);
+    });
+  }
+
+  static Future<List<RepositoriesModel>> getOrganizationRepos(
+      String orgLogin, int offset, int limit, CancelToken cancelToken) async {
+    return NetworkUtil()
+        .get(
+            "/owner/$orgLogin" +
+                ApiUrls.reposUrl +
+                '?limit=$limit&offset=$offset',
+            cancelToken,
+            headers: headers)
+        .then((dynamic res) {
+      return Repositories.getListFromJson(res['repositories']);
     });
   }
 
