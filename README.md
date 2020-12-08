@@ -18,21 +18,12 @@ The project is still in beta and not all features are available.
 - List builds
 - Show build details and history
 - Show build logs
-
+- Show repository details
+- Star and un-star repository on org
+- Activate and deactivate repository on org
 
 #### TO-DO
 
-- Show repository details
-- Star and un-star repository on org
 - Trigger build
-- Activate and deactivate repository on org
 
-## Screenshots
-
-![CI Selection](/screenshots/screen1.jpg)
-![Login Screen](/screenshots/screen2.jpg)
-![Login Token Help](/screenshots/screen3.jpg)
-![Dashboard](/screenshots/screen4.jpg)
-![My Account](/screenshots/screen5.jpg)
-![Settings](/screenshots/screen6.jpg)
 
