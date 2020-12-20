@@ -53,12 +53,11 @@ class _MyAccountState extends State<MyAccount> {
               leading: CircleAvatar(
                 backgroundImage:
                     NetworkImage(widget.formStore.userStore.user.avatarUrl),
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
               ),
               title: Text(
                 widget.formStore.userStore.user.name,
-                style: TextStyle(
-                    color: Colors.blueGrey, fontWeight: FontWeight.bold),
+                //style: TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
                 widget.formStore.userStore.user.login,
@@ -177,12 +176,9 @@ class _MyAccountState extends State<MyAccount> {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(organization.avatarUrl),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
       ),
-      title: Text(
-        organization.name,
-        style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),
-      ),
+      title: Text(organization.name),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => ShowUserRepos(

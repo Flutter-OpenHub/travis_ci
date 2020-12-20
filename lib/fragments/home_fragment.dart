@@ -26,25 +26,26 @@ class _ActiveRepoState extends State<HomeFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: PagewiseListView(
-          itemBuilder: _builder,
-          shrinkWrap: true,
-          showRetry: false,
-          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-          pageLoadController: _pageWiseLoadController,
-          noItemsFoundBuilder: (context) {
-            return Chip(label: Text('No active repositories found!'));
-          },
-          errorBuilder: (context, error) {
-            return Text(error.toString());
-          },
-          loadingBuilder: (context) {
-            return CircularProgressIndicator(
-              strokeWidth: 2.0,
-            );
-          },
-        ));
+      //backgroundColor: Colors.white,
+      body: PagewiseListView(
+        itemBuilder: _builder,
+        shrinkWrap: true,
+        showRetry: false,
+        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        pageLoadController: _pageWiseLoadController,
+        noItemsFoundBuilder: (context) {
+          return Chip(label: Text('No active repositories found!'));
+        },
+        errorBuilder: (context, error) {
+          return Text(error.toString());
+        },
+        loadingBuilder: (context) {
+          return CircularProgressIndicator(
+            strokeWidth: 2.0,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -63,7 +64,9 @@ class _ActiveRepoState extends State<HomeFragment> {
     return ListTile(
       trailing: Icon(
         repositoriesModel.starred ? Icons.star : Icons.star_border,
-        color: repositoriesModel.starred ? Colors.orange : Colors.black54,
+        color: repositoriesModel.starred
+            ? Colors.orange
+            : Theme.of(context).dividerColor,
       ),
       leading: Icon(
         TravisLogos.source_repository,

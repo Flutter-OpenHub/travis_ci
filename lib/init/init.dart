@@ -4,7 +4,7 @@
  * Created by Amit Khairnar on 09/10/2020.
  */
 
-import 'package:travis_ci/store/token_store/token_store.dart';
+import '../store/token_store/token_store.dart';
 
 /// Base url for all the apis
 String baseUrl;

@@ -71,14 +71,16 @@ class _RestartCancelBuildButtonState extends State<RestartCancelBuildButton> {
             : ActionChip(
                 avatar: Icon(
                   widget.isRestart ? Icons.refresh : Icons.close,
-                  color: Colors.teal,
+                  color: Theme.of(context).iconTheme.color.withOpacity(0.6),
                 ),
                 label: Text(
                   '${widget.isRestart ? "Restart" : "Cancel"} build',
-                  style: TextStyle(color: Colors.teal),
+                  style: TextStyle(
+                      color:
+                          Theme.of(context).iconTheme.color.withOpacity(0.6)),
                 ),
-                backgroundColor: Colors.white30,
-                shape: StadiumBorder(side: BorderSide(color: Colors.grey[200])),
+                //backgroundColor: Colors.white30,
+                //shape: StadiumBorder(side: BorderSide(color: Colors.grey[200])),
                 onPressed: () {
                   _store.restartCancelBuild(
                       widget.buildId, widget.isRestart, CancelToken());

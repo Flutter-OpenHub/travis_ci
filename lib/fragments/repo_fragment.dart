@@ -24,7 +24,7 @@ class _RepoFragmentState extends State<RepoFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: PagewiseListView(
         itemBuilder: _builder,
         shrinkWrap: true,

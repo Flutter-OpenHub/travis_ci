@@ -25,12 +25,10 @@ class MyBuilds extends StatefulWidget {
 class _MyBuildsState extends State<MyBuilds> {
   PagewiseLoadController<BuildsModel> _pageWiseLoadController;
 
-  bool _restarted = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: _buildUI(),
     );
   }

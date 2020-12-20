@@ -8,10 +8,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
-import 'package:travis_ci/models/repo.dart';
 
 import '../../api/travis_ci_api.dart';
 import '../../models/build_model.dart';
+import '../../models/repo.dart';
 
 part 'builds_store.g.dart';
 

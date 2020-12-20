@@ -70,9 +70,9 @@ mixin _$RestartCancelBuildStore on _RestartCancelBuildStore, Store {
 
   @override
   Future<dynamic> restartCancelBuild(
-      String id, bool isActivate, CancelToken cancelToken) {
+      String id, bool isRestart, CancelToken cancelToken) {
     return _$restartCancelBuildAsyncAction
-        .run(() => super.restartCancelBuild(id, isActivate, cancelToken));
+        .run(() => super.restartCancelBuild(id, isRestart, cancelToken));
   }
 
   @override

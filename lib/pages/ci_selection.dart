@@ -15,7 +15,7 @@ class InitializationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Theme.of(context).cardColor,
       body: Container(
         width: double.maxFinite,
         child: Column(
@@ -31,7 +31,7 @@ class InitializationPage extends StatelessWidget {
             Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+                  side: BorderSide(color: Theme.of(context).splashColor),
                   borderRadius: BorderRadius.circular(8.0)),
               child: InkWell(
                 onTap: () {
@@ -67,7 +67,7 @@ class InitializationPage extends StatelessWidget {
             Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+                  side: BorderSide(color: Theme.of(context).splashColor),
                   borderRadius: BorderRadius.circular(8.0)),
               child: InkWell(
                 onTap: () {
@@ -103,13 +103,12 @@ class InitializationPage extends StatelessWidget {
             Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+                  side: BorderSide(color: Theme.of(context).splashColor),
                   borderRadius: BorderRadius.circular(8.0)),
               child: InkWell(
                 onTap: () {
                   TravisDialog.showWarning(
-                      context: context,
-                      text: "This option has been disabled");
+                      context: context, text: "This option has been disabled");
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

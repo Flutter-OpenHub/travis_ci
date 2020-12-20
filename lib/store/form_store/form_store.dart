@@ -47,7 +47,7 @@ abstract class _FormStore with Store {
     future.then((value) {
       userStore.user = value;
     }).catchError((error) {
-      errorMessage = error.toString();
+      errorMessage = error.message.toString();
     });
   }
 

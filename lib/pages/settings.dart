@@ -11,11 +11,15 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
 import '../init/init.dart';
+import '../main.dart';
 import '../store/settings_store/settings_store.dart';
 import '../utils/open_url.dart';
 import '../widgets/openhub_logo.dart';
 
 class SettingsPage extends StatefulWidget {
+  final bool showAppBar;
+
+  const SettingsPage({Key key, @required this.showAppBar}) : super(key: key);
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -32,22 +36,24 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'SourceSansPro'),
-        ),
-        textTheme: TextTheme(headline6: TextStyle(fontSize: 20.0)),
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        brightness: Brightness.light,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
+      //backgroundColor: Colors.white,
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: Text(
+                'Settings',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'SourceSansPro'),
+              ),
+              textTheme: TextTheme(headline6: TextStyle(fontSize: 20.0)),
+              centerTitle: false,
+              backgroundColor: Colors.white,
+              elevation: 0.0,
+              brightness: Brightness.light,
+              iconTheme: IconThemeData(color: Colors.black),
+            )
+          : null,
       body: _buildUI(),
     );
   }
@@ -140,6 +146,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               subtitle: Text(
                                   'The status of your builds straight to your inbox'),
                             )),
+                  SwitchListTile(
+                    secondary: Icon(Icons.color_lens),
+                    title: Text("Dark Theme"),
+                    onChanged: (value) => mainStore.toggleTheme(),
+                    value: mainStore.brightness == Brightness.dark,
+                  ),
                   if (!isOrg)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

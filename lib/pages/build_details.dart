@@ -92,7 +92,7 @@ class BuildDetails extends StatelessWidget {
                   children: [
                     Icon(
                       FeatherIcons.gitCommit,
-                      color: Colors.teal,
+                      color: Theme.of(context).iconTheme.color.withOpacity(0.6),
                       size: 16.0,
                     ),
                     SizedBox(
@@ -110,7 +110,7 @@ class BuildDetails extends StatelessWidget {
                   children: [
                     Icon(
                       FeatherIcons.clock,
-                      color: Colors.teal,
+                      color: Theme.of(context).iconTheme.color.withOpacity(0.6),
                       size: 16.0,
                     ),
                     SizedBox(
@@ -137,7 +137,7 @@ class BuildDetails extends StatelessWidget {
                 children: [
                   Icon(
                     FeatherIcons.gitPullRequest,
-                    color: Colors.teal,
+                    color: Theme.of(context).iconTheme.color.withOpacity(0.6),
                     size: 16.0,
                   ),
                   SizedBox(
@@ -180,7 +180,7 @@ class BuildDetails extends StatelessWidget {
                     buildData.tag != null
                         ? FeatherIcons.tag
                         : FeatherIcons.gitBranch,
-                    color: Colors.teal,
+                    color: Theme.of(context).iconTheme.color.withOpacity(0.6),
                     size: 16.0,
                   ),
                   SizedBox(
@@ -208,7 +208,7 @@ class BuildDetails extends StatelessWidget {
               children: [
                 Icon(
                   FeatherIcons.calendar,
-                  color: Colors.teal,
+                  color: Theme.of(context).iconTheme.color.withOpacity(0.6),
                   size: 16.0,
                 ),
                 SizedBox(
