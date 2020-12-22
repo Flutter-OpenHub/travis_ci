@@ -44,9 +44,10 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                   Expanded(
                       child: Text(_getUserStore.user.login,
                           style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.0,
-                              color: Colors.teal[600])))
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.0,
+                            color: Theme.of(context).textTheme.headline2.color,
+                          )))
                 ],
               )
             : _getUserStore.getUserFuture.status == FutureStatus.rejected

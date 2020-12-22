@@ -267,7 +267,10 @@ class BuildDetails extends StatelessWidget {
               ),
             ),
           ),
-          Divider(),
+          Divider(
+            indent: 16.0,
+            endIndent: 16.0,
+          ),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

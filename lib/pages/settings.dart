@@ -42,16 +42,10 @@ class _SettingsPageState extends State<SettingsPage> {
               title: Text(
                 'Settings',
                 style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'SourceSansPro'),
+                    fontWeight: FontWeight.w600, fontFamily: 'SourceSansPro'),
               ),
               textTheme: TextTheme(headline6: TextStyle(fontSize: 20.0)),
-              centerTitle: false,
-              backgroundColor: Colors.white,
               elevation: 0.0,
-              brightness: Brightness.light,
-              iconTheme: IconThemeData(color: Colors.black),
             )
           : null,
       body: _buildUI(),
@@ -102,6 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
         builder: (_) => _settingsStore.getPreferencesFuture.status ==
                 FutureStatus.fulfilled
             ? ListView(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 children: <Widget>[
                   Observer(
                       builder: (_) => _settingsStore.updateSettingsFuture ==
