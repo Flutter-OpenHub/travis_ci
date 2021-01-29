@@ -4,6 +4,7 @@
  * Created by Amit Khairnar on 09/10/2020.
  */
 
+import 'package:animations/animations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
@@ -59,25 +60,33 @@ class _RepoFragmentState extends State<RepoFragment> {
 
   Widget _builder(
       BuildContext context, RepositoriesModel repositoriesModel, int index) {
-    return ListTile(
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-      leading: Icon(
-        TravisLogos.source_repository,
-        color: Colors.grey,
-      ),
-      title: Text(repositoriesModel.name,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
-      subtitle: Text(repositoriesModel.owner,
-          style: TextStyle(color: Colors.blue, fontSize: 15.0)),
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return Details(
-            repositoriesModel: repositoriesModel,
-          );
-        }));
+    return OpenContainer(
+      closedColor: Theme.of(context).canvasColor,
+      openColor: Theme.of(context).canvasColor,
+      closedBuilder: (BuildContext _, VoidCallback openContainer) {
+        return ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+          leading: Icon(
+            TravisLogos.source_repository,
+            color: Colors.grey,
+          ),
+          title: Text(
+            repositoriesModel.name,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+          ),
+          subtitle: Text(
+            repositoriesModel.owner,
+            style: TextStyle(color: Colors.blue, fontSize: 15.0),
+          ),
+          onTap: openContainer,
+        );
       },
+      openBuilder: (BuildContext _, VoidCallback openContainer) {
+        return Details(repositoriesModel: repositoriesModel);
+      },
+      closedElevation: 0,
+      transitionDuration: Duration(milliseconds: 500),
     );
   }
 }

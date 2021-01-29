@@ -162,6 +162,21 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  // _showDialog() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (_) => AlertDialog(
+  //         contentPadding: const EdgeInsets.all(0),
+  //             content: SizedBox(
+  //               width: MediaQuery.of(context).size.width * 0.7,
+  //               height: MediaQuery.of(context).size.height * 0.7,
+  //               child: MyAccount(
+  //                 formStore: widget.store,
+  //               ),
+  //             ),
+  //           ));
+  // }
+
   _drawer(SizingInformation sizingInformation) {
     return Drawer(
       elevation: 0.0,
@@ -187,6 +202,7 @@ class HomePageState extends State<HomePage> {
                     trailing: Icon(Icons.keyboard_arrow_right),
                     contentPadding: const EdgeInsets.only(),
                     onTap: () {
+                      //_showDialog();
                       if (sizingInformation.deviceScreenType ==
                           DeviceScreenType.mobile) Navigator.of(context).pop();
                       Navigator.push(context,

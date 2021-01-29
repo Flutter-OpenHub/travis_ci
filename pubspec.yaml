@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  animations: ^1.1.2
   shared_preferences: ^0.5.12+4
   url_launcher: ^5.7.2
   feather_icons_flutter: ^4.7.4

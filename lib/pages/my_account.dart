@@ -6,6 +6,7 @@
 
 import 'dart:async';
 
+import 'package:animations/animations.dart';
 import 'package:dio/dio.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -173,19 +174,27 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   Widget _builder(BuildContext context, Organization organization, int index) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(organization.avatarUrl),
-        backgroundColor: Colors.transparent,
-      ),
-      title: Text(organization.name),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => ShowUserRepos(
-                  login: organization.login,
-                  title: organization.name,
-                )));
+    return OpenContainer(
+      closedColor: Theme.of(context).canvasColor,
+      openColor: Theme.of(context).canvasColor,
+      closedBuilder: (BuildContext _, VoidCallback openContainer) {
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(organization.avatarUrl),
+            backgroundColor: Colors.transparent,
+          ),
+          title: Text(organization.name),
+          onTap: openContainer,
+        );
       },
+      openBuilder: (BuildContext _, VoidCallback openContainer) {
+        return ShowUserRepos(
+          login: organization.login,
+          title: organization.name,
+        );
+      },
+      closedElevation: 0,
+      transitionDuration: Duration(milliseconds: 500),
     );
   }
 
