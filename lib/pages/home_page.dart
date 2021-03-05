@@ -19,7 +19,7 @@ import 'settings.dart';
 class HomePage extends StatefulWidget {
   final FormStore store;
 
-  const HomePage({Key key, this.store}) : super(key: key);
+  const HomePage({Key? key, required this.store}) : super(key: key);
   @override
   HomePageState createState() => HomePageState();
 }
@@ -29,7 +29,7 @@ class HomePageState extends State<HomePage> {
 
   String _title = "Active Repos";
 
-  Widget _selectedWidget;
+  late Widget _selectedWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +60,12 @@ class HomePageState extends State<HomePage> {
                             CircleAvatar(
                               radius: 28.0,
                               backgroundImage: NetworkImage(
-                                  widget.store.userStore.user.avatarUrl),
+                                  widget.store.userStore.user!.avatarUrl),
                             ),
                             ListTile(
-                              title: Text(widget.store.userStore.user.name),
-                              subtitle: Text(widget.store.userStore.user.login),
+                              title: Text(widget.store.userStore.user!.name),
+                              subtitle:
+                                  Text(widget.store.userStore.user!.login),
                               trailing: Icon(Icons.keyboard_arrow_right),
                               contentPadding: const EdgeInsets.only(),
                               onTap: () {
@@ -194,11 +195,11 @@ class HomePageState extends State<HomePage> {
                   CircleAvatar(
                     radius: 28.0,
                     backgroundImage:
-                        NetworkImage(widget.store.userStore.user.avatarUrl),
+                        NetworkImage(widget.store.userStore.user!.avatarUrl),
                   ),
                   ListTile(
-                    title: Text(widget.store.userStore.user.name),
-                    subtitle: Text(widget.store.userStore.user.login),
+                    title: Text(widget.store.userStore.user!.name),
+                    subtitle: Text(widget.store.userStore.user!.login),
                     trailing: Icon(Icons.keyboard_arrow_right),
                     contentPadding: const EdgeInsets.only(),
                     onTap: () {

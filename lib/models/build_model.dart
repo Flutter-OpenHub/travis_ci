@@ -12,36 +12,37 @@ import 'repository.dart';
 class BuildsModel {
   final int id;
   final String number;
-  final BuildState state;
-  final int duration;
+  final BuildState? state;
+  final int? duration;
   final String previousState;
   final String updatedAt;
-  final String createdAt;
+  final String? createdAt;
   final CreatedBy createdBy;
   final Commit commit;
-  final Repository repository;
-  final Branch branch;
-  final Tag tag;
-  final List<Job> jobs;
+  final Repository? repository;
+  final Branch? branch;
+  final Tag? tag;
+  final List<Job>? jobs;
 
   BuildsModel(
-      {this.id,this.number,
+      {required this.id,
+      required this.number,
       this.state,
       this.duration,
-      this.previousState,
-      this.createdBy,
-      this.updatedAt,
+      required this.previousState,
+      required this.createdBy,
+      required this.updatedAt,
       this.createdAt,
-      this.commit,
+      required this.commit,
       this.repository,
       this.branch,
       this.jobs,
       this.tag});
 
   factory BuildsModel.fromJson(Map<String, dynamic> parsedJson) {
-    List<dynamic> _jobs = parsedJson['jobs'];
+    List<dynamic>? _jobs = parsedJson['jobs'];
     return BuildsModel(
-      id: parsedJson['id'],
+        id: parsedJson['id'],
         state:
             enumFromString<BuildState>(BuildState.values, parsedJson['state']),
         number: parsedJson['number'],
@@ -72,12 +73,12 @@ class Commit {
   final String committedAt;
 
   Commit(
-      {this.id,
-      this.sha,
-      this.ref,
-      this.message,
-      this.committedAt,
-      this.compareUrl});
+      {required this.id,
+      required this.sha,
+      required this.ref,
+      required this.message,
+      required this.committedAt,
+      required this.compareUrl});
 
   factory Commit.fromJson(Map<String, dynamic> parsedJson) {
     return Commit(
@@ -96,7 +97,11 @@ class CreatedBy {
   final String type;
   final String href;
 
-  CreatedBy({this.id, this.login, this.type, this.href});
+  CreatedBy(
+      {required this.id,
+      required this.login,
+      required this.type,
+      required this.href});
 
   factory CreatedBy.fromJson(Map<String, dynamic> parsedJson) {
     return CreatedBy(
@@ -112,7 +117,7 @@ class Job {
   final String type;
   final String href;
 
-  Job({this.id, this.type, this.href});
+  Job({required this.id, required this.type, required this.href});
 
   factory Job.fromJson(Map<String, dynamic> parsedJson) {
     return Job(

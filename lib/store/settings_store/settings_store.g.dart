@@ -9,7 +9,7 @@ part of 'settings_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$SettingsStore on _SettingsStore, Store {
-  Computed<bool> _$hasErrorsComputed;
+  Computed<bool>? _$hasErrorsComputed;
 
   @override
   bool get hasErrors =>
@@ -53,13 +53,13 @@ mixin _$SettingsStore on _SettingsStore, Store {
       Atom(name: '_SettingsStore.buildEmailsResponse');
 
   @override
-  BuildEmailsResponse get buildEmailsResponse {
+  BuildEmailsResponse? get buildEmailsResponse {
     _$buildEmailsResponseAtom.reportRead();
     return super.buildEmailsResponse;
   }
 
   @override
-  set buildEmailsResponse(BuildEmailsResponse value) {
+  set buildEmailsResponse(BuildEmailsResponse? value) {
     _$buildEmailsResponseAtom.reportWrite(value, super.buildEmailsResponse, () {
       super.buildEmailsResponse = value;
     });
@@ -69,14 +69,14 @@ mixin _$SettingsStore on _SettingsStore, Store {
       Atom(name: '_SettingsStore.privateInsightsVisibilityResponse');
 
   @override
-  PrivateInsightsVisibilityResponse get privateInsightsVisibilityResponse {
+  PrivateInsightsVisibilityResponse? get privateInsightsVisibilityResponse {
     _$privateInsightsVisibilityResponseAtom.reportRead();
     return super.privateInsightsVisibilityResponse;
   }
 
   @override
   set privateInsightsVisibilityResponse(
-      PrivateInsightsVisibilityResponse value) {
+      PrivateInsightsVisibilityResponse? value) {
     _$privateInsightsVisibilityResponseAtom
         .reportWrite(value, super.privateInsightsVisibilityResponse, () {
       super.privateInsightsVisibilityResponse = value;
@@ -102,13 +102,13 @@ mixin _$SettingsStore on _SettingsStore, Store {
       Atom(name: '_SettingsStore.updateSettingsFuture');
 
   @override
-  ObservableFuture<BuildEmailsResponse> get updateSettingsFuture {
+  ObservableFuture<BuildEmailsResponse>? get updateSettingsFuture {
     _$updateSettingsFutureAtom.reportRead();
     return super.updateSettingsFuture;
   }
 
   @override
-  set updateSettingsFuture(ObservableFuture<BuildEmailsResponse> value) {
+  set updateSettingsFuture(ObservableFuture<BuildEmailsResponse>? value) {
     _$updateSettingsFutureAtom.reportWrite(value, super.updateSettingsFuture,
         () {
       super.updateSettingsFuture = value;
@@ -119,7 +119,7 @@ mixin _$SettingsStore on _SettingsStore, Store {
       Atom(name: '_SettingsStore.updatePrivateInsightsFuture');
 
   @override
-  ObservableFuture<PrivateInsightsVisibilityResponse>
+  ObservableFuture<PrivateInsightsVisibilityResponse>?
       get updatePrivateInsightsFuture {
     _$updatePrivateInsightsFutureAtom.reportRead();
     return super.updatePrivateInsightsFuture;
@@ -127,7 +127,7 @@ mixin _$SettingsStore on _SettingsStore, Store {
 
   @override
   set updatePrivateInsightsFuture(
-      ObservableFuture<PrivateInsightsVisibilityResponse> value) {
+      ObservableFuture<PrivateInsightsVisibilityResponse>? value) {
     _$updatePrivateInsightsFutureAtom
         .reportWrite(value, super.updatePrivateInsightsFuture, () {
       super.updatePrivateInsightsFuture = value;
@@ -138,13 +138,13 @@ mixin _$SettingsStore on _SettingsStore, Store {
       Atom(name: '_SettingsStore.getPreferencesFuture');
 
   @override
-  ObservableFuture<List<dynamic>> get getPreferencesFuture {
+  ObservableFuture<List<dynamic>>? get getPreferencesFuture {
     _$getPreferencesFutureAtom.reportRead();
     return super.getPreferencesFuture;
   }
 
   @override
-  set getPreferencesFuture(ObservableFuture<List<dynamic>> value) {
+  set getPreferencesFuture(ObservableFuture<List<dynamic>>? value) {
     _$getPreferencesFutureAtom.reportWrite(value, super.getPreferencesFuture,
         () {
       super.getPreferencesFuture = value;

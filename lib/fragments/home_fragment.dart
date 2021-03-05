@@ -22,7 +22,7 @@ class HomeFragment extends StatefulWidget {
 class _ActiveRepoState extends State<HomeFragment> {
   CancelToken cancelToken = CancelToken();
 
-  PagewiseLoadController<RepositoriesModel> _pageWiseLoadController;
+  late PagewiseLoadController<RepositoriesModel> _pageWiseLoadController;
 
   @override
   Widget build(BuildContext context) {

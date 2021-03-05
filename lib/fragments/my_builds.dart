@@ -23,7 +23,9 @@ class MyBuilds extends StatefulWidget {
 }
 
 class _MyBuildsState extends State<MyBuilds> {
-  PagewiseLoadController<BuildsModel> _pageWiseLoadController;
+  late PagewiseLoadController<BuildsModel> _pageWiseLoadController;
+
+  //bool _restarted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _MyBuildsState extends State<MyBuilds> {
       children: [
         ListTile(
           title: Text(
-            buildsModel.repository.slug,
+            buildsModel.repository!.slug,
             //maxLines: 1,
             //overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -72,7 +74,7 @@ class _MyBuildsState extends State<MyBuilds> {
                     width: 8.0,
                   ),
                   Text(
-                    buildsModel.branch.name,
+                    buildsModel.branch!.name,
                     style: TextStyle(fontWeight: FontWeight.w500),
                   )
                 ],
@@ -118,8 +120,8 @@ class _MyBuildsState extends State<MyBuilds> {
                         ),
                         Text(
                           buildsModel.createdAt != null
-                              ? timeago
-                                  .format(DateTime.parse(buildsModel.createdAt))
+                              ? timeago.format(
+                                  DateTime.parse(buildsModel.createdAt!))
                               : "-",
                           style: TextStyle(fontWeight: FontWeight.w500),
                         )
@@ -175,8 +177,8 @@ class _MyBuildsState extends State<MyBuilds> {
                       ),
                       Text(
                         buildsModel.duration != null
-                            ? "${buildsModel.duration ~/ 60} min "
-                                "${buildsModel.duration % 60} sec"
+                            ? "${buildsModel.duration! ~/ 60} min "
+                                "${buildsModel.duration! % 60} sec"
                             : '-',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       )

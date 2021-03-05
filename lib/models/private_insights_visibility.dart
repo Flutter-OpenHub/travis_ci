@@ -8,7 +8,7 @@ class PrivateInsightsVisibilityResponse {
   final String name;
   final String value;
 
-  PrivateInsightsVisibilityResponse({this.name, this.value});
+  PrivateInsightsVisibilityResponse({required this.name, required this.value});
 
   factory PrivateInsightsVisibilityResponse.fromJson(
           Map<String, dynamic> parsedJson) =>

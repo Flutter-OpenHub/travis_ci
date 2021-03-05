@@ -20,7 +20,7 @@ class RepoFragment extends StatefulWidget {
 }
 
 class _RepoFragmentState extends State<RepoFragment> {
-  PagewiseLoadController<RepositoriesModel> _pageWiseLoadController;
+  late PagewiseLoadController<RepositoriesModel> _pageWiseLoadController;
 
   @override
   Widget build(BuildContext context) {

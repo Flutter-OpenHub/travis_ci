@@ -20,13 +20,13 @@ abstract class _RestartCancelBuildStore with Store {
   final TravisCIApi _travisCIApi = TravisCIApi();
 
   @observable
-  Map data;
+  late Map data;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<Map> restartCancelBuildFuture;
+  ObservableFuture<Map>? restartCancelBuildFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;

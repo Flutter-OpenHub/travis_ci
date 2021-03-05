@@ -9,7 +9,7 @@ part of 'form_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$FormStore on _FormStore, Store {
-  Computed<bool> _$hasErrorComputed;
+  Computed<bool>? _$hasErrorComputed;
 
   @override
   bool get hasError => (_$hasErrorComputed ??=
@@ -49,13 +49,13 @@ mixin _$FormStore on _FormStore, Store {
   final _$authUserFutureAtom = Atom(name: '_FormStore.authUserFuture');
 
   @override
-  ObservableFuture<User> get authUserFuture {
+  ObservableFuture<User>? get authUserFuture {
     _$authUserFutureAtom.reportRead();
     return super.authUserFuture;
   }
 
   @override
-  set authUserFuture(ObservableFuture<User> value) {
+  set authUserFuture(ObservableFuture<User>? value) {
     _$authUserFutureAtom.reportWrite(value, super.authUserFuture, () {
       super.authUserFuture = value;
     });

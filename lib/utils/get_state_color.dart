@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:travis_ci/enum/build_status.dart';
 
 class GetStateColor {
-  static getStateColor(BuildState state) {
+  static getStateColor(BuildState? state) {
     switch (state) {
       case BuildState.started:
         return Colors.orange;

@@ -20,13 +20,13 @@ class GetUserStore = _GetUserStore with _$GetUserStore;
 abstract class _GetUserStore with Store {
   final TravisCIApi _userAccountApi = TravisCIApi();
   @observable
-  User user;
+  User? user;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<User> getUserFuture;
+  ObservableFuture<User>? getUserFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;

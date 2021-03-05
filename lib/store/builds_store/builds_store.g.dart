@@ -9,7 +9,7 @@ part of 'builds_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BuildsStore on _BuildsStore, Store {
-  Computed<bool> _$hasErrorsComputed;
+  Computed<bool>? _$hasErrorsComputed;
 
   @override
   bool get hasErrors => (_$hasErrorsComputed ??=
@@ -64,13 +64,13 @@ mixin _$BuildsStore on _BuildsStore, Store {
   final _$getBuildsFutureAtom = Atom(name: '_BuildsStore.getBuildsFuture');
 
   @override
-  ObservableFuture<List<BuildsModel>> get getBuildsFuture {
+  ObservableFuture<List<BuildsModel>>? get getBuildsFuture {
     _$getBuildsFutureAtom.reportRead();
     return super.getBuildsFuture;
   }
 
   @override
-  set getBuildsFuture(ObservableFuture<List<BuildsModel>> value) {
+  set getBuildsFuture(ObservableFuture<List<BuildsModel>>? value) {
     _$getBuildsFutureAtom.reportWrite(value, super.getBuildsFuture, () {
       super.getBuildsFuture = value;
     });
@@ -80,13 +80,13 @@ mixin _$BuildsStore on _BuildsStore, Store {
       Atom(name: '_BuildsStore.starUnStarRepoFuture');
 
   @override
-  ObservableFuture<RepositoriesModel> get starUnStarRepoFuture {
+  ObservableFuture<RepositoriesModel>? get starUnStarRepoFuture {
     _$starUnStarRepoFutureAtom.reportRead();
     return super.starUnStarRepoFuture;
   }
 
   @override
-  set starUnStarRepoFuture(ObservableFuture<RepositoriesModel> value) {
+  set starUnStarRepoFuture(ObservableFuture<RepositoriesModel>? value) {
     _$starUnStarRepoFutureAtom.reportWrite(value, super.starUnStarRepoFuture,
         () {
       super.starUnStarRepoFuture = value;

@@ -11,6 +11,8 @@ part 'token_store.g.dart';
 class TokenStore = _TokenStore with _$TokenStore;
 
 abstract class _TokenStore with Store {
+  _TokenStore(this.token);
+
   @observable
   String token;
 

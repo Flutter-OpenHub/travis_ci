@@ -12,7 +12,7 @@ class User {
   String avatarUrl;
   String lastSynced;
 
-  User(this.id, this.isSyncing, this.name, this.login, this.avatarUrl);
+  //User(this.id, this.isSyncing, this.name, this.login, this.avatarUrl);
 
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],

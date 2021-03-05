@@ -9,7 +9,7 @@ part of 'repo_listtile_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$RepoListTileStore on _RepoListTileStore, Store {
-  Computed<bool> _$hasErrorsComputed;
+  Computed<bool>? _$hasErrorsComputed;
 
   @override
   bool get hasErrors =>
@@ -21,13 +21,13 @@ mixin _$RepoListTileStore on _RepoListTileStore, Store {
       Atom(name: '_RepoListTileStore.repositoriesModel');
 
   @override
-  RepositoriesModel get repositoriesModel {
+  RepositoriesModel? get repositoriesModel {
     _$repositoriesModelAtom.reportRead();
     return super.repositoriesModel;
   }
 
   @override
-  set repositoriesModel(RepositoriesModel value) {
+  set repositoriesModel(RepositoriesModel? value) {
     _$repositoriesModelAtom.reportWrite(value, super.repositoriesModel, () {
       super.repositoriesModel = value;
     });
@@ -52,13 +52,13 @@ mixin _$RepoListTileStore on _RepoListTileStore, Store {
       Atom(name: '_RepoListTileStore.activateDeactivateRepoFuture');
 
   @override
-  ObservableFuture<RepositoriesModel> get activateDeactivateRepoFuture {
+  ObservableFuture<RepositoriesModel>? get activateDeactivateRepoFuture {
     _$activateDeactivateRepoFutureAtom.reportRead();
     return super.activateDeactivateRepoFuture;
   }
 
   @override
-  set activateDeactivateRepoFuture(ObservableFuture<RepositoriesModel> value) {
+  set activateDeactivateRepoFuture(ObservableFuture<RepositoriesModel>? value) {
     _$activateDeactivateRepoFutureAtom
         .reportWrite(value, super.activateDeactivateRepoFuture, () {
       super.activateDeactivateRepoFuture = value;

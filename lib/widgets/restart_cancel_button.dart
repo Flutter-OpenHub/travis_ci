@@ -15,10 +15,10 @@ import '../utils/dialog.dart';
 class RestartCancelBuildButton extends StatefulWidget {
   final String buildId;
   final bool isRestart;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
   const RestartCancelBuildButton(
-      {Key key, this.buildId, this.onChanged, this.isRestart = true})
+      {Key? key, required this.buildId, this.onChanged, this.isRestart = true})
       : super(key: key);
   @override
   _RestartCancelBuildButtonState createState() =>
@@ -28,7 +28,7 @@ class RestartCancelBuildButton extends StatefulWidget {
 class _RestartCancelBuildButtonState extends State<RestartCancelBuildButton> {
   final RestartCancelBuildStore _store = RestartCancelBuildStore();
 
-  ReactionDisposer _restartCancelBuildDisposer;
+  late ReactionDisposer _restartCancelBuildDisposer;
   @override
   void dispose() {
     _restartCancelBuildDisposer();
@@ -39,14 +39,16 @@ class _RestartCancelBuildButtonState extends State<RestartCancelBuildButton> {
   void initState() {
     super.initState();
     _restartCancelBuildDisposer = reaction(
-      (_) => _store.restartCancelBuildFuture.status,
-      (result) => _store.restartCancelBuildFuture.status ==
+      (_) => _store.restartCancelBuildFuture!.status,
+      (result) => _store.restartCancelBuildFuture!.status ==
                   FutureStatus.rejected &&
               _store.hasErrors
           ? _showError()
-          : _store.restartCancelBuildFuture.status == FutureStatus.fulfilled &&
+          : _store.restartCancelBuildFuture!.status == FutureStatus.fulfilled &&
                   !_store.hasErrors
-              ? _update()
+              ? widget.onChanged != null
+                  ? _update()
+                  : null
               : null,
     );
   }
@@ -57,27 +59,27 @@ class _RestartCancelBuildButtonState extends State<RestartCancelBuildButton> {
   }
 
   _update() {
-    widget.onChanged(true);
+    widget.onChanged!(true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Observer(
         builder: (_) => _store.restartCancelBuildFuture != null &&
-                _store.restartCancelBuildFuture.status == FutureStatus.pending
+                _store.restartCancelBuildFuture!.status == FutureStatus.pending
             ? CircularProgressIndicator(
                 strokeWidth: 1.5,
               )
             : ActionChip(
                 avatar: Icon(
                   widget.isRestart ? Icons.refresh : Icons.close,
-                  color: Theme.of(context).iconTheme.color.withOpacity(0.6),
+                  color: Theme.of(context).iconTheme.color!.withOpacity(0.6),
                 ),
                 label: Text(
                   '${widget.isRestart ? "Restart" : "Cancel"} build',
                   style: TextStyle(
                       color:
-                          Theme.of(context).iconTheme.color.withOpacity(0.6)),
+                          Theme.of(context).iconTheme.color!.withOpacity(0.6)),
                 ),
                 //backgroundColor: Colors.white30,
                 //shape: StadiumBorder(side: BorderSide(color: Colors.grey[200])),

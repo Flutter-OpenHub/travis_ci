@@ -19,19 +19,19 @@ abstract class _LogsStore with Store {
   final TravisCIApi _buildsApi = TravisCIApi();
 
   @observable
-  Map buildLog;
+  Map? buildLog;
 
   @observable
-  String buildLogTxt;
+  String? buildLogTxt;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<Map> getBuildLogFuture;
+  ObservableFuture<Map>? getBuildLogFuture;
 
   @observable
-  ObservableFuture<String> getBuildLogTxtFuture;
+  ObservableFuture<String>? getBuildLogTxtFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;
@@ -46,8 +46,8 @@ abstract class _LogsStore with Store {
       errorMessage = error.toString().contains('SocketException:')
           ? 'Connection to server failed! Please check your internet connection and try again.'
           : error.response != null
-          ? jsonDecode(error.response.data.toString())['error_message']
-          : error.message.toString();
+              ? jsonDecode(error.response.data.toString())['error_message']
+              : error.message.toString();
     });
   }
 
@@ -61,9 +61,8 @@ abstract class _LogsStore with Store {
       errorMessage = error.toString().contains('SocketException:')
           ? 'Connection to server failed! Please check your internet connection and try again.'
           : error.response != null
-          ? jsonDecode(error.response.data.toString())['error_message']
-          : error.message.toString();
+              ? jsonDecode(error.response.data.toString())['error_message']
+              : error.message.toString();
     });
   }
 }
-

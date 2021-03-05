@@ -19,7 +19,7 @@ import '../widgets/openhub_logo.dart';
 class SettingsPage extends StatefulWidget {
   final bool showAppBar;
 
-  const SettingsPage({Key key, @required this.showAppBar}) : super(key: key);
+  const SettingsPage({Key? key, required this.showAppBar}) : super(key: key);
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -29,8 +29,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ReactionDisposer _updateBuildEmailsDisposer;
-  ReactionDisposer _updatePrivateInsightsDisposer;
+  late ReactionDisposer _updateBuildEmailsDisposer;
+  late ReactionDisposer _updatePrivateInsightsDisposer;
 
   @override
   Widget build(BuildContext context) {
@@ -65,25 +65,25 @@ class _SettingsPageState extends State<SettingsPage> {
     _settingsStore.loadPrefs();
     _settingsStore.getPreferences(CancelToken());
     _updateBuildEmailsDisposer = reaction(
-      (_) => _settingsStore.updateSettingsFuture.status,
-      (result) =>
-          _settingsStore.updateSettingsFuture.status == FutureStatus.rejected &&
-                  _settingsStore.hasErrors
-              ? _showError()
-              : _settingsStore.updateSettingsFuture.status ==
-                          FutureStatus.fulfilled &&
-                      !_settingsStore.hasErrors
-                  ? _saveEmailPrefs()
-                  : null,
-    );
-
-    _updatePrivateInsightsDisposer = reaction(
-      (_) => _settingsStore.updatePrivateInsightsFuture.status,
-      (result) => _settingsStore.updatePrivateInsightsFuture.status ==
+      (_) => _settingsStore.updateSettingsFuture!.status,
+      (result) => _settingsStore.updateSettingsFuture!.status ==
                   FutureStatus.rejected &&
               _settingsStore.hasErrors
           ? _showError()
-          : _settingsStore.updatePrivateInsightsFuture.status ==
+          : _settingsStore.updateSettingsFuture!.status ==
+                      FutureStatus.fulfilled &&
+                  !_settingsStore.hasErrors
+              ? _saveEmailPrefs()
+              : null,
+    );
+
+    _updatePrivateInsightsDisposer = reaction(
+      (_) => _settingsStore.updatePrivateInsightsFuture!.status,
+      (result) => _settingsStore.updatePrivateInsightsFuture!.status ==
+                  FutureStatus.rejected &&
+              _settingsStore.hasErrors
+          ? _showError()
+          : _settingsStore.updatePrivateInsightsFuture!.status ==
                       FutureStatus.fulfilled &&
                   !_settingsStore.hasErrors
               ? _savePrivateInsightsPrefs()
@@ -93,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildUI() {
     return Observer(
-        builder: (_) => _settingsStore.getPreferencesFuture.status ==
+        builder: (_) => _settingsStore.getPreferencesFuture!.status ==
                 FutureStatus.fulfilled
             ? ListView(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -102,10 +102,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       builder: (_) => _settingsStore.updateSettingsFuture ==
                                   null ||
                               (_settingsStore.updateSettingsFuture != null &&
-                                  (_settingsStore.updateSettingsFuture.status ==
+                                  (_settingsStore
+                                              .updateSettingsFuture!.status ==
                                           FutureStatus.fulfilled ||
                                       _settingsStore
-                                              .updateSettingsFuture.status ==
+                                              .updateSettingsFuture!.status ==
                                           FutureStatus.rejected))
                           ? SwitchListTile(
                               value: _settingsStore.buildEmails,
@@ -167,24 +168,24 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              RadioListTile(
+                              RadioListTile<String>(
                                 value: "private",
                                 groupValue:
                                     _settingsStore.privateInsightsVisibility,
                                 onChanged: (value) => _settingsStore
-                                    .privateInsightsVisibility = value,
+                                    .privateInsightsVisibility = value!,
                                 title: Text(
                                   "Do not allow everyone to see insights from your private builds",
                                   style: TextStyle(
                                       color: Colors.blueGrey, fontSize: 14.0),
                                 ),
                               ),
-                              RadioListTile(
+                              RadioListTile<String>(
                                 value: "public",
                                 groupValue:
                                     _settingsStore.privateInsightsVisibility,
                                 onChanged: (value) => _settingsStore
-                                    .privateInsightsVisibility = value,
+                                    .privateInsightsVisibility = value!,
                                 title: Text(
                                   "Allow everyone to see insights from your private builds",
                                   style: TextStyle(
@@ -201,11 +202,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                                     .updatePrivateInsightsFuture !=
                                                 null &&
                                             (_settingsStore
-                                                        .updatePrivateInsightsFuture
+                                                        .updatePrivateInsightsFuture!
                                                         .status ==
                                                     FutureStatus.fulfilled ||
                                                 _settingsStore
-                                                        .updatePrivateInsightsFuture
+                                                        .updatePrivateInsightsFuture!
                                                         .status ==
                                                     FutureStatus.rejected))
                                     ? Material(
@@ -294,7 +295,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   )
                 ],
               )
-            : _settingsStore.getPreferencesFuture.status ==
+            : _settingsStore.getPreferencesFuture!.status ==
                     FutureStatus.rejected
                 ? Center(
                     child: Padding(
@@ -308,20 +309,20 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   _saveEmailPrefs() async {
-    _settingsStore.buildEmails = _settingsStore.buildEmailsResponse.value;
+    _settingsStore.buildEmails = _settingsStore.buildEmailsResponse!.value;
     _settingsStore.sharedPreferences
         .setBool("notification", _settingsStore.buildEmails);
   }
 
   _savePrivateInsightsPrefs() async {
     _settingsStore.privateInsightsVisibility =
-        _settingsStore.privateInsightsVisibilityResponse.value;
+        _settingsStore.privateInsightsVisibilityResponse!.value;
     _settingsStore.sharedPreferences.setString(
         "private_insights", _settingsStore.privateInsightsVisibility);
   }
 
   _showError() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(_settingsStore.errorMessage),
       behavior: SnackBarBehavior.floating,
     ));

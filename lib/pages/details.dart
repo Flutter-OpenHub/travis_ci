@@ -20,7 +20,7 @@ import '../utils/get_state_color.dart';
 class Details extends StatefulWidget {
   final RepositoriesModel repositoriesModel;
 
-  const Details({Key key, this.repositoriesModel}) : super(key: key);
+  const Details({Key? key, required this.repositoriesModel}) : super(key: key);
 
   @override
   _DetailsState createState() => _DetailsState();
@@ -29,9 +29,9 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   BuildsStore _buildsStore = BuildsStore();
 
-  TabController _tabController;
+  late TabController _tabController;
 
-  ReactionDisposer _starUnStarDisposer;
+  late ReactionDisposer _starUnStarDisposer;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         actions: <Widget>[
           Observer(
               builder: (_) => _buildsStore.starUnStarRepoFuture != null &&
-                      _buildsStore.starUnStarRepoFuture.status ==
+                      _buildsStore.starUnStarRepoFuture!.status ==
                           FutureStatus.pending
                   ? Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -98,19 +98,19 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         ]),
       ),
       body: Observer(
-          builder: (_) =>
-              _buildsStore.getBuildsFuture.status == FutureStatus.fulfilled
-                  ? TabBarView(controller: _tabController, children: [
-                      _current(),
-                      _history(),
-                    ])
-                  : _buildsStore.getBuildsFuture.status == FutureStatus.rejected
-                      ? Center(
-                          child: Text(_buildsStore.errorMessage),
-                        )
-                      : Center(
-                          child: CircularProgressIndicator(),
-                        )),
+          builder: (_) => _buildsStore.getBuildsFuture!.status ==
+                  FutureStatus.fulfilled
+              ? TabBarView(controller: _tabController, children: [
+                  _current(),
+                  _history(),
+                ])
+              : _buildsStore.getBuildsFuture!.status == FutureStatus.rejected
+                  ? Center(
+                      child: Text(_buildsStore.errorMessage),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    )),
     );
   }
 
@@ -122,22 +122,22 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+    _buildsStore.getBuilds(
+        widget.repositoriesModel.id.toString(), CancelToken());
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _starUnStarDisposer = reaction(
-      (_) => _buildsStore.starUnStarRepoFuture.status,
+      (_) => _buildsStore.starUnStarRepoFuture!.status,
       (result) =>
-          _buildsStore.starUnStarRepoFuture.status == FutureStatus.rejected &&
+          _buildsStore.starUnStarRepoFuture!.status == FutureStatus.rejected &&
                   _buildsStore.hasErrors
               ? _showError()
-              : _buildsStore.starUnStarRepoFuture.status ==
+              : _buildsStore.starUnStarRepoFuture!.status ==
                           FutureStatus.fulfilled &&
                       !_buildsStore.hasErrors
                   ? _navigate(true)
                   : null,
     );
-    _buildsStore.getBuilds(
-        widget.repositoriesModel.id.toString(), CancelToken());
   }
 
   Widget _current() {
@@ -231,8 +231,8 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                               ),
                               Text(
                                 _buildsStore.builds[index].duration != null
-                                    ? "${_buildsStore.builds[index].duration ~/ 60} min "
-                                        "${_buildsStore.builds[index].duration % 60} sec"
+                                    ? "${_buildsStore.builds[index].duration! ~/ 60} min "
+                                        "${_buildsStore.builds[index].duration! % 60} sec"
                                     : "-",
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               )

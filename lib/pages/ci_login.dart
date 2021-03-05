@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ReactionDisposer _disposer;
+  late ReactionDisposer _disposer;
 
   @override
   Widget build(BuildContext context) {
@@ -67,14 +67,14 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     store.setupValidations();
     _disposer = reaction(
-      (_) => store.authUserFuture.status,
-      (result) =>
-          store.authUserFuture.status == FutureStatus.rejected && store.hasError
-              ? _showError()
-              : store.authUserFuture.status == FutureStatus.fulfilled &&
-                      !store.hasError
-                  ? _navigate()
-                  : null,
+      (_) => store.authUserFuture!.status,
+      (result) => store.authUserFuture!.status == FutureStatus.rejected &&
+              store.hasError
+          ? _showError()
+          : store.authUserFuture!.status == FutureStatus.fulfilled &&
+                  !store.hasError
+              ? _navigate()
+              : null,
     );
   }
 
@@ -122,8 +122,8 @@ class _LoginPageState extends State<LoginPage> {
                             onSubmitted: (value) {
                               store.validateAll();
                               if (!store.errorState.hasErrors) {
-                                kTokenStore = TokenStore();
-                                kTokenStore.token = store.token;
+                                kTokenStore = TokenStore(store.token);
+                                //kTokenStore.token = store.token;
                                 store.authUser();
                               }
                             },
@@ -146,15 +146,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Observer(
                       builder: (_) => store.authUserFuture != null &&
-                              store.authUserFuture.status ==
+                              store.authUserFuture!.status ==
                                   FutureStatus.pending
                           ? CircularProgressIndicator()
                           : FloatingActionButton(
                               onPressed: () {
                                 store.validateAll();
                                 if (!store.errorState.hasErrors) {
-                                  kTokenStore = TokenStore();
-                                  kTokenStore.token = store.token;
+                                  kTokenStore = TokenStore(store.token);
+                                  //kTokenStore.token = store.token;
                                   store.authUser();
                                 }
                               },
@@ -272,15 +272,15 @@ class _LoginPageState extends State<LoginPage> {
 
   _navigate() {
     // Init TokenStore
-    kTokenStore = TokenStore();
-    kTokenStore.token = store.token;
+    kTokenStore = TokenStore(store.token);
+    //kTokenStore.token = store.token;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => HomePage(store: store)));
   }
 
   _showError() {
     //TODO Snackbar is not visible if bottomsheet is active
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(store.errorMessage),
       behavior: SnackBarBehavior.floating,
     ));
@@ -309,7 +309,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               content: _buildInstructionsUI(),
               actions: [
-                FlatButton(
+                TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

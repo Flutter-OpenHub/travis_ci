@@ -12,9 +12,8 @@ import 'package:travis_ci/store/get_user_store/get_user_store.dart';
 
 class UserDataWidget extends StatefulWidget {
   final String id;
-  final String token;
 
-  const UserDataWidget({Key key, this.id, this.token}) : super(key: key);
+  const UserDataWidget({Key? key, required this.id}) : super(key: key);
   @override
   _UserDataWidgetState createState() => _UserDataWidgetState();
 }
@@ -30,27 +29,28 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   @override
   Widget build(BuildContext context) {
     return Observer(
-        builder: (_) => _getUserStore.getUserFuture.status ==
+        builder: (_) => _getUserStore.getUserFuture!.status ==
                 FutureStatus.fulfilled
             ? Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(_getUserStore.user.avatarUrl),
+                    backgroundImage:
+                        NetworkImage(_getUserStore.user!.avatarUrl),
                     radius: 12.0,
                   ),
                   SizedBox(
                     width: 8.0,
                   ),
                   Expanded(
-                      child: Text(_getUserStore.user.login,
+                      child: Text(_getUserStore.user!.login,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 16.0,
-                            color: Theme.of(context).textTheme.headline2.color,
+                            color: Theme.of(context).textTheme.headline2!.color,
                           )))
                 ],
               )
-            : _getUserStore.getUserFuture.status == FutureStatus.rejected
+            : _getUserStore.getUserFuture!.status == FutureStatus.rejected
                 ? Text(_getUserStore.errorMessage)
                 : Padding(
                     padding: const EdgeInsets.all(6.0),

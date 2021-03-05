@@ -16,13 +16,13 @@ void main() async {
   mainStore = MainStore();
   WidgetsFlutterBinding.ensureInitialized();
   mainStore.prefs = await SharedPreferences.getInstance();
-  mainStore.brightness = (mainStore.prefs.getBool("isDark") ?? false)
+  mainStore.brightness = (mainStore.prefs!.getBool("isDark") ?? false)
       ? Brightness.dark
       : Brightness.light;
   runApp(TravisCI());
 }
 
-MainStore mainStore;
+late MainStore mainStore;
 
 class TravisCI extends StatefulWidget {
   @override

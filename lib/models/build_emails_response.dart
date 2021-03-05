@@ -8,7 +8,7 @@ class BuildEmailsResponse {
   final String name;
   final bool value;
 
-  BuildEmailsResponse({this.name, this.value});
+  BuildEmailsResponse({required this.name, required this.value});
 
   factory BuildEmailsResponse.fromJson(Map<String, dynamic> parsedJson) =>
       BuildEmailsResponse(name: parsedJson['name'], value: parsedJson['value']);

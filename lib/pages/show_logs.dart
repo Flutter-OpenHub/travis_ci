@@ -14,7 +14,7 @@ import '../store/logs_store/logs_store.dart';
 class ShowLogs extends StatefulWidget {
   final int jobId;
 
-  const ShowLogs({Key key, this.jobId}) : super(key: key);
+  const ShowLogs({Key? key, required this.jobId}) : super(key: key);
   @override
   _ShowLogsState createState() => _ShowLogsState();
 }
@@ -30,12 +30,13 @@ class _ShowLogsState extends State<ShowLogs> {
       ),
       body: Observer(
         builder: (_) => _logsStore.getBuildLogFuture != null
-            ? _logsStore.getBuildLogFuture.status == FutureStatus.fulfilled
+            ? _logsStore.getBuildLogFuture!.status == FutureStatus.fulfilled
                 ? Container(
                     color: Colors.black,
-                    child: _buildLog(_logsStore.buildLog['content'].toString()),
+                    child:
+                        _buildLog(_logsStore.buildLog!['content'].toString()),
                   )
-                : _logsStore.getBuildLogFuture.status == FutureStatus.rejected
+                : _logsStore.getBuildLogFuture!.status == FutureStatus.rejected
                     ? Text(_logsStore.errorMessage)
                     : Center(
                         child: CircularProgressIndicator(),

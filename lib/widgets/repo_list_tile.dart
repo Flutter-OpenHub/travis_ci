@@ -18,7 +18,8 @@ import '../utils/icon_fonts.dart';
 class RepoListTile extends StatefulWidget {
   final RepositoriesModel repositoriesModel;
 
-  const RepoListTile({Key key, this.repositoriesModel}) : super(key: key);
+  const RepoListTile({Key? key, required this.repositoriesModel})
+      : super(key: key);
   @override
   _RepoListTileState createState() => _RepoListTileState();
 }
@@ -27,7 +28,7 @@ class _RepoListTileState extends State<RepoListTile> {
   final RepoListTileStore _repoListTileStore = RepoListTileStore();
   final CancelToken _cancelToken = CancelToken();
 
-  ReactionDisposer _activateDeactivateDisposer;
+  late ReactionDisposer _activateDeactivateDisposer;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class _RepoListTileState extends State<RepoListTile> {
       trailing: Observer(
           builder: (_) => _repoListTileStore.activateDeactivateRepoFuture !=
                       null &&
-                  _repoListTileStore.activateDeactivateRepoFuture.status ==
+                  _repoListTileStore.activateDeactivateRepoFuture!.status ==
                       FutureStatus.pending
               ? CircularProgressIndicator(
                   strokeWidth: 1.5,
@@ -83,12 +84,12 @@ class _RepoListTileState extends State<RepoListTile> {
   void initState() {
     super.initState();
     _activateDeactivateDisposer = reaction(
-      (_) => _repoListTileStore.activateDeactivateRepoFuture.status,
-      (result) => _repoListTileStore.activateDeactivateRepoFuture.status ==
+      (_) => _repoListTileStore.activateDeactivateRepoFuture!.status,
+      (result) => _repoListTileStore.activateDeactivateRepoFuture!.status ==
                   FutureStatus.rejected &&
               _repoListTileStore.hasErrors
           ? _showError()
-          : _repoListTileStore.activateDeactivateRepoFuture.status ==
+          : _repoListTileStore.activateDeactivateRepoFuture!.status ==
                       FutureStatus.fulfilled &&
                   !_repoListTileStore.hasErrors
               ? _update()
@@ -104,6 +105,6 @@ class _RepoListTileState extends State<RepoListTile> {
 
   _update() {
     widget.repositoriesModel.active =
-        _repoListTileStore.repositoriesModel.active;
+        _repoListTileStore.repositoriesModel!.active;
   }
 }

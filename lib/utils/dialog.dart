@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 class TravisDialog {
   TravisDialog._();
 
-  static showLoading(
-      {@required String message, @required BuildContext context}) {
+  static showLoading({required String message, required BuildContext context}) {
     return showDialog<Null>(
         context: context,
         barrierDismissible: false,
@@ -36,9 +35,9 @@ class TravisDialog {
   }
 
   static showWarningWithTitle(
-      {@required String title,
-      @required String message,
-      @required BuildContext context}) {
+      {required String title,
+      required String message,
+      required BuildContext context}) {
     return showDialog<Null>(
         context: context,
         barrierDismissible: false,
@@ -65,7 +64,7 @@ class TravisDialog {
         });
   }
 
-  static showWarning({@required String text, @required BuildContext context}) {
+  static showWarning({required String text, required BuildContext context}) {
     return showDialog<Null>(
         context: context,
         barrierDismissible: false,

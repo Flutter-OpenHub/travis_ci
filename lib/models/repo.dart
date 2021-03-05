@@ -103,18 +103,18 @@ class RepoPermissions {
   bool createEnvVar;
 
   RepoPermissions(
-      {this.read,
-      this.deleteKeyPair,
-      this.createRequest,
-      this.admin,
-      this.activate,
-      this.deactivate,
-      this.migrate,
-      this.star,
-      this.createCron,
-      this.unStar,
-      this.createKeyPair,
-      this.createEnvVar});
+      {required this.read,
+      required this.deleteKeyPair,
+      required this.createRequest,
+      required this.admin,
+      required this.activate,
+      required this.deactivate,
+      required this.migrate,
+      required this.star,
+      required this.createCron,
+      required this.unStar,
+      required this.createKeyPair,
+      required this.createEnvVar});
 
   factory RepoPermissions.fromJson(Map<String, dynamic> parsedJson) {
     return RepoPermissions(

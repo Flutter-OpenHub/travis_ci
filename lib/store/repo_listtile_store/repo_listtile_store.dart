@@ -20,13 +20,13 @@ abstract class _RepoListTileStore with Store {
   final TravisCIApi _buildsApi = TravisCIApi();
 
   @observable
-  RepositoriesModel repositoriesModel;
+  RepositoriesModel? repositoriesModel;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<RepositoriesModel> activateDeactivateRepoFuture;
+  ObservableFuture<RepositoriesModel>? activateDeactivateRepoFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;

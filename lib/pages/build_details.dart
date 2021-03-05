@@ -20,9 +20,13 @@ import 'user_data_widget.dart';
 class BuildDetails extends StatelessWidget {
   final BuildsModel buildData;
   final bool showAppbar;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
-  const BuildDetails({Key key, this.buildData, this.showAppbar, this.onChanged})
+  const BuildDetails(
+      {Key? key,
+      required this.buildData,
+      required this.showAppbar,
+      this.onChanged})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -92,7 +96,8 @@ class BuildDetails extends StatelessWidget {
                   children: [
                     Icon(
                       FeatherIcons.gitCommit,
-                      color: Theme.of(context).iconTheme.color.withOpacity(0.6),
+                      color:
+                          Theme.of(context).iconTheme.color!.withOpacity(0.6),
                       size: 16.0,
                     ),
                     SizedBox(
@@ -110,7 +115,8 @@ class BuildDetails extends StatelessWidget {
                   children: [
                     Icon(
                       FeatherIcons.clock,
-                      color: Theme.of(context).iconTheme.color.withOpacity(0.6),
+                      color:
+                          Theme.of(context).iconTheme.color!.withOpacity(0.6),
                       size: 16.0,
                     ),
                     SizedBox(
@@ -118,8 +124,8 @@ class BuildDetails extends StatelessWidget {
                     ),
                     Text(
                       buildData.duration != null
-                          ? "Ran for ${buildData.duration ~/ 60} min "
-                              "${buildData.duration % 60} sec"
+                          ? "Ran for ${buildData.duration! ~/ 60} min "
+                              "${buildData.duration! % 60} sec"
                           : '-',
                       style: TextStyle(fontWeight: FontWeight.w500),
                     )
@@ -137,7 +143,7 @@ class BuildDetails extends StatelessWidget {
                 children: [
                   Icon(
                     FeatherIcons.gitPullRequest,
-                    color: Theme.of(context).iconTheme.color.withOpacity(0.6),
+                    color: Theme.of(context).iconTheme.color!.withOpacity(0.6),
                     size: 16.0,
                   ),
                   SizedBox(
@@ -180,7 +186,7 @@ class BuildDetails extends StatelessWidget {
                     buildData.tag != null
                         ? FeatherIcons.tag
                         : FeatherIcons.gitBranch,
-                    color: Theme.of(context).iconTheme.color.withOpacity(0.6),
+                    color: Theme.of(context).iconTheme.color!.withOpacity(0.6),
                     size: 16.0,
                   ),
                   SizedBox(
@@ -189,7 +195,7 @@ class BuildDetails extends StatelessWidget {
                   Text(
                     [
                       buildData.tag != null ? "Tag" : "Branch",
-                      buildData.branch.name
+                      buildData.branch!.name
                     ].join(" "),
                     style: TextStyle(fontWeight: FontWeight.w500),
                   )
@@ -208,7 +214,7 @@ class BuildDetails extends StatelessWidget {
               children: [
                 Icon(
                   FeatherIcons.calendar,
-                  color: Theme.of(context).iconTheme.color.withOpacity(0.6),
+                  color: Theme.of(context).iconTheme.color!.withOpacity(0.6),
                   size: 16.0,
                 ),
                 SizedBox(
@@ -216,7 +222,7 @@ class BuildDetails extends StatelessWidget {
                 ),
                 Text(
                   buildData.createdAt != null
-                      ? timeago.format(DateTime.parse(buildData.createdAt))
+                      ? timeago.format(DateTime.parse(buildData.createdAt!))
                       : "-",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 )
@@ -282,17 +288,17 @@ class BuildDetails extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: buildData.jobs.length,
+            itemCount: buildData.jobs!.length,
             itemBuilder: (_, index) => ListTile(
-              title: Text(buildData.jobs.length == 1
+              title: Text(buildData.jobs!.length == 1
                   ? 'View build log'
-                  : "#${buildData.jobs[index].id} log"),
+                  : "#${buildData.jobs![index].id} log"),
               leading: Icon(FeatherIcons.fileText),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => ShowLogs(
-                          jobId: buildData.jobs[index].id,
+                          jobId: buildData.jobs![index].id,
                         )));
               },
             ),

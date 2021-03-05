@@ -23,7 +23,7 @@ abstract class _SettingsStore with Store {
   static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final TravisCIApi _travisCIApi = TravisCIApi();
 
-  SharedPreferences sharedPreferences;
+  late SharedPreferences sharedPreferences;
 
   @observable
   bool buildEmails = false;
@@ -32,23 +32,23 @@ abstract class _SettingsStore with Store {
   String privateInsightsVisibility = "private";
 
   @observable
-  BuildEmailsResponse buildEmailsResponse;
+  BuildEmailsResponse? buildEmailsResponse;
 
   @observable
-  PrivateInsightsVisibilityResponse privateInsightsVisibilityResponse;
+  PrivateInsightsVisibilityResponse? privateInsightsVisibilityResponse;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<BuildEmailsResponse> updateSettingsFuture;
+  ObservableFuture<BuildEmailsResponse>? updateSettingsFuture;
 
   @observable
-  ObservableFuture<PrivateInsightsVisibilityResponse>
+  ObservableFuture<PrivateInsightsVisibilityResponse>?
       updatePrivateInsightsFuture;
 
   @observable
-  ObservableFuture<List<dynamic>> getPreferencesFuture;
+  ObservableFuture<List<dynamic>>? getPreferencesFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;

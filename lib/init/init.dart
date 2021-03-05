@@ -7,10 +7,10 @@
 import '../store/token_store/token_store.dart';
 
 /// Base url for all the apis
-String baseUrl;
+late String baseUrl;
 
 /// Boolean to check if selected CI server is org or not
-bool isOrg;
+late bool isOrg;
 
 /// Stores token
-TokenStore kTokenStore;
+late TokenStore kTokenStore;

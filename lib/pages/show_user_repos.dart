@@ -16,13 +16,14 @@ class ShowUserRepos extends StatefulWidget {
   final String login;
   final String title;
 
-  const ShowUserRepos({Key key, this.login, this.title}) : super(key: key);
+  const ShowUserRepos({Key? key, required this.login, required this.title})
+      : super(key: key);
   @override
   _ShowUserReposState createState() => _ShowUserReposState();
 }
 
 class _ShowUserReposState extends State<ShowUserRepos> {
-  PagewiseLoadController<RepositoriesModel> _pageWiseLoadController;
+  late PagewiseLoadController<RepositoriesModel> _pageWiseLoadController;
 
   @override
   Widget build(BuildContext context) {

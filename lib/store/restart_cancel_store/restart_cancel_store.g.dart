@@ -9,7 +9,7 @@ part of 'restart_cancel_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$RestartCancelBuildStore on _RestartCancelBuildStore, Store {
-  Computed<bool> _$hasErrorsComputed;
+  Computed<bool>? _$hasErrorsComputed;
 
   @override
   bool get hasErrors =>
@@ -52,13 +52,13 @@ mixin _$RestartCancelBuildStore on _RestartCancelBuildStore, Store {
       Atom(name: '_RestartCancelBuildStore.restartCancelBuildFuture');
 
   @override
-  ObservableFuture<Map<dynamic, dynamic>> get restartCancelBuildFuture {
+  ObservableFuture<Map<dynamic, dynamic>>? get restartCancelBuildFuture {
     _$restartCancelBuildFutureAtom.reportRead();
     return super.restartCancelBuildFuture;
   }
 
   @override
-  set restartCancelBuildFuture(ObservableFuture<Map<dynamic, dynamic>> value) {
+  set restartCancelBuildFuture(ObservableFuture<Map<dynamic, dynamic>>? value) {
     _$restartCancelBuildFutureAtom
         .reportWrite(value, super.restartCancelBuildFuture, () {
       super.restartCancelBuildFuture = value;

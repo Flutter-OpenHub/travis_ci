@@ -20,16 +20,16 @@ class UserStore = _UserStore with _$UserStore;
 abstract class _UserStore with Store {
   final TravisCIApi _userAccountApi = TravisCIApi();
   @observable
-  User user;
+  User? user;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<User> syncAccountFuture;
+  ObservableFuture<User>? syncAccountFuture;
 
   @observable
-  ObservableFuture<User> getUserFuture;
+  ObservableFuture<User>? getUserFuture;
 
   @computed
   bool get hasApiError => errorMessage.isNotEmpty;
@@ -55,7 +55,7 @@ abstract class _UserStore with Store {
   @action
   Future syncAccount(CancelToken cancelToken) async {
     final future =
-        _userAccountApi.syncAccount(user.id.toString(), cancelToken);
+        _userAccountApi.syncAccount(user!.id.toString(), cancelToken);
     syncAccountFuture = ObservableFuture(future);
     future.then((value) {
       user = value;

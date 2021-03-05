@@ -19,9 +19,9 @@ import 'api_urls.dart';
 class TravisCIApi {
   /// Headers required in each api call
   static Map<String, String> get headers => {
-    "Travis-API-Version": "3",
-    "Authorization": kTokenStore.authorizationToken
-  };
+        "Travis-API-Version": "3",
+        "Authorization": kTokenStore.authorizationToken
+      };
 
   NetworkUtil _netUtil = NetworkUtil();
 
@@ -48,7 +48,7 @@ class TravisCIApi {
       String id, CancelToken cancelToken) async {
     var res = await _netUtil.get(ApiUrls.repoUrl + id + '/builds', cancelToken,
         headers: headers);
-    List<dynamic> _builds = res['builds'];
+    List<dynamic>? _builds = res['builds'];
     return _builds != null
         ? _builds.map((e) => BuildsModel.fromJson(e)).toList()
         : [];
@@ -61,7 +61,7 @@ class TravisCIApi {
   }
 
   /// Gets the data of the User
-  Future<User> getUser(CancelToken cancelToken, {String id}) async {
+  Future<User> getUser(CancelToken cancelToken, {String? id}) async {
     var res = await _netUtil.get(
         ApiUrls.userUrl + (id != null ? '/$id' : ''), cancelToken,
         headers: headers);
@@ -142,12 +142,12 @@ class TravisCIApi {
       int offset, int limit, CancelToken cancelToken) async {
     return NetworkUtil()
         .get(
-        ApiUrls.myBuildsUrl +
-            '?limit=$limit&offset=$offset&sort_by=created_at:desc',
-        cancelToken,
-        headers: headers)
+            ApiUrls.myBuildsUrl +
+                '?limit=$limit&offset=$offset&sort_by=created_at:desc',
+            cancelToken,
+            headers: headers)
         .then((dynamic res) {
-      List<dynamic> _builds = res['builds'];
+      List<dynamic>? _builds = res['builds'];
       return _builds != null
           ? _builds.map((e) => BuildsModel.fromJson(e)).toList()
           : [];
@@ -159,8 +159,8 @@ class TravisCIApi {
       int offset, int limit, CancelToken cancelToken) async {
     return NetworkUtil()
         .get(ApiUrls.organizationsUrl + '?limit=$limit&offset=$offset',
-        cancelToken,
-        headers: headers)
+            cancelToken,
+            headers: headers)
         .then((dynamic res) {
       return Organizations.getListFromJson(res['organizations']);
     });
@@ -171,11 +171,11 @@ class TravisCIApi {
       String orgLogin, int offset, int limit, CancelToken cancelToken) async {
     return NetworkUtil()
         .get(
-        "/owner/$orgLogin" +
-            ApiUrls.reposUrl +
-            '?limit=$limit&offset=$offset',
-        cancelToken,
-        headers: headers)
+            "/owner/$orgLogin" +
+                ApiUrls.reposUrl +
+                '?limit=$limit&offset=$offset',
+            cancelToken,
+            headers: headers)
         .then((dynamic res) {
       return Repositories.getListFromJson(res['repositories']);
     });
@@ -187,10 +187,10 @@ class TravisCIApi {
       {bool isActive = false}) async {
     return NetworkUtil()
         .get(
-        ApiUrls.reposUrl +
-            '?limit=$limit${isActive ? '&repository.active=true' : ''}&offset=$offset&sort_by=default_branch.last_build:desc',
-        cancelToken,
-        headers: headers)
+            ApiUrls.reposUrl +
+                '?limit=$limit${isActive ? '&repository.active=true' : ''}&offset=$offset&sort_by=default_branch.last_build:desc',
+            cancelToken,
+            headers: headers)
         .then((dynamic res) {
       return Repositories.getListFromJson(res['repositories']);
     });

@@ -12,13 +12,13 @@ mixin _$MainStore on _MainStore, Store {
   final _$brightnessAtom = Atom(name: '_MainStore.brightness');
 
   @override
-  Brightness get brightness {
+  Brightness? get brightness {
     _$brightnessAtom.reportRead();
     return super.brightness;
   }
 
   @override
-  set brightness(Brightness value) {
+  set brightness(Brightness? value) {
     _$brightnessAtom.reportWrite(value, super.brightness, () {
       super.brightness = value;
     });
@@ -27,13 +27,13 @@ mixin _$MainStore on _MainStore, Store {
   final _$prefsAtom = Atom(name: '_MainStore.prefs');
 
   @override
-  SharedPreferences get prefs {
+  SharedPreferences? get prefs {
     _$prefsAtom.reportRead();
     return super.prefs;
   }
 
   @override
-  set prefs(SharedPreferences value) {
+  set prefs(SharedPreferences? value) {
     _$prefsAtom.reportWrite(value, super.prefs, () {
       super.prefs = value;
     });

@@ -9,10 +9,10 @@ class MainStore = _MainStore with _$MainStore;
 
 abstract class _MainStore with Store {
   @observable
-  Brightness brightness;
+  Brightness? brightness;
 
   @observable
-  SharedPreferences prefs;
+  SharedPreferences? prefs;
 
   Future toggleTheme() async {
     brightness =
@@ -21,7 +21,7 @@ abstract class _MainStore with Store {
   }
 
   Future _updatePreferences() async {
-    await prefs.setBool("isDark", brightness == Brightness.dark);
+    await prefs!.setBool("isDark", brightness == Brightness.dark);
     //print(prefs.getBool("isDark"));
   }
 }

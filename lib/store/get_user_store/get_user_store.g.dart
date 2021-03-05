@@ -9,7 +9,7 @@ part of 'get_user_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$GetUserStore on _GetUserStore, Store {
-  Computed<bool> _$hasErrorsComputed;
+  Computed<bool>? _$hasErrorsComputed;
 
   @override
   bool get hasErrors =>
@@ -20,13 +20,13 @@ mixin _$GetUserStore on _GetUserStore, Store {
   final _$userAtom = Atom(name: '_GetUserStore.user');
 
   @override
-  User get user {
+  User? get user {
     _$userAtom.reportRead();
     return super.user;
   }
 
   @override
-  set user(User value) {
+  set user(User? value) {
     _$userAtom.reportWrite(value, super.user, () {
       super.user = value;
     });
@@ -50,13 +50,13 @@ mixin _$GetUserStore on _GetUserStore, Store {
   final _$getUserFutureAtom = Atom(name: '_GetUserStore.getUserFuture');
 
   @override
-  ObservableFuture<User> get getUserFuture {
+  ObservableFuture<User>? get getUserFuture {
     _$getUserFutureAtom.reportRead();
     return super.getUserFuture;
   }
 
   @override
-  set getUserFuture(ObservableFuture<User> value) {
+  set getUserFuture(ObservableFuture<User>? value) {
     _$getUserFutureAtom.reportWrite(value, super.getUserFuture, () {
       super.getUserFuture = value;
     });

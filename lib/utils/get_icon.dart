@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:travis_ci/enum/build_status.dart';
 
 class GetIcon {
-  static getIcon(BuildState state, {double size}) {
+  static getIcon(BuildState? state, {double? size}) {
     switch (state) {
       case BuildState.started:
         return Icon(

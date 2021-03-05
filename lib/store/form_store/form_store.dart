@@ -32,10 +32,10 @@ abstract class _FormStore with Store {
   @observable
   String errorMessage = '';
 
-  List<ReactionDisposer> _disposers;
+  late List<ReactionDisposer> _disposers;
 
   @observable
-  ObservableFuture<User> authUserFuture;
+  ObservableFuture<User>? authUserFuture;
 
   @computed
   bool get hasError => errorMessage.isNotEmpty;

@@ -9,7 +9,7 @@ part of 'token_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$TokenStore on _TokenStore, Store {
-  Computed<String> _$authorizationTokenComputed;
+  Computed<String>? _$authorizationTokenComputed;
 
   @override
   String get authorizationToken => (_$authorizationTokenComputed ??=

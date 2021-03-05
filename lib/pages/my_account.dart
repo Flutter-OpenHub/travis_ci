@@ -23,20 +23,20 @@ import '../store/form_store/form_store.dart';
 class MyAccount extends StatefulWidget {
   final FormStore formStore;
 
-  const MyAccount({Key key, this.formStore}) : super(key: key);
+  const MyAccount({Key? key, required this.formStore}) : super(key: key);
   @override
   _MyAccountState createState() => _MyAccountState();
 }
 
 class _MyAccountState extends State<MyAccount> {
-  PagewiseLoadController<Organization> _pageWiseLoadController;
+  late PagewiseLoadController<Organization> _pageWiseLoadController;
   CancelToken cancelToken = CancelToken();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ReactionDisposer _disposer;
+  late ReactionDisposer _disposer;
 
-  Timer _timer;
+  late Timer _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +53,15 @@ class _MyAccountState extends State<MyAccount> {
             ListTile(
               leading: CircleAvatar(
                 backgroundImage:
-                    NetworkImage(widget.formStore.userStore.user.avatarUrl),
+                    NetworkImage(widget.formStore.userStore.user!.avatarUrl),
                 backgroundColor: Colors.transparent,
               ),
               title: Text(
-                widget.formStore.userStore.user.name,
+                widget.formStore.userStore.user!.name,
                 //style: TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
-                widget.formStore.userStore.user.login,
+                widget.formStore.userStore.user!.login,
               ),
             ),
             Observer(
@@ -71,17 +71,17 @@ class _MyAccountState extends State<MyAccount> {
                         'Sync account',
                         //style: TextStyle(fontWeight: FontWeight.w600),2020-01-26T07:49:01Z
                       ),
-                      subtitle: widget.formStore.userStore.user.isSyncing
+                      subtitle: widget.formStore.userStore.user!.isSyncing
                           ? Text('Syncing...')
                           : Text('synced at: ' +
                               DateFormat().format(
                                   DateFormat('yyyy-MM-ddTHH:mm:ssZ')
                                       .parse(
-                                          widget.formStore.userStore.user
+                                          widget.formStore.userStore.user!
                                               .lastSynced,
                                           true)
                                       .toLocal())),
-                      trailing: widget.formStore.userStore.user.isSyncing
+                      trailing: widget.formStore.userStore.user!.isSyncing
                           ? SizedBox(
                               width: 20.0,
                               height: 20.0,
@@ -93,7 +93,7 @@ class _MyAccountState extends State<MyAccount> {
                               width: 1,
                             ),
                       onTap: () {
-                        if (!widget.formStore.userStore.user.isSyncing) {
+                        if (!widget.formStore.userStore.user!.isSyncing) {
                           widget.formStore.userStore.syncAccount(cancelToken);
                         }
                       },
@@ -160,12 +160,12 @@ class _MyAccountState extends State<MyAccount> {
               (pageIndex * 10), 10, cancelToken);
         });
     _disposer = reaction(
-      (_) => widget.formStore.userStore.syncAccountFuture.status,
-      (result) => widget.formStore.userStore.syncAccountFuture.status ==
+      (_) => widget.formStore.userStore.syncAccountFuture!.status,
+      (result) => widget.formStore.userStore.syncAccountFuture!.status ==
                   FutureStatus.rejected &&
               widget.formStore.userStore.hasApiError
           ? _showError()
-          : widget.formStore.userStore.syncAccountFuture.status ==
+          : widget.formStore.userStore.syncAccountFuture!.status ==
                       FutureStatus.fulfilled &&
                   !widget.formStore.userStore.hasApiError
               ? _fetchStatus()
@@ -203,7 +203,7 @@ class _MyAccountState extends State<MyAccount> {
     Future.delayed(
         Duration(seconds: 3),
         () => _timer = Timer.periodic(Duration(seconds: 3), (tick) {
-              if (widget.formStore.userStore.user.isSyncing) {
+              if (widget.formStore.userStore.user!.isSyncing) {
                 widget.formStore.userStore.getUser(cancelToken);
               } else {
                 _timer.cancel();
@@ -212,8 +212,8 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   _showError() {
-    widget.formStore.userStore.user.isSyncing = false;
-    _scaffoldKey.currentState.showSnackBar(
+    widget.formStore.userStore.user!.isSyncing = false;
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(widget.formStore.userStore.errorMessage)));
     widget.formStore.userStore.errorMessage = '';
   }

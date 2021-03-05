@@ -24,16 +24,16 @@ abstract class _BuildsStore with Store {
   ObservableList<BuildsModel> builds = ObservableList<BuildsModel>();
 
   @observable
-  RepositoriesModel repositoriesModel;
+  late RepositoriesModel repositoriesModel;
 
   @observable
   String errorMessage = '';
 
   @observable
-  ObservableFuture<List<BuildsModel>> getBuildsFuture;
+  ObservableFuture<List<BuildsModel>>? getBuildsFuture;
 
   @observable
-  ObservableFuture<RepositoriesModel> starUnStarRepoFuture;
+  ObservableFuture<RepositoriesModel>? starUnStarRepoFuture;
 
   @computed
   bool get hasErrors => errorMessage.isNotEmpty;
